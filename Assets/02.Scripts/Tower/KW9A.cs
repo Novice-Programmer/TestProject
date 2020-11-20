@@ -30,7 +30,7 @@ public class KW9A : TestTower
         for (int i = 0; i < 3; i++)
         {
             GameObject go = Instantiate(_rocketMissile, _firePoints[Random.Range(0, _firePoints.Length)].position,Quaternion.identity);
-            NormalProjectile missile = go.GetComponent<NormalProjectile>();
+            OneTargetProjectile missile = go.GetComponent<OneTargetProjectile>();
             missile.ProjectileSetting(_atk / 3, _target);
             yield return new WaitForSeconds(Random.Range(0.1f, 0.3f));
         }

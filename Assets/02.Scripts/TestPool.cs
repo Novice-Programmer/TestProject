@@ -83,23 +83,11 @@ public class TestPool : MonoBehaviour
     }
 
     /// <summary>
-    /// _poolObjects에 있는 enemyFileName이 일치하는 이름중에 비활성화 된 게임 오브젝트를 갖고와서 TestEnemy 컴포넌트를 반환
-    /// </summary>
-    /// <param name="enemyFileName"></param>
-    /// <returns></returns>
-    public TestEnemy GetEnemy(string enemyFileName)
-    {
-        GameObject go = PoolGetObject(enemyFileName);
-        TestEnemy enemy = go.GetComponent<TestEnemy>();
-        return enemy;
-    }
-
-    /// <summary>
     /// _poolObjects에 있는 objectName에 일치하는 이름 중에 비활성화 된 게임 오브젝트를 갖고온다.
     /// </summary>
     /// <param name="objectName">파일명</param>
     /// <returns></returns>
-    GameObject PoolGetObject(string objectName)
+    public TestPoolObject PoolGetObject(string objectName)
     {
         GameObject go = _poolObjects[objectName][0];
         for(int i = 0; i < _poolObjects[objectName].Count; i++)
@@ -110,6 +98,6 @@ public class TestPool : MonoBehaviour
                 break;
             }
         }
-        return go;
+        return go.GetComponent<TestPoolObject>();
     }
 }

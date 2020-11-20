@@ -24,7 +24,7 @@ public enum ERatingEnemy
     Boss
 }
 
-public abstract class TestEnemy : MonoBehaviour
+public abstract class TestEnemy : TestPoolObject
 {
     [SerializeField] protected TestEnemyData _enemyData;
     
@@ -35,16 +35,18 @@ public abstract class TestEnemy : MonoBehaviour
     protected bool _isDead = false;
 
     protected EWeakType _weakType;
-    protected int _hp;
-    protected int _mp;
-    protected int _atk; // 공격력
-    protected int _def; // 방어력
-    protected float _atkSpd; // 공격 속도
-    protected float _movSpd; // 이동 속도
+    [SerializeField] protected int _hp;
+    [SerializeField] protected int _mp;
+    [SerializeField] protected int _atk; // 공격력
+    [SerializeField] protected int _def; // 방어력
+    [SerializeField] protected float _atkSpd; // 공격 속도
+    [SerializeField] protected float _movSpd; // 이동 속도
+    [SerializeField] protected float _dieAnimTime; // 죽음 시간
 
     List<TestBadBuff> _badBuffs;
 
     NavMeshAgent _enemyAI;
+    Animator _enemyAnim;
 
     float _attackTime = 0;
     float _timeCheck = 0;
@@ -52,24 +54,70 @@ public abstract class TestEnemy : MonoBehaviour
     private void Awake()
     {
         _enemyAI = GetComponent<NavMeshAgent>();
+        _enemyAnim = GetComponent<Animator>();
     }
 
-    private void Start()
+    public override void ActiveObject()
     {
+        base.ActiveObject();
+        _wavePointIndex = 0;
         _enemyAI.destination = TestWayPoint._wayPoints[_wavePointIndex].position;
         _badBuffs = new List<TestBadBuff>();
         _state = EStateEnemy.Move;
+        _action = false;
+        _enemyAI.isStopped = false;
         _hp = _enemyData.hp;
         _mp = 0;
         StatusCheck();
-        StartCoroutine(EnemyAction());
+        StopCoroutine(EnemyDie());
+        StartCoroutine(BadBuffCheck());
+    }
+
+    public override void DisActiveObject()
+    {
+        base.DisActiveObject();
     }
 
     private void Update()
     {
-        if (_badBuffs.Count > 0)
+        if (_action)
         {
-            StatusCheck();
+            return;
+        }
+        else
+        {
+            switch (_state)
+            {
+                case EStateEnemy.AttackTowerSearch:
+                    break;
+                case EStateEnemy.AttackCommander:
+                    break;
+                case EStateEnemy.Attack:
+                    break;
+                case EStateEnemy.Move:
+                    Move();
+                    break;
+                case EStateEnemy.Special:
+                    break;
+                case EStateEnemy.None:
+                    break;
+                case EStateEnemy.Stun:
+                    break;
+                case EStateEnemy.Die:
+                    break;
+            }
+        }
+    }
+
+    IEnumerator BadBuffCheck()
+    {
+        while (!_isDead)
+        {
+            if (_badBuffs.Count > 0)
+            {
+                StatusCheck();
+            }
+            yield return null;
         }
     }
 
@@ -135,47 +183,28 @@ public abstract class TestEnemy : MonoBehaviour
         _enemyAI.acceleration = _movSpd * 2.0f;
     }
 
-    IEnumerator EnemyAction()
-    {
-        while (!_isDead)
-        {
-            if (_action)
-            {
-                yield return null;
-            }
-            else
-            {
-                switch (_state)
-                {
-                    case EStateEnemy.AttackTowerSearch:
-                        break;
-                    case EStateEnemy.AttackCommander:
-                        break;
-                    case EStateEnemy.Attack:
-                        break;
-                    case EStateEnemy.Move:
-                        Move();
-                        break;
-                    case EStateEnemy.Special:
-                        break;
-                    case EStateEnemy.None:
-                        break;
-                    case EStateEnemy.Stun:
-                        break;
-                    case EStateEnemy.Die:
-                        break;
-                }
-            }
-            yield return null;
-        }
-    }
-
     void Move()
     {
         if (Vector3.Distance(transform.position, _enemyAI.destination) <= 0.2f)
         {
             GetNextWayPoint();
         }
+    }
+
+    void Die()
+    {
+        _state = EStateEnemy.Die;
+        _enemyAI.isStopped = true;
+        StopCoroutine(BadBuffCheck());
+        StartCoroutine(EnemyDie());
+    }
+
+    IEnumerator EnemyDie()
+    {
+        _enemyAnim.SetTrigger("Die");
+        _action = true;
+        yield return new WaitForSeconds(_dieAnimTime);
+        DisActiveObject();
     }
 
     void GetNextWayPoint()
@@ -191,11 +220,18 @@ public abstract class TestEnemy : MonoBehaviour
 
     public virtual void Hit(int damage)
     {
-        _hp = damage - _def;
+        if (_state == EStateEnemy.Die)
+            return;
+        int resultDamage = damage - _def;
+        if (resultDamage <= 0)
+        {
+            resultDamage = 1;
+        }
+        _hp -= resultDamage;
         if (_hp <= 0)
         {
             _hp = 0;
-            _state = EStateEnemy.Die;
+            Die();
         }
     }
 }

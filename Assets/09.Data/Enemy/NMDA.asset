@@ -26,7 +26,7 @@ MonoBehaviour:
   atkRange: 1
   atkRate: 30
   atkTime: 3
-  movSpd: 1.5
+  movSpd: 2
   mineralGetRate: 15
   minMineral: 1
   maxMineral: 6
