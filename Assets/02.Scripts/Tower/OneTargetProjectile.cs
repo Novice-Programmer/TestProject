@@ -8,6 +8,7 @@ public class OneTargetProjectile : MonoBehaviour
     Transform _target;
     bool _enemyAttack;
 
+    [SerializeField] EWeakType weakType = EWeakType.None;
     [SerializeField] bool _splash = false;
     [SerializeField] float _speed = 10.0f;
     [SerializeField] float _rotateSpeed = 0.25f;
@@ -24,7 +25,7 @@ public class OneTargetProjectile : MonoBehaviour
 
     private void Update()
     {
-        if(_target == null)
+        if (_target == null)
         {
             Destroy(gameObject);
             return;
@@ -45,15 +46,30 @@ public class OneTargetProjectile : MonoBehaviour
 
     void HitTarget()
     {
-        Instantiate(_boomEffect,transform.position,transform.rotation);
+        Instantiate(_boomEffect, transform.position, transform.rotation);
         if (_enemyAttack)
         {
-            TestTower tower = _target.GetComponent<TestTower>();
+            if (_splash)
+            {
+
+            }
+            else
+            {
+                TestTower tower = _target.GetComponent<TestTower>();
+                tower.Hit(_atk);
+            }
         }
         else
         {
-            TestEnemy enemy = _target.GetComponent<TestEnemy>();
-            enemy.Hit(_atk);
+            if (_splash)
+            {
+
+            }
+            else
+            {
+                TestEnemy enemy = _target.GetComponent<TestEnemy>();
+                enemy.Hit(_atk, weakType);
+            }
         }
         Destroy(gameObject);
     }

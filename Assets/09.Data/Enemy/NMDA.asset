@@ -17,15 +17,16 @@ MonoBehaviour:
   description: "\uD654\uC131\uC5D0\uC11C \uBC1C\uACAC\uB418\uB294 \uC801\uB300\uC801\uC778
     \uC0DD\uBA85\uCCB4"
   weakType: 0
-  hp: 15
-  mp: 5
+  hp: 80
+  mp: 20
   atk: 10
   def: 1
-  checkTime: 1.5
+  checkTime: 3
   atkSpd: 0.7
   atkRange: 1
-  atkRate: 30
-  atkTime: 3
+  sightRange: 5
+  atkRate: 20
+  atkTime: 5
   movSpd: 2
   mineralGetRate: 15
   minMineral: 1

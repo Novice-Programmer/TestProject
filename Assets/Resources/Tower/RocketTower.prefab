@@ -525,6 +525,7 @@ GameObject:
   - component: {fileID: 3592855254122144653}
   - component: {fileID: 2559596427660335098}
   - component: {fileID: 6729449153968158309}
+  - component: {fileID: 2033461621299218828}
   m_Layer: 19
   m_Name: RocketTower
   m_TagString: Tower
@@ -557,7 +558,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3590530707196527081}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 3, y: 3, z: 3}
@@ -600,6 +601,22 @@ MonoBehaviour:
   _rangeObject: {fileID: 8732998734655778903}
   _towerBulidSuccess: 0
   _firePointParent: {fileID: 3585982065503301039}
+--- !u!54 &2033461621299218828
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3590530707196527081}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3590548140419149819
 GameObject:
   m_ObjectHideFlags: 0

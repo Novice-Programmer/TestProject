@@ -26,6 +26,7 @@ public class TestEnemyData : ScriptableObject
     public float checkTime; // 몇초마다 공격 확인할 지
     public float atkSpd; // 공격 속도
     public float atkRange; // 공격 범위
+    public float sightRange; // 공격 체크 범위
     [Range(0,100)]
     public float atkRate; // 공격 확률
     public float atkTime; // 공격 시간

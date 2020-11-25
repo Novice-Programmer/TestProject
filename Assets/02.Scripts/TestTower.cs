@@ -39,7 +39,7 @@ public abstract class TestTower : MonoBehaviour
 {
     [Header("TowerInfo")]
     public ETowerType _towerType = ETowerType.None;
-    [SerializeField] protected ETowerState _towerState = ETowerState.Search;
+    public ETowerState _towerState = ETowerState.Search;
     [SerializeField] protected int _level;
     [SerializeField] protected int _hp;
     [SerializeField] protected int _maxHP;
@@ -71,14 +71,14 @@ public abstract class TestTower : MonoBehaviour
     TestTowerUpgradeData _upgradeSP = null;
 
     string _enemyTag = "Enemy";
-    protected Transform _target;
+    protected Transform[] _target;
 
     float _attackCountdown = 0;
 
     bool _towerSelect = false;
     public bool _towerBulidSuccess = false;
 
-    public TestIntVector2 gridPosition { get; private set; }
+    public TestIntVector2 GridPosition { get; private set; }
 
     private void Start()
     {
@@ -104,8 +104,12 @@ public abstract class TestTower : MonoBehaviour
         {
             if (_towerState == ETowerState.Attack)
             {
-                Vector3 dir = _target.position - transform.position;
-                Quaternion lookRotation = Quaternion.LookRotation(dir);
+                Vector3 dir = Vector3.zero;
+                for(int i = 0; i < _target.Length; i++)
+                {
+                    dir = _target[i].position - transform.position;
+                }
+                Quaternion lookRotation = Quaternion.LookRotation(dir/_target.Length);
                 Vector3 rotateValue = Quaternion.Lerp(_partToRotate.rotation, lookRotation, Time.deltaTime * _turnSpeed).eulerAngles;
                 _partToRotate.rotation = Quaternion.Euler(_partToRotate.rotation.x, rotateValue.y, _partToRotate.rotation.z);
 
@@ -145,42 +149,84 @@ public abstract class TestTower : MonoBehaviour
 
     }
 
+    public virtual void Hit(int damage)
+    {
+        _hp -= damage;
+        if (_hp <= 0)
+        {
+            _hp = 0;
+            _towerState = ETowerState.Breakdown;
+        }
+    }
+
     void UpdateTarget()
     {
         if (_towerState == ETowerState.Search || _towerState == ETowerState.Attack)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(_enemyTag);
-            float shortestDistance = _atkRange;
-            GameObject nearestEnemy = null;
-            foreach (GameObject enemy in enemies)
-            {
-                if (enemy.GetComponent<TestEnemy>()._state == EStateEnemy.Die)
-                    continue;
-                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-                if (distanceToEnemy < shortestDistance)
-                {
-                    if (nearestEnemy != null)
-                    {
-                        if ((int)nearestEnemy.GetComponent<TestEnemy>()._rating >= (int)enemy.GetComponent<TestEnemy>()._rating)
-                        {
-                            shortestDistance = distanceToEnemy;
-                            nearestEnemy = enemy;
-                        }
-                    }
-                    else
-                    {
-                        shortestDistance = distanceToEnemy;
-                        nearestEnemy = enemy;
-                    }
+            List<TestEnemy> enemiesRank = new List<TestEnemy>();
 
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                if (Vector3.Distance(transform.position, enemies[i].transform.position) < _atkRange)
+                {
+                    TestEnemy enemy = enemies[i].GetComponent<TestEnemy>();
+                    if (enemy._state != EStateEnemy.Die)
+                        enemiesRank.Add(enemy);
                 }
             }
 
-            if (nearestEnemy != null)
+            if (enemiesRank.Count > 0)
             {
+                _target = new Transform[_targetNumber];
+                for (int i = 0; i < enemiesRank.Count-1; i++)
+                {
+                    for (int j = i + 1; j < enemiesRank.Count; j++)
+                    {
+                        if (enemiesRank[i]._rating < enemiesRank[j]._rating)
+                        {
+                            TestEnemy temp = enemiesRank[i];
+                            enemiesRank[i] = enemiesRank[j];
+                            enemiesRank[j] = temp;
+                        }
+                        else if (enemiesRank[i]._rating == enemiesRank[j]._rating)
+                        {
+                            float distanceToEnemyI = Vector3.Distance(transform.position, enemiesRank[i].transform.position);
+                            float distanceToEnemyJ = Vector3.Distance(transform.position, enemiesRank[j].transform.position);
+                            if (distanceToEnemyI > distanceToEnemyJ)
+                            {
+                                TestEnemy temp = enemiesRank[i];
+                                enemiesRank[i] = enemiesRank[j];
+                                enemiesRank[j] = temp;
+                            }
+                        }
+                    }
+                }
+
                 _towerState = ETowerState.Attack;
-                _target = nearestEnemy.transform;
+                if (_target.Length <= enemiesRank.Count)
+                {
+                    for (int i = 0; i < _target.Length; i++)
+                    {
+                        _target[i] = enemiesRank[i].transform;
+                    }
+                }
+                else
+                {
+                    for(int i = 0; i < _target.Length; i+=enemiesRank.Count)
+                    {
+                        for(int j = 0; j < enemiesRank.Count; j++)
+                        {
+                            if(i+j >= _target.Length)
+                            {
+                                break;
+                            }
+                            _target[i+j] = enemiesRank[j].transform;
+                        }
+                    }
+                }
             }
+
             else
             {
                 _target = null;
