@@ -7,6 +7,8 @@ public class TestGameManager : MonoBehaviour
     public static TestGameManager Instance { set; get; }
 
     int _wave = 0;
+    float _timeCheck = 0;
+    bool _waveStart = false;
 
     private void Awake()
     {
@@ -21,15 +23,41 @@ public class TestGameManager : MonoBehaviour
         TestResourceManager.Instance.TowerPartPayment(EPaymentType.Initial, _wave);
     }
 
-    public void WaveStart()
+    private void Update()
     {
-        TestWaveManager.Instance.WaveStart(_wave);
-        _wave++;
+        if (_waveStart)
+        {
+            _timeCheck += Time.deltaTime;
+            if(_timeCheck >= 10.0f)
+            {
+                _timeCheck = 0;
+                TestResourceManager.Instance.TowerPartPayment(EPaymentType.Occasional, _wave - 1);
+            }
+        }
     }
 
-    public void WaveEnd()
+    public void WaveStart()
     {
+        _waveStart = true;
+        TestWaveManager.Instance.WaveStart(_wave);
+    }
 
+    public void WaveEnd(bool stageClear)
+    {
+        _timeCheck = 0;
+        _waveStart = false;
+        _wave++;
+        TestResourceManager.Instance.WaveClear(_wave);
+        if (stageClear)
+        {
+            Debug.Log("스테이지 클리어");
+            TestGameUI.Instance.StageClear();
+        }
+        else
+        {
+            TestResourceManager.Instance.TowerPartPayment(EPaymentType.Regular, _wave);
+            TestGameUI.Instance.WaveClear(_wave);
+        }
     }
 
     public void TowerInstall(ETowerType towerType,int installCost)
@@ -41,5 +69,6 @@ public class TestGameManager : MonoBehaviour
     {
         TestResourceManager.Instance.TowerPartValue = -ghostTowerData.installCost;
         TestTower tower = Instantiate(TestTowerDataManager.Instance.GetTower(ghostTowerData._towerType), ghostTowerData.fitPos, Quaternion.identity);
+        tower.BuildingTower(ghostTowerData);
     }
 }

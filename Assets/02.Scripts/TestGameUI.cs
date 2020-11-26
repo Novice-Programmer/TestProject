@@ -25,7 +25,7 @@ public class TestGameUI : MonoBehaviour
 
 	public EUIState UIState { get; private set; }
 
-	[SerializeField] TestUITWIN _uITWIN = null;
+	[SerializeField] TestUITower _uITower = null;
 	[SerializeField] TestUIWave _uiWave = null;
 	[SerializeField] TestUIResource _uiResource = null;
 
@@ -36,17 +36,47 @@ public class TestGameUI : MonoBehaviour
 
 	public void GameUISetting()
 	{
-		_uITWIN.TowerInstallButtonAdd();
+		_uITower.TowerInstallButtonAdd();
 	}
 
-    public void TowerInstallClick()
+    public void TowerViewUIOff()
     {
-        _uITWIN.TowerViewOff();
+        _uITower.TowerViewOff();
     }
 
 	public void ResourceValueChange()
     {
-		_uITWIN.UIValueChange();
+		_uITower.UIValueChange();
 		_uiResource.UIValueChange();
+    }
+
+	public void TowerClick(TestTower tower)
+    {
+		_uITower.ClickTower(tower);
+    }
+
+	public void StageUIInit(TestWave[] waves)
+    {
+		_uiWave.StageEnemyUIInit(waves);
+    }
+
+	public void WaveUISetting(int wave)
+    {
+		_uiWave.NextWave(wave);
+    }
+
+	public void AppearanceEnemy(EEnemy enemyType)
+    {
+		_uiWave.WaveEnemyAppearance(enemyType);
+    }
+
+	public void WaveClear(int wave)
+    {
+		_uiWave.NextWave(wave);
+    }
+
+	public void StageClear()
+    {
+
     }
 }

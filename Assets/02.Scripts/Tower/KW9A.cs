@@ -27,21 +27,24 @@ public class KW9A : TestTower
 
     IEnumerator MissileLaunch()
     {
-
         for (int i = 0; i < _atkNumber; i++)
         {
-            if (_target == null)
-            {
-                break;
-            }
             for (int j = 0; j < _target.Length; j++)
             {
                 GameObject go = Instantiate(_rocketMissile, _firePoints[Random.Range(0, _firePoints.Length)].position, Quaternion.identity);
                 OneTargetProjectile missile = go.GetComponent<OneTargetProjectile>();
                 missile.ProjectileSetting(_atk, _target[j]);
                 yield return new WaitForSeconds(Random.Range(_atkSpd * 0.1f, _atkSpd * 0.2f));
+                if (_target == null)
+                {
+                    break;
+                }
             }
             yield return new WaitForSeconds(Random.Range(_atkSpd * 0.3f, _atkSpd * 0.5f));
+            if (_target == null)
+            {
+                break;
+            }
         }
     }
 

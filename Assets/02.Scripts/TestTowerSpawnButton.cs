@@ -38,7 +38,7 @@ public class TestTowerSpawnButton : MonoBehaviour
 
     public void TowerClick()
     {
-        TestGameUI.Instance.TowerInstallClick();
+        TestGameUI.Instance.TowerViewUIOff();
         TestGameManager.Instance.TowerInstall(_towerState.towerType, _towerState.towerInstallCost);
     }
 }

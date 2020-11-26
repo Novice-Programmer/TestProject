@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EEnemy
+{
+    NMDA
+}
+
 public enum EWeakType
 {
     Fire,
@@ -15,6 +20,7 @@ public enum EWeakType
 [CreateAssetMenu(fileName = "TestData", menuName = "Test/EnemyData", order = 1)]
 public class TestEnemyData : ScriptableObject
 {
+    public EEnemy enemy;
     public string fileName; // 파일 이름
     public string enemyName; // 이름
     public string description; // 설명

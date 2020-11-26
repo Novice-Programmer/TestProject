@@ -160,4 +160,9 @@ public class TestTowerDataManager : MonoBehaviour
         }
         return null;
     }
+
+    public Sprite GetTowerImage(ETowerType towerType)
+    {
+        return _towerImages[(int)towerType];
+    }
 }

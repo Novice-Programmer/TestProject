@@ -7,8 +7,10 @@ public class TestGhostTower : MonoBehaviour
     public ETowerType _towerType = ETowerType.None;
     public int installCost;
     public TestIntVector2 _demision;
+    public TestIntVector2 _gridPos;
     public ETowerFitType towerFitType = ETowerFitType.Overlaps;
     public Vector3 fitPos;
+    public TestTile parentTile;
     [SerializeField] MeshRenderer[] _materialRenders = null;
     [SerializeField] Material _fitMaterial = null;
     [SerializeField] Material _outMaterial = null;

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public abstract class TestPoolObject : MonoBehaviour
 {
-    public virtual void ActiveObject()
+    protected int _poolNumber;
+    public virtual void ActiveObject(int poolNumber)
     {
+        _poolNumber = poolNumber;
         gameObject.SetActive(true);
     }
 

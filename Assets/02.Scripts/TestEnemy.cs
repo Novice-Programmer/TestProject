@@ -61,9 +61,9 @@ public abstract class TestEnemy : TestPoolObject
         _enemyCllider = GetComponent<BoxCollider>();
     }
 
-    public override void ActiveObject()
+    public override void ActiveObject(int poolNumber)
     {
-        base.ActiveObject();
+        base.ActiveObject(poolNumber);
         _enemyAI.enabled = true;
         _enemyCllider.enabled = true;
         _wavePointIndex = 0;
@@ -81,6 +81,7 @@ public abstract class TestEnemy : TestPoolObject
     public override void DisActiveObject()
     {
         base.DisActiveObject();
+        TestWaveManager.Instance.WaveEnemyDie();
     }
 
     private void Update()

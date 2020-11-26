@@ -3,29 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EStatusType
-{
-    HP,
-    EP,
-    ATK,
-    DEF,
-    SP,
-    ATKSPD,
-    ATKRANGE,
-    ATKNUMBER,
-    TARGETNUMBER,
-    LEVELATK,
-    LEVELDEF,
-    LEVELSP
-}
-
-public enum ERotateAxis
-{
-    X,
-    Y,
-    Z
-}
-
 public enum ETowerState
 {
     Search,
@@ -40,9 +17,9 @@ public abstract class TestTower : MonoBehaviour
     [Header("TowerInfo")]
     public ETowerType _towerType = ETowerType.None;
     public ETowerState _towerState = ETowerState.Search;
-    [SerializeField] protected int _level;
-    [SerializeField] protected int _hp;
-    [SerializeField] protected int _maxHP;
+    public int _level;
+    public int _hp;
+    public int _maxHP;
     [SerializeField] protected int _ep;
     [SerializeField] protected int _chargeEP;
     [SerializeField] protected int _atk;
@@ -51,9 +28,9 @@ public abstract class TestTower : MonoBehaviour
     [SerializeField] protected float _atkRange;
     [SerializeField] protected int _atkNumber;
     [SerializeField] protected int _targetNumber;
-    [SerializeField] protected int _levelATK;
-    [SerializeField] protected int _levelDEF;
-    [SerializeField] protected int _levelSP;
+    public int _levelATK;
+    public int _levelDEF;
+    public int _levelSP;
     [SerializeField] protected float[] spValue;
     [SerializeField] protected TestIntVector2 _dimensions;
 
@@ -65,10 +42,10 @@ public abstract class TestTower : MonoBehaviour
     [SerializeField] GameObject _rangeObject = null;
     Vector3 _rangeSize;
 
-    TestTowerGameData _gameTowerData;
-    TestTowerUpgradeData _upgradeATK = null;
-    TestTowerUpgradeData _upgradeDEF = null;
-    TestTowerUpgradeData _upgradeSP = null;
+    public TestTowerGameData _gameTowerData;
+    public TestTowerUpgradeData _upgradeATK = null;
+    public TestTowerUpgradeData _upgradeDEF = null;
+    public TestTowerUpgradeData _upgradeSP = null;
 
     string _enemyTag = "Enemy";
     protected Transform[] _target;
@@ -78,7 +55,8 @@ public abstract class TestTower : MonoBehaviour
     bool _towerSelect = false;
     public bool _towerBulidSuccess = false;
 
-    public TestIntVector2 GridPosition { get; private set; }
+    TestTile _parentTile;
+    TestIntVector2 _gridPosition;
 
     private void Start()
     {
@@ -247,6 +225,14 @@ public abstract class TestTower : MonoBehaviour
         {
             _towerSelect = false;
         }
+        if (_towerSelect)
+        {
+            TestGameUI.Instance.TowerClick(this);
+        }
+        else
+        {
+            TestGameUI.Instance.TowerViewUIOff();
+        }
         _rangeObject.SetActive(_towerSelect);
     }
 
@@ -254,6 +240,25 @@ public abstract class TestTower : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, _atkRange);
+    }
+
+    public void BuildingTower(TestGhostTower ghostTower)
+    {
+        _parentTile = ghostTower.parentTile;
+        _gridPosition = ghostTower._gridPos;
+    }
+
+    public void TowerRepair()
+    {
+        _hp = _maxHP;
+        if (_towerState == ETowerState.Breakdown)
+            _towerState = ETowerState.Search;
+    }
+
+    public void SellTower()
+    {
+        _parentTile.Clear(_gridPosition, _dimensions);
+        Destroy(gameObject);
     }
 
     #region 데이터
@@ -273,7 +278,7 @@ public abstract class TestTower : MonoBehaviour
         _hp = _maxHP;
     }
 
-    void StatusCheck()
+    public void StatusCheck()
     {
 
         if (_upgradeATK != null)
@@ -331,6 +336,58 @@ public abstract class TestTower : MonoBehaviour
         }
     }
 
+    public int UpgradeCost(EUpgradeType upgradeType)
+    {
+        int cost = 0;
+
+        switch (upgradeType)
+        {
+            case EUpgradeType.Attack:
+                if (_upgradeATK != null)
+                {
+                    cost = _upgradeATK.nextCost + _gameTowerData.atkUpgradeCost;
+                }
+                else
+                {
+                    cost = _gameTowerData.atkUpgradeCost;
+                }
+                break;
+            case EUpgradeType.Defence:
+                if (_upgradeDEF != null)
+                {
+                    cost = _upgradeDEF.nextCost + _gameTowerData.defUpgradeCost;
+                }
+                else
+                {
+                    cost = _gameTowerData.defUpgradeCost;
+                }
+                break;
+            case EUpgradeType.Special:
+                if (_upgradeSP != null)
+                {
+                    cost = _upgradeSP.nextCost + _gameTowerData.spUpgradeCost;
+                }
+                else
+                {
+                    cost = _gameTowerData.spUpgradeCost;
+                }
+                break;
+        }
+
+        return cost;
+    }
+
+    public int TowerRepairCost()
+    {
+        int cost = (_hp / _maxHP) * (int)(_gameTowerData.buildCost * 0.3f);
+        return cost;
+    }
+
+    public int TowerGetSellNumber()
+    {
+        int sellNumber = (int)(TestTowerDataManager.Instance.GetTowerData(_towerType).buildCost * 0.5f);
+        return sellNumber;
+    }
     #endregion
 
 }
