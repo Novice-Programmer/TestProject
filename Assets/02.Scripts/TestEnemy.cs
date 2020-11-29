@@ -44,7 +44,7 @@ public abstract class TestEnemy : ObjectHit
     [SerializeField] protected float _moveCheckSize; // 이동 확인 범위
     [SerializeField] protected TestWorldStatusUI _statusUI = null;
 
-    List<TestBadBuff> _badBuffs;
+    [SerializeField] List<TestBadBuff> _badBuffs;
 
     NavMeshAgent _enemyAI;
     Animator _enemyAnim;

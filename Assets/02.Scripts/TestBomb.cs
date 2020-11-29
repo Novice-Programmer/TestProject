@@ -66,6 +66,7 @@ public class TestBomb : MonoBehaviour
             }
             else
             {
+                GetComponent<BoxCollider>().enabled = false;
                 Bomb();
             }
         }

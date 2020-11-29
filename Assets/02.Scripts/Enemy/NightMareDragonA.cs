@@ -11,6 +11,8 @@ public class NightMareDragonA : TestEnemy
     public override void TargetAttack()
     {
         base.TargetAttack();
+        if (_target == null)
+            return;
         _attackZone.HitZoneSetting(_atk, _target.tag);
         _attackZone.gameObject.SetActive(true);
         Vector3 effectPos = new Vector3(_target.position.x, _target.position.y + 1f, _target.position.z);
