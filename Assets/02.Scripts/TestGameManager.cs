@@ -71,4 +71,9 @@ public class TestGameManager : MonoBehaviour
         TestTower tower = Instantiate(TestTowerDataManager.Instance.GetTower(ghostTowerData._towerType), ghostTowerData.fitPos, Quaternion.identity);
         tower.BuildingTower(ghostTowerData);
     }
+
+    public void GameOver()
+    {
+        Debug.Log("GaveOver");
+    }
 }

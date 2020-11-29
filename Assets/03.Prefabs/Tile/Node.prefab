@@ -188,6 +188,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _height: 0
   _nodeType: 3
+  _parentTile: {fileID: 0}
+  _pos:
+    x: 0
+    y: 0
   _noneTileM: {fileID: 2100000, guid: 1d2f8f956d768bd4dab2e0ea71fd1555, type: 2}
   _useTileM: {fileID: 2100000, guid: 47002fe578fe13740b40dd34482c5876, type: 2}
   _towerTileM: {fileID: 2100000, guid: 25f07275485fed249a930fd874ace558, type: 2}

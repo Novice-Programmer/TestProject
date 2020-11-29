@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 6914608486531827941}
   - component: {fileID: 6914608486531827942}
   - component: {fileID: 6914608486531827943}
-  - component: {fileID: -4442343598474411227}
   - component: {fileID: 2187079949990813730}
   - component: {fileID: -6978394398680952038}
+  - component: {fileID: 4273161248954620637}
   m_Layer: 0
   m_Name: KW9A_Rocket
   m_TagString: Untagged
@@ -28,9 +28,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6914608486531827936}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 7533662224859814160}
   m_Father: {fileID: 0}
@@ -83,25 +83,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &-4442343598474411227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6914608486531827936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53b62fd1f9847b34983e991c5dd97f46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _splash: 0
-  _speed: 15
-  _rotateSpeed: 30
-  _boomEffect: {fileID: 3717756204655897091, guid: 39a28a1ea94b92d4ea31215698d254c9,
-    type: 3}
-  _boomEffectTime: 4
-  _boomRange: 1
 --- !u!65 &2187079949990813730
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -131,6 +112,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4273161248954620637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914608486531827936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8208e8ef0e64ae74b8b08776679b2fff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxTime: 2.5
+  _bombObject: {fileID: 8270203369625135687, guid: 39a28a1ea94b92d4ea31215698d254c9,
+    type: 3}
+  _values: []
+  _speed: 7
+  _rotateSpeed: 30
+  _parabola: 0
+  _upSpeed: 10
+  _maxUp: 10
 --- !u!1 &7533662224859776304
 GameObject:
   m_ObjectHideFlags: 0

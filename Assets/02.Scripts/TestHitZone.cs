@@ -5,22 +5,20 @@ using UnityEngine;
 public class TestHitZone : MonoBehaviour
 {
     int _damage = 0;
+    string _targetTag;
 
-    private void Start()
-    {
-        gameObject.SetActive(false);
-    }
-    public void HitZoneSetting(int damage)
+    public void HitZoneSetting(int damage,string targetTag)
     {
         _damage = damage;
+        _targetTag = targetTag;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Tower"))
+        if (other.CompareTag(_targetTag))
         {
-            TestTower tower = other.GetComponent<TestTower>();
-            tower.Hit(_damage);
+            ObjectHit objectHit = other.GetComponent<ObjectHit>();
+            objectHit.Hit(_damage,EWeakType.None);
         }
     }
 }

@@ -6,12 +6,15 @@ public class KW9A : TestTower
 {
     [Header("KW9A")]
     [SerializeField] Transform _firePointParent = null;
+    [SerializeField] Transform _nuclearPoint = null;
     Transform[] _firePoints;
-    GameObject _rocketMissile;
+    Projectile _rocketMissile;
+    Projectile _rocketNuclear;
 
     private void Awake()
     {
-        _rocketMissile = Resources.Load("Tower/KW9A_Rocket") as GameObject;
+        _rocketMissile = (Resources.Load("Tower/KW9A_Rocket") as GameObject).GetComponent<Projectile>();
+        _rocketNuclear = (Resources.Load("Tower/KW9A_NuclearRocket") as GameObject).GetComponent<Projectile>();
         _firePoints = new Transform[_firePointParent.childCount];
         for (int i = 0; i < _firePoints.Length; i++)
         {
@@ -31,9 +34,9 @@ public class KW9A : TestTower
         {
             for (int j = 0; j < _target.Length; j++)
             {
-                GameObject go = Instantiate(_rocketMissile, _firePoints[Random.Range(0, _firePoints.Length)].position, Quaternion.identity);
-                OneTargetProjectile missile = go.GetComponent<OneTargetProjectile>();
-                missile.ProjectileSetting(_atk, _target[j]);
+                int _randInt = Random.Range(0, _firePoints.Length);
+                Projectile missile = Instantiate(_rocketMissile, _firePoints[_randInt].position, _firePoints[_randInt].rotation);
+                missile.ProjectileSetting(_target[j], "Enemy", _atk);
                 yield return new WaitForSeconds(Random.Range(_atkSpd * 0.1f, _atkSpd * 0.2f));
                 if (_target == null)
                 {
@@ -51,6 +54,7 @@ public class KW9A : TestTower
     protected override void SpecialAttack()
     {
         base.SpecialAttack();
-        StartCoroutine(MissileLaunch());
+        Projectile nuclear = Instantiate(_rocketNuclear, _nuclearPoint.position, _nuclearPoint.rotation);
+        nuclear.ProjectileSetting(_target[0].position, "Enemy", _spValue);
     }
 }

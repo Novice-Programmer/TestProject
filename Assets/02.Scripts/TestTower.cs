@@ -12,7 +12,7 @@ public enum ETowerState
     Breakdown
 }
 
-public abstract class TestTower : MonoBehaviour
+public abstract class TestTower : ObjectHit
 {
     [Header("TowerInfo")]
     public ETowerType _towerType = ETowerType.None;
@@ -31,15 +31,18 @@ public abstract class TestTower : MonoBehaviour
     public int _levelATK;
     public int _levelDEF;
     public int _levelSP;
-    [SerializeField] protected float[] spValue;
+    [SerializeField] protected float[] _spValue;
     [SerializeField] protected TestIntVector2 _dimensions;
+    [SerializeField] protected TestWorldStatusUI _statusUI;
 
     [Header("Setup")]
-
     [SerializeField] Transform _partToRotate = null;
     [SerializeField] float _turnSpeed = 10.0f;
     [SerializeField] bool _rotateCheck = true;
     [SerializeField] GameObject _rangeObject = null;
+    [SerializeField] MeshRenderer[] _materials = null;
+    [SerializeField] List<Material> _activeMaterials = null;
+    [SerializeField] Material _breakDownMaterial = null;
     Vector3 _rangeSize;
 
     public TestTowerGameData _gameTowerData;
@@ -51,6 +54,7 @@ public abstract class TestTower : MonoBehaviour
     protected Transform[] _target;
 
     float _attackCountdown = 0;
+    int _totalCost = 0;
 
     bool _towerSelect = false;
     public bool _towerBulidSuccess = false;
@@ -64,10 +68,19 @@ public abstract class TestTower : MonoBehaviour
         DataSetting();
         StartCoroutine(BulidSuccess());
         InvokeRepeating("UpdateTarget", 0.0f, 0.5f);
+        _materials = GetComponentsInChildren<MeshRenderer>();
+        for(int i = 0; i < _materials.Length; i++)
+        {
+            _activeMaterials.Add(_materials[i].material);
+        }
     }
 
     private void Update()
     {
+        if(_towerState == ETowerState.Breakdown)
+        {
+            return;
+        }
         if (_target == null)
         {
             if (_towerState == ETowerState.Attack)
@@ -96,7 +109,6 @@ public abstract class TestTower : MonoBehaviour
                     if (_ep == 100)
                     {
                         SpecialAttack();
-                        _ep = 0;
                     }
                     else
                     {
@@ -120,20 +132,37 @@ public abstract class TestTower : MonoBehaviour
         {
             _ep = 100;
         }
+        _statusUI.MPChange(_ep);
     }
 
     protected virtual void SpecialAttack()
     {
-
+        _ep = 0;
+        _statusUI.MPChange(_ep);
     }
 
-    public virtual void Hit(int damage)
+    public override void Hit(int damage, EWeakType weakType)
     {
+        if (_hp <= 0)
+        {
+            return;
+        }
+
         _hp -= damage;
         if (_hp <= 0)
         {
             _hp = 0;
-            _towerState = ETowerState.Breakdown;
+            Braekdown();
+        }
+        _statusUI.HPChange(_hp);
+    }
+
+    void Braekdown()
+    {
+        _towerState = ETowerState.Breakdown;
+        for(int i = 0; i < _materials.Length; i++)
+        {
+            _materials[i].material = _breakDownMaterial;
         }
     }
 
@@ -251,8 +280,15 @@ public abstract class TestTower : MonoBehaviour
     public void TowerRepair()
     {
         _hp = _maxHP;
+        _statusUI.HPChange(_hp);
         if (_towerState == ETowerState.Breakdown)
+        {
             _towerState = ETowerState.Search;
+            for(int i = 0; i < _materials.Length; i++)
+            {
+                _materials[i].material = _activeMaterials[i];
+            }
+        }
     }
 
     public void SellTower()
@@ -276,9 +312,12 @@ public abstract class TestTower : MonoBehaviour
         StatusCheck();
 
         _hp = _maxHP;
+        _statusUI.StatusSetting(_maxHP);
+        _statusUI.HPChange(_hp);
+        _totalCost = _gameTowerData.buildCost;
     }
 
-    public void StatusCheck()
+    void StatusCheck()
     {
 
         if (_upgradeATK != null)
@@ -310,12 +349,16 @@ public abstract class TestTower : MonoBehaviour
             _chargeEP = _gameTowerData.ep + (int)(_gameTowerData.ep * _gameTowerData.researchResult.epAddRate * 0.01f);
         }
 
-        spValue = _gameTowerData.spValue;
-        if (_upgradeSP != null)
+        _spValue = new float[_gameTowerData.spValue.Length];
+        for (int i = 0; i < _spValue.Length; i++)
         {
-            for (int i = 0; i < spValue.Length; i++)
+            if (_upgradeSP != null)
             {
-                spValue[i] = _gameTowerData.spValue[i] + _upgradeSP.addValue[i];
+                _spValue[i] = _gameTowerData.spValue[i] + _upgradeSP.addValue[i];
+            }
+            else
+            {
+                _spValue[i] = _gameTowerData.spValue[i];
             }
         }
 
@@ -379,14 +422,34 @@ public abstract class TestTower : MonoBehaviour
 
     public int TowerRepairCost()
     {
-        int cost = (_hp / _maxHP) * (int)(_gameTowerData.buildCost * 0.3f);
+        int cost;
+        float hpRate =  1 - (float)_hp / _maxHP;
+        cost = (int)(hpRate * _totalCost * 0.3f);
         return cost;
     }
 
     public int TowerGetSellNumber()
     {
-        int sellNumber = (int)(TestTowerDataManager.Instance.GetTowerData(_towerType).buildCost * 0.5f);
+        int sellNumber = (int)(_totalCost * 0.5f);
         return sellNumber;
+    }
+
+    public void TowerUpgrade(EUpgradeType upgradeType)
+    {
+        int maxHP = _maxHP;
+        StatusCheck();
+        if(upgradeType == EUpgradeType.Defence)
+        {
+            _statusUI.StatusSetting(_maxHP);
+            int addHP = _maxHP - maxHP;
+            _hp += addHP;
+            _statusUI.HPChange(_hp);
+        }
+    }
+
+    public void TotalCostAdd(int cost)
+    {
+        _totalCost += cost;
     }
     #endregion
 

@@ -5,35 +5,30 @@ using UnityEngine;
 public class NightMareDragonA : TestEnemy
 {
     [SerializeField] Transform _specialAttackPos = null;
-    [SerializeField] OneTargetProjectile _specialAttack = null;
+    [SerializeField] Projectile _specialAttack = null;
     [SerializeField] TestHitZone _attackZone = null;
-    [SerializeField] float _attackAnimTime = 1.0f;
-    [SerializeField] float _specialAnimTime = 0.8f;
-    protected override void TargetAttack()
+    public override void TargetAttack()
     {
         base.TargetAttack();
-        StartCoroutine(AttackAction());
+        _attackZone.HitZoneSetting(_atk, _target.tag);
+        _attackZone.gameObject.SetActive(true);
     }
 
-    IEnumerator AttackAction()
+    public override void AttackEnd()
     {
-        _attackZone.HitZoneSetting(_atk);
-        _attackZone.gameObject.SetActive(true);
-        yield return new WaitForSeconds(_attackAnimTime);
+        base.AttackEnd();
         _attackZone.gameObject.SetActive(false);
     }
 
-    protected override void TargetSpecialAttack()
+    public override void TargetSpecialAttack()
     {
         base.TargetSpecialAttack();
-        StartCoroutine(SpecialAttackAction());
+        Projectile attack = Instantiate(_specialAttack, _specialAttackPos.position, _specialAttackPos.rotation);
+        attack.ProjectileSetting(_target.position, _target.tag, (int)(_atk * 2.5f));
     }
 
-    IEnumerator SpecialAttackAction()
+    public override void SkillEnd()
     {
-        yield return new WaitForSeconds(_specialAnimTime);
-        OneTargetProjectile attack = Instantiate(_specialAttack, _specialAttackPos.position, _specialAttackPos.rotation);
-        attack.ProjectileSetting(_atk*2, _targetTower.transform, true);
-        yield return null;
+        base.SkillEnd();
     }
 }

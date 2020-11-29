@@ -69,13 +69,18 @@ public class TestUITower : MonoBehaviour
     {
         _towerName.text = tower._gameTowerData.towerName;
         _towerIconImage.sprite = TestTowerDataManager.Instance.GetTowerImage(tower._towerType);
-        _towerRepairBtn.interactable = tower._maxHP - tower._hp > (tower._hp * 0.1f) && TestResourceManager.Instance.TowerPartValue >= tower.TowerRepairCost();
-        if (_towerRepairBtn.interactable)
+        bool towerRepairCheck;
+        _towerRepairCostTxt.text = "Cost " + tower.TowerRepairCost();
+        if (tower._hp > (tower._maxHP * 0.9f))
         {
-            _towerRepairCostTxt.text = "Cost " + tower.TowerRepairCost();
+            towerRepairCheck = false;
+            _towerRepairCostTxt.text = "내구도 충분";
         }
-        else
-            _towerRepairCostTxt.text = "수리 불가";
+        else if (TestResourceManager.Instance.TowerPartValue < tower.TowerRepairCost())
+            towerRepairCheck = false;
+        else 
+            towerRepairCheck = true;
+        _towerRepairBtn.interactable = towerRepairCheck;
         _towerSellGetTxt.text = "Get " + tower.TowerGetSellNumber();
         bool upgradeDEFCheck = TestResourceManager.Instance.TowerPartValue >= tower.UpgradeCost(EUpgradeType.Defence);
         if (tower._upgradeDEF != null)
@@ -152,6 +157,7 @@ public class TestUITower : MonoBehaviour
         {
             TestResourceManager.Instance.TowerPartValue = -_selectTower.TowerRepairCost();
             _selectTower.TowerRepair();
+            _selectTower.TotalCostAdd(_selectTower.TowerRepairCost());
         }
         TestInputManager.Instance.TowerSelectClose();
         _selectTower = null;
@@ -168,8 +174,9 @@ public class TestUITower : MonoBehaviour
     public void ClickTowerUpgradeDEF()
     {
         TestResourceManager.Instance.TowerPartValue = -_selectTower.UpgradeCost(EUpgradeType.Defence);
+        _selectTower.TotalCostAdd(_selectTower.UpgradeCost(EUpgradeType.Defence));
         _selectTower._upgradeDEF = TestTowerDataManager.Instance.GetUpgradeData(_selectTower._towerType, EUpgradeType.Defence, ++_selectTower._levelDEF);
-        _selectTower.StatusCheck();
+        _selectTower.TowerUpgrade(EUpgradeType.Defence);
         TestInputManager.Instance.TowerSelectClose();
         _selectTower = null;
     }
@@ -177,8 +184,9 @@ public class TestUITower : MonoBehaviour
     public void ClickTowerUpgradeATK()
     {
         TestResourceManager.Instance.TowerPartValue = -_selectTower.UpgradeCost(EUpgradeType.Attack);
+        _selectTower.TotalCostAdd(_selectTower.UpgradeCost(EUpgradeType.Attack));
         _selectTower._upgradeATK = TestTowerDataManager.Instance.GetUpgradeData(_selectTower._towerType, EUpgradeType.Attack, ++_selectTower._levelATK);
-        _selectTower.StatusCheck();
+        _selectTower.TowerUpgrade(EUpgradeType.Attack);
         TestInputManager.Instance.TowerSelectClose();
         _selectTower = null;
     }
@@ -186,8 +194,9 @@ public class TestUITower : MonoBehaviour
     public void ClickTowerUpgradeSP()
     {
         TestResourceManager.Instance.TowerPartValue = -_selectTower.UpgradeCost(EUpgradeType.Special);
+        _selectTower.TotalCostAdd(_selectTower.UpgradeCost(EUpgradeType.Special));
         _selectTower._upgradeSP = TestTowerDataManager.Instance.GetUpgradeData(_selectTower._towerType, EUpgradeType.Special, ++_selectTower._levelSP);
-        _selectTower.StatusCheck();
+        _selectTower.TowerUpgrade(EUpgradeType.Special);
         TestInputManager.Instance.TowerSelectClose();
         _selectTower = null;
     }

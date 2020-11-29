@@ -8,6 +8,8 @@ TagManager:
   - FxTemporaire
   - Tower
   - WayPoint
+  - Commander
+  - Field
   layers:
   - Default
   - TransparentFX
@@ -30,7 +32,7 @@ TagManager:
   - Enemy
   - Tower
   - MiniMapView
-  - 
+  - BlockColider
   - 
   - 
   - 

@@ -28,6 +28,7 @@ public class TestGameUI : MonoBehaviour
 	[SerializeField] TestUITower _uITower = null;
 	[SerializeField] TestUIWave _uiWave = null;
 	[SerializeField] TestUIResource _uiResource = null;
+	[SerializeField] TestPlayerUI _uiPlayer = null;
 
     private void Awake()
     {
@@ -78,5 +79,15 @@ public class TestGameUI : MonoBehaviour
 	public void StageClear()
     {
 
+    }
+
+	public void CommanderSetting(int maxHP)
+    {
+		_uiPlayer.HPSetting(maxHP);
+    }
+
+	public void CommanderHit(int hp)
+    {
+		_uiPlayer.ChangeHP(hp);
     }
 }

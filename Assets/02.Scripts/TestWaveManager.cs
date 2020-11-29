@@ -37,9 +37,9 @@ public class TestWaveManager : MonoBehaviour
         for (int i = 0; i < nowWave._spawnDatas.Length; i++)
         {
             yield return new WaitForSeconds(nowWave._spawnDatas[i]._delayTime);
-            TestPoolObject enemy = TestPool.Instance.PoolGetObject(nowWave._spawnDatas[i]._enemyData.fileName);
+            GameObject enemy = TestPool.Instance.PoolGetObject(nowWave._spawnDatas[i]._enemyData.fileName);
             enemy.transform.position = _startPoint.position;
-            enemy.ActiveObject(i);
+            enemy.GetComponent<TestEnemy>().Active();
             TestGameUI.Instance.AppearanceEnemy(nowWave._spawnDatas[i]._enemyData.enemy);
         }
         yield return null;

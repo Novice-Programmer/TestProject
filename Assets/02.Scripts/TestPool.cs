@@ -87,7 +87,7 @@ public class TestPool : MonoBehaviour
     /// </summary>
     /// <param name="objectName">파일명</param>
     /// <returns></returns>
-    public TestPoolObject PoolGetObject(string objectName)
+    public GameObject PoolGetObject(string objectName)
     {
         GameObject go = _poolObjects[objectName][0];
         for(int i = 0; i < _poolObjects[objectName].Count; i++)
@@ -98,6 +98,6 @@ public class TestPool : MonoBehaviour
                 break;
             }
         }
-        return go.GetComponent<TestPoolObject>();
+        return go;
     }
 }

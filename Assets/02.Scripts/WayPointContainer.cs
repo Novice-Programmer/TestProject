@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestWayPoint : MonoBehaviour
+public class WayPointContainer : MonoBehaviour
 {
     public static Transform[] _wayPoints;
 
@@ -13,6 +13,7 @@ public class TestWayPoint : MonoBehaviour
         for(int i = 0; i < _wayPoints.Length; i++)
         {
             _wayPoints[i] = transform.GetChild(i);
+            _wayPoints[i].GetComponent<WayPoint>().WayPointSetting(i);
         }
     }
 }

@@ -16,7 +16,6 @@ public class TestInputManager : MonoBehaviour
     public static ETouchMode TouchMode = ETouchMode.Touch;
     public static TestGhostTower BuildTower = null;
     public static TestTower SelectTower = null;
-    [SerializeField] LayerMask _tileLayer = 0;
 
     [Header("CameraMove")]
     [SerializeField] float _minX = 0;
@@ -29,11 +28,14 @@ public class TestInputManager : MonoBehaviour
     [SerializeField] float _touchBorderThicknessX = 150.0f;
     [SerializeField] float _touchBorderThicknessY = 150.0f;
     [SerializeField] float _touchPanMoveLength = 5.0f;
+    [SerializeField] float _doubleTouchTime = 0.5f;
 
     Vector3 _touchPos = Vector3.zero;
     int _touchX = 0;
     int _touchY = 0;
     bool _doubleTouchCheck = false;
+
+    float _timeCheck = 0;
 
     private void Awake()
     {
@@ -49,6 +51,11 @@ public class TestInputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _timeCheck += Time.deltaTime;
+        if (_doubleTouchCheck && _timeCheck >= _doubleTouchTime)
+        {
+            _doubleTouchCheck = false;
+        }
         if (TouchMode == ETouchMode.TowerBuliding)
         {
             if (Input.GetMouseButton(1))
@@ -111,20 +118,33 @@ public class TestInputManager : MonoBehaviour
 
                 if (Input.mousePosition.x >= Screen.width - _panBorderThicknessX)
                 {
-                    transform.Translate(Vector3.right * _panSpeed * Time.deltaTime, Space.World);
+                    if (transform.position.x + _panSpeed * Time.deltaTime <= _maxX)
+                        transform.Translate(Vector3.right * _panSpeed * Time.deltaTime, Space.World);
+                    else
+                        transform.position = new Vector3(_maxX, transform.position.y, transform.position.z);
                 }
+
                 if (Input.mousePosition.x <= _panBorderThicknessX)
                 {
-                    transform.Translate(Vector3.left * _panSpeed * Time.deltaTime, Space.World);
+                    if (transform.position.x - _panSpeed * Time.deltaTime >= _minX)
+                        transform.Translate(Vector3.left * _panSpeed * Time.deltaTime, Space.World);
+                    else
+                        transform.position = new Vector3(_minX, transform.position.y, transform.position.z);
                 }
 
                 if (Input.mousePosition.y >= Screen.height - _panBorderThicknessY)
                 {
-                    transform.Translate(Vector3.forward * _panSpeed * Time.deltaTime, Space.World);
+                    if (transform.position.z + _panSpeed * Time.deltaTime <= _maxY)
+                        transform.Translate(Vector3.forward * _panSpeed * Time.deltaTime, Space.World);
+                    else
+                        transform.position = new Vector3(transform.position.x, transform.position.y, _maxY);
                 }
                 if (Input.mousePosition.y <= _panBorderThicknessY)
                 {
-                    transform.Translate(Vector3.back * _panSpeed * Time.deltaTime, Space.World);
+                    if (transform.position.z - _panSpeed * Time.deltaTime >= _minY)
+                        transform.Translate(Vector3.back * _panSpeed * Time.deltaTime, Space.World);
+                    else
+                        transform.position = new Vector3(transform.position.x, transform.position.y, _minY);
                 }
             }
         }
@@ -196,12 +216,23 @@ public class TestInputManager : MonoBehaviour
                         if (Vector2.Distance(prevTouch, nowTouch) < 10.0f)
                         {
                             transform.Translate((Vector3.forward * _touchY + Vector3.right * _touchX) * _touchPanMoveLength, Space.World);
+                            if (transform.position.x > _maxX)
+                                transform.position = new Vector3(_maxX, transform.position.y, transform.position.z);
+                            if (transform.position.x < _minX)
+                                transform.position = new Vector3(_minX, transform.position.y, transform.position.z);
+                            if (transform.position.z > _maxY)
+                                transform.position = new Vector3(transform.position.x, transform.position.y, _maxY);
+                            if (transform.position.z < _minY)
+                                transform.position = new Vector3(transform.position.x, transform.position.y, _minY);
                             return;
                         }
                     }
 
                     _touchPos = Input.mousePosition;
                     _doubleTouchCheck = _touchX != 0 || _touchY != 0;
+
+                    if (_doubleTouchCheck)
+                        _timeCheck = 0;
                 }
             }
         }
