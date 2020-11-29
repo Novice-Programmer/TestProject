@@ -696,6 +696,8 @@ MonoBehaviour:
   _target: {fileID: 0}
   _blockCollider: {fileID: 5842625890898769565}
   _specialAttackPos: {fileID: 4586127923416202416}
+  _attackEffect: {fileID: 5902680246531206964, guid: 3ad7561d071abe341a85bcfb126a6bb3,
+    type: 3}
   _specialAttack: {fileID: 3317766590020993686, guid: a9d1bc86d47d4cf49b80aa7786170878,
     type: 3}
   _attackZone: {fileID: 1178951085993511629}

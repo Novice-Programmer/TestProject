@@ -5,6 +5,7 @@ using UnityEngine;
 public class NightMareDragonA : TestEnemy
 {
     [SerializeField] Transform _specialAttackPos = null;
+    [SerializeField] GameObject _attackEffect = null;
     [SerializeField] Projectile _specialAttack = null;
     [SerializeField] TestHitZone _attackZone = null;
     public override void TargetAttack()
@@ -12,6 +13,8 @@ public class NightMareDragonA : TestEnemy
         base.TargetAttack();
         _attackZone.HitZoneSetting(_atk, _target.tag);
         _attackZone.gameObject.SetActive(true);
+        Vector3 effectPos = new Vector3(_target.position.x, _target.position.y + 1f, _target.position.z);
+        Instantiate(_attackEffect, effectPos, Quaternion.identity);
     }
 
     public override void AttackEnd()
