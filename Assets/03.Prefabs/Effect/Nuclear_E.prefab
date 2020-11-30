@@ -4621,7 +4621,7 @@ Transform:
   m_GameObject: {fileID: 8367331322605583370}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 8367331322605084718}
   m_Father: {fileID: 0}
@@ -9208,7 +9208,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c940b37e8de6b4d9e92fb8972593f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _badBuff: {fileID: 5728550187087611371, guid: dd1b56fbaf51c8d49b5b86089ac3b6db,
+    type: 3}
   _badBuffType: 1
+  _targetTag: Enemy
+  _eternity: 0
+  _continueTime: 0
 --- !u!65 &1505258413127348852
 BoxCollider:
   m_ObjectHideFlags: 0

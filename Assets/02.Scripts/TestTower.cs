@@ -148,7 +148,7 @@ public abstract class TestTower : ObjectHit
             return;
         }
 
-        _hp -= damage;
+        _hp -= damage - _def;
         if (_hp <= 0)
         {
             _hp = 0;
@@ -260,7 +260,7 @@ public abstract class TestTower : ObjectHit
         }
         else
         {
-            TestGameUI.Instance.TowerViewUIOff();
+            TestGameUI.Instance.ViewUIOff();
         }
         _rangeObject.SetActive(_towerSelect);
     }
@@ -271,7 +271,7 @@ public abstract class TestTower : ObjectHit
         Gizmos.DrawWireSphere(transform.position, _atkRange);
     }
 
-    public void BuildingTower(TestGhostTower ghostTower)
+    public void BuildingTower(TestGhost ghostTower)
     {
         _parentTile = ghostTower.parentTile;
         _gridPosition = ghostTower._gridPos;
@@ -302,7 +302,7 @@ public abstract class TestTower : ObjectHit
 
     void DataSetting()
     {
-        _gameTowerData = TestTowerDataManager.Instance.GetTowerGameData(_towerType);
+        _gameTowerData = ObjectDataManager.Instance.GetTowerGameData(_towerType);
         _ep = 0;
         _levelATK = 0;
         _levelDEF = 0;
@@ -373,7 +373,7 @@ public abstract class TestTower : ObjectHit
             {
                 case EResearch.AdvancedAITechnology:
                     _levelSP++;
-                    _upgradeSP = TestTowerDataManager.Instance.GetUpgradeData(_towerType, EUpgradeType.Special, 1);
+                    _upgradeSP = ObjectDataManager.Instance.GetUpgradeData(_towerType, EUpgradeType.Special, 1);
                     break;
             }
         }

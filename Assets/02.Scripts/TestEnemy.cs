@@ -43,39 +43,46 @@ public abstract class TestEnemy : ObjectHit
     [SerializeField] protected float _movSpd; // 이동 속도
     [SerializeField] protected float _moveCheckSize; // 이동 확인 범위
     [SerializeField] protected TestWorldStatusUI _statusUI = null;
+    [SerializeField] NavMeshObstacle _enemyObstacle = null;
 
     [SerializeField] List<TestBadBuff> _badBuffs;
 
     NavMeshAgent _enemyAI;
     Animator _enemyAnim;
-    BoxCollider _enemyCllider;
     public Transform _target;
+    EHitType _prevTarget;
+
+    [SerializeField] float _obstacleCheckRange = 2.0f;
 
     string _towerTag = "Tower";
-    [SerializeField] BoxCollider _blockCollider = null;
+    string _obstacleTag = "Obstacle";
     float _timeCheck = 0;
     float _attackTime = 0;
+    int _attackNumber = 0;
 
     private void Awake()
     {
         _enemyAI = GetComponent<NavMeshAgent>();
         _enemyAnim = GetComponent<Animator>();
-        _enemyCllider = GetComponent<BoxCollider>();
     }
 
     public void Active()
     {
         gameObject.SetActive(true);
         _enemyAI.enabled = true;
-        _enemyCllider.enabled = true;
-        _blockCollider.enabled = true;
+        _enemyObstacle.enabled = false;
         _wavePointIndex = 0;
         _enemyAI.destination = WayPointContainer._wayPoints[_wavePointIndex].position;
+        for (int i = 0; i < _badBuffs.Count; i++)
+        {
+            Destroy(_badBuffs[i].gameObject);
+        }
         _badBuffs = new List<TestBadBuff>();
         _state = EStateEnemy.Move;
         _action = false;
         _timeCheck = 0;
         _attackTime = 0;
+        _attackNumber = 0;
         _hp = _enemyData.hp;
         _statusUI.StatusSetting(_enemyData.hp);
         _statusUI.HPChange(_hp);
@@ -144,30 +151,15 @@ public abstract class TestEnemy : ObjectHit
 
             for (int i = 0; i < _badBuffs.Count; i++)
             {
-                TestBadBuff badBuff = _badBuffs[i];
-                badBuff.checkTime += Time.deltaTime;
-                badBuff.remainTime -= Time.deltaTime;
-
-                if (badBuff.checkTime >= badBuff.dotTime)
-                {
-                    if (_badBuffs[i].hp > 0)
-                    {
-                        Hit(_badBuffs[i].hp, EWeakType.None);
-                    }
-                    _mp -= _badBuffs[i].mp;
-                    atkBadValue += _badBuffs[i].atk;
-                    defBadValue += _badBuffs[i].def;
-                    atkSpdBadValue += _badBuffs[i].atkSpd;
-                    movSpdBadValue += _badBuffs[i].movSpd;
-                    _statusUI.MPChange(_mp);
-                    badBuff.checkTime = 0;
-                }
-
-                if (badBuff.remainTime <= 0)
+                if (_badBuffs[i] == null)
                 {
                     _badBuffs.RemoveAt(i);
                     break;
                 }
+                atkBadValue += _badBuffs[i].atk;
+                defBadValue += _badBuffs[i].def;
+                atkSpdBadValue += _badBuffs[i].atkSpd;
+                movSpdBadValue += _badBuffs[i].movSpd;
             }
             _atk = _enemyData.atk - atkBadValue;
             if (_atk <= 0)
@@ -203,8 +195,10 @@ public abstract class TestEnemy : ObjectHit
 
     void Move()
     {
+        _attackNumber = 0;
         _enemyAI.speed = _movSpd;
         _enemyAnim.SetBool("Move", true);
+        _enemyObstacle.enabled = false;
         if (_timeCheck >= _enemyData.checkTime)
         {
             _timeCheck = 0;
@@ -215,19 +209,49 @@ public abstract class TestEnemy : ObjectHit
                 return;
             }
         }
+        ViewObstacle();
+    }
+
+    void ViewObstacle()
+    {
+        GameObject[] obstacles = GameObject.FindGameObjectsWithTag(_obstacleTag);
+        float shortestDistance = _obstacleCheckRange;
+        GameObject nearestObstacle = null;
+        foreach (GameObject obstacle in obstacles)
+        {
+            if (obstacle.GetComponent<TestObstacle>()._obstacleType == EAttackAble.AttackDisable)
+                continue;
+            float distanceToObstacle = Vector3.Distance(transform.position, obstacle.transform.position);
+            if (distanceToObstacle < shortestDistance)
+            {
+                shortestDistance = distanceToObstacle;
+                nearestObstacle = obstacle;
+            }
+        }
+
+        if (nearestObstacle != null)
+        {
+            _prevTarget = EHitType.Obstacle;
+            _state = EStateEnemy.Attack;
+            _attackTime = 0;
+            _timeCheck = 0;
+            _target = nearestObstacle.transform;
+        }
     }
 
     void AttackSearch()
     {
         _enemyAI.speed = _movSpd;
         _enemyAnim.SetBool("Move", true);
+        _enemyObstacle.enabled = false;
         if (_timeCheck >= _enemyData.atkTime)
         {
             _timeCheck = 0;
-            GetNextWayPoint(--_wavePointIndex);
+            GetNextWayPoint(_wavePointIndex);
             _state = EStateEnemy.Move;
             return;
         }
+
         GameObject[] towers = GameObject.FindGameObjectsWithTag(_towerTag);
         float shortestDistance = _enemyData.sightRange;
         GameObject nearestTower = null;
@@ -238,7 +262,6 @@ public abstract class TestEnemy : ObjectHit
             float distanceToTower = Vector3.Distance(transform.position, tower.transform.position);
             if (distanceToTower < shortestDistance)
             {
-
                 shortestDistance = distanceToTower;
                 nearestTower = tower;
             }
@@ -246,48 +269,112 @@ public abstract class TestEnemy : ObjectHit
 
         if (nearestTower != null)
         {
+            _prevTarget = EHitType.Tower;
             _state = EStateEnemy.Attack;
             _attackTime = 0;
             _target = nearestTower.GetComponent<TestTower>().transform;
             _enemyAI.destination = nearestTower.transform.position;
         }
+
+        if(_target == null)
+            ViewObstacle();
     }
 
     void Attack()
     {
+        _enemyAI.enabled = true;
+
+        if (_target != null)
+        {
+            if (_target.GetComponent<ObjectHit>()._hitType == EHitType.Tower)
+            {
+                if (_timeCheck >= 2.5f && _attackNumber == 0)
+                {
+                    _timeCheck = 0;
+                    GetNextWayPoint(_wavePointIndex);
+                    _state = EStateEnemy.Move;
+                    return;
+                }
+
+                if (_target.GetComponent<TestTower>()._towerState == ETowerState.Breakdown)
+                {
+                    _target = null;
+                    GetNextWayPoint(_wavePointIndex);
+                    _state = EStateEnemy.AttackSearch;
+                    return;
+                }
+            }
+        }
+
+        else
+        {
+            if (_prevTarget != EHitType.Obstacle)
+            {
+                GetNextWayPoint(_wavePointIndex);
+                _state = EStateEnemy.AttackSearch;
+                return;
+            }
+            else
+            {
+                _timeCheck = 0;
+                GetNextWayPoint(_wavePointIndex);
+                _state = EStateEnemy.Move;
+                return;
+            }
+        }
+
         if (_timeCheck >= _enemyData.atkTime)
         {
             _timeCheck = 0;
-            GetNextWayPoint(--_wavePointIndex);
+            GetNextWayPoint(_wavePointIndex);
             _state = EStateEnemy.Move;
             return;
         }
 
-        if (_target == null)
+        AttackRangeCheck(_target.GetComponent<ObjectHit>()._hitType);
+    }
+
+    void AttackCommander()
+    {
+        AttackRangeCheck(_target.GetComponent<ObjectHit>()._hitType);
+    }
+
+    void AttackRangeCheck(EHitType hitType)
+    {
+        float addRange;
+        if (hitType == EHitType.Commander)
         {
-            GetNextWayPoint(--_wavePointIndex);
-            _state = EStateEnemy.AttackSearch;
-            return;
+            addRange = 1.0f;
         }
-        else if (_target != null && _target.GetComponent<TestTower>()._towerState == ETowerState.Breakdown)
+        else
         {
-            _target = null;
-            GetNextWayPoint(--_wavePointIndex);
-            _state = EStateEnemy.AttackSearch;
-            return;
+            addRange = 0.0f;
         }
-        if (Vector3.Distance(transform.position, _target.position) < _enemyData.atkRange)
+
+        bool towerCheck = hitType == EHitType.Tower;
+
+        bool attack = true;
+        if (Vector3.Distance(transform.position, _target.position) < _enemyData.atkRange + addRange)
         {
             _enemyAI.speed = 0;
             _enemyAnim.SetBool("Move", false);
+            _enemyAI.enabled = false;
+            _enemyObstacle.enabled = true;
             Quaternion lookRotation = Quaternion.LookRotation(_target.position - transform.position);
             Vector3 rotateValue = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * 10f).eulerAngles;
             transform.rotation = Quaternion.Euler(transform.rotation.x, rotateValue.y, transform.rotation.z);
             if (_attackTime <= 0.0f)
             {
-                if (Quaternion.Angle(transform.rotation, lookRotation) < 10.0f)
+                if (towerCheck)
+                {
+                    if (Quaternion.Angle(transform.rotation, lookRotation) >= 10.0f)
+                        attack = false;
+                }
+
+                if (attack)
                 {
                     _attackTime = 9999;
+                    _attackNumber++;
                     if (_mp < 100)
                     {
                         _enemyAnim.SetTrigger("Attack");
@@ -303,38 +390,7 @@ public abstract class TestEnemy : ObjectHit
         {
             _enemyAI.speed = _movSpd;
             _enemyAnim.SetBool("Move", true);
-        }
-
-
-        _attackTime -= Time.deltaTime;
-    }
-
-    void AttackCommander()
-    {
-        if (Vector3.Distance(transform.position, _target.position) < _enemyData.atkRange + 1f)
-        {
-            _enemyAI.speed = 0;
-            _enemyAnim.SetBool("Move", false);
-            Quaternion lookRotation = Quaternion.LookRotation(_target.position - transform.position);
-            Vector3 rotateValue = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * 10f).eulerAngles;
-            transform.rotation = Quaternion.Euler(transform.rotation.x, rotateValue.y, transform.rotation.z);
-            if (_attackTime <= 0.0f)
-            {
-                _attackTime = 9999;
-                if (_mp < 100)
-                {
-                    _enemyAnim.SetTrigger("Attack");
-                }
-                else
-                {
-                    _enemyAnim.SetTrigger("Skill");
-                }
-            }
-        }
-        else
-        {
-            _enemyAI.speed = _movSpd;
-            _enemyAnim.SetBool("Move", true);
+            _enemyObstacle.enabled = false;
         }
 
         _attackTime -= Time.deltaTime;
@@ -366,8 +422,7 @@ public abstract class TestEnemy : ObjectHit
     {
         _state = EStateEnemy.Die;
         _enemyAI.enabled = false;
-        _enemyCllider.enabled = false;
-        _blockCollider.enabled = false;
+        _enemyObstacle.enabled = false;
         if (gameObject.activeSelf)
         {
             StopCoroutine(BadBuffCheck());
@@ -421,5 +476,44 @@ public abstract class TestEnemy : ObjectHit
     public override void BadBuff(TestBadBuff badBuff)
     {
         _badBuffs.Add(badBuff);
+    }
+
+    public override bool BuffCheck(EBadBuff buffType)
+    {
+        for (int i = 0; i < _badBuffs.Count; i++)
+        {
+            if (_badBuffs[i].type == buffType)
+                return false;
+        }
+        return true;
+    }
+
+    public override void BadBuffUpdate(TestBadBuff badBuff)
+    {
+        for (int i = 0; i < _badBuffs.Count; i++)
+        {
+            if (_badBuffs[i].type == badBuff.type)
+            {
+                _badBuffs[i].hp = badBuff.hp;
+                _badBuffs[i].mp = badBuff.mp;
+                _badBuffs[i].atk = badBuff.atk;
+                _badBuffs[i].def = badBuff.def;
+                _badBuffs[i].atkSpd = badBuff.atkSpd;
+                _badBuffs[i].movSpd = badBuff.movSpd;
+                _badBuffs[i].dotTime = badBuff.dotTime;
+                _badBuffs[i].checkTime = badBuff.checkTime;
+                break;
+            }
+        }
+    }
+
+    public override void ReduceMP(int mp)
+    {
+        _mp -= mp;
+        if (_mp < 0)
+        {
+            _mp = 0;
+        }
+        _statusUI.MPChange(_mp);
     }
 }

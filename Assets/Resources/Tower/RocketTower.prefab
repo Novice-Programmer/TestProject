@@ -688,6 +688,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f77ad6490119ac4abbc19fd04a4b096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hitType: 2
   _towerType: 1
   _towerState: 0
   _level: 0
@@ -713,6 +714,8 @@ MonoBehaviour:
   _turnSpeed: 10
   _rotateCheck: 1
   _rangeObject: {fileID: 8732998734655778903}
+  _materials: []
+  _activeMaterials: []
   _breakDownMaterial: {fileID: 2100000, guid: da535f9b311e6b44ebac89bb8d57c1ee, type: 2}
   _gameTowerData:
     towerType: 0

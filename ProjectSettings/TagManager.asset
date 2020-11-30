@@ -10,6 +10,7 @@ TagManager:
   - WayPoint
   - Commander
   - Field
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -32,7 +33,7 @@ TagManager:
   - Enemy
   - Tower
   - MiniMapView
-  - BlockColider
+  - Obstacle
   - 
   - 
   - 

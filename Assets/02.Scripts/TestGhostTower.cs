@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestGhostTower : MonoBehaviour
+public class TestGhost : MonoBehaviour
 {
     public ETowerType _towerType = ETowerType.None;
     public int installCost;
@@ -18,7 +18,7 @@ public class TestGhostTower : MonoBehaviour
 
     private void Start()
     {
-        _rangeObject.transform.localScale *= TestTowerDataManager.Instance.GetTowerData(_towerType).atkRange;
+        _rangeObject.transform.localScale *= ObjectDataManager.Instance.GetTowerData(_towerType).atkRange;
     }
 
     public void FitMaterialCheck(ETowerFitType towerFitType)
