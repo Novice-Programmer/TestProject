@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ROD
   m_EditorClassIdentifier: 
   ID: 1000000002
-  type: 0
+  type: 4
   requireResearch: 999
   research: 0
-  target: 02000000
+  target: 02000000e7030000

@@ -15,6 +15,7 @@ public enum ETowerState
 public abstract class TestTower : ObjectHit
 {
     [Header("TowerInfo")]
+    public EObjectName _objectName = EObjectName.None;
     public ETowerType _towerType = ETowerType.None;
     public ETowerState _towerState = ETowerState.Search;
     public int _level;
@@ -57,7 +58,7 @@ public abstract class TestTower : ObjectHit
     int _totalCost = 0;
 
     bool _towerSelect = false;
-    public bool _towerBulidSuccess = false;
+    public bool _towerBuildSuccess = false;
 
     TestTile _parentTile;
     TestIntVector2 _gridPosition;
@@ -66,7 +67,7 @@ public abstract class TestTower : ObjectHit
     {
         _rangeSize = _rangeObject.transform.localScale;
         DataSetting();
-        StartCoroutine(BulidSuccess());
+        StartCoroutine(BuildSuccess());
         InvokeRepeating("UpdateTarget", 0.0f, 0.5f);
         _materials = GetComponentsInChildren<MeshRenderer>();
         for(int i = 0; i < _materials.Length; i++)
@@ -241,10 +242,10 @@ public abstract class TestTower : ObjectHit
         }
     }
 
-    IEnumerator BulidSuccess()
+    IEnumerator BuildSuccess()
     {
         yield return new WaitForSeconds(0.5f);
-        _towerBulidSuccess = true;
+        _towerBuildSuccess = true;
     }
 
     public void TowerSelect(bool towerSelectOff = true)
@@ -273,7 +274,7 @@ public abstract class TestTower : ObjectHit
 
     public void BuildingTower(TestGhost ghostTower)
     {
-        _parentTile = ghostTower.parentTile;
+        _parentTile = ghostTower._parentTile;
         _gridPosition = ghostTower._gridPos;
     }
 

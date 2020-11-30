@@ -25,7 +25,7 @@ public class TestGameUI : MonoBehaviour
 
 	public EUIState UIState { get; private set; }
 
-	[SerializeField] TestUITower _uITower = null;
+	[SerializeField] TestUIInfo _uITower = null;
 	[SerializeField] TestUIWave _uiWave = null;
 	[SerializeField] TestUIResource _uiResource = null;
 	[SerializeField] TestPlayerUI _uiPlayer = null;

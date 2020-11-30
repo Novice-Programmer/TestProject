@@ -19,16 +19,22 @@ public enum EObjectName
     FireWall
 }
 
+public enum EImageNumber
+{
+    KW9A,
+    FireWall
+}
+
 public class ObjectDataManager : MonoBehaviour
 {
     public static ObjectDataManager Instance { set; get; }
+    [SerializeField] Sprite[] _objectImages = null;
+    [SerializeField] TestGhost[] _prefabGhosts = null;
 
     [Header("Tower")]
     [SerializeField] TestTowerData[] _towerAllDatas = null;
     [SerializeField] TestTowerUpgradeData[] _upgradeAllData = null;
-    [SerializeField] Sprite[] _towerImages = null;
     [SerializeField] TestTower[] _prefabTowers = null;
-    [SerializeField] TestGhost[] _prefabGhostTowers = null;
 
     Dictionary<ETowerType, Dictionary<EUpgradeType, Dictionary<int, TestTowerUpgradeData>>> _towerUpgradeDic
     = new Dictionary<ETowerType, Dictionary<EUpgradeType, Dictionary<int, TestTowerUpgradeData>>>();
@@ -37,9 +43,14 @@ public class ObjectDataManager : MonoBehaviour
 
     [Header("Obstacle")]
     [SerializeField] TestObstacleData[] _obstacleAllDatas = null;
-    [SerializeField] Sprite[] _obstacleImages = null;
     [SerializeField] TestObstacle[] _prefabObstacle = null;
-    [SerializeField] TestGhostObstacle[] _prefabGhostObstacles = null;
+
+    Dictionary<EObstacleType, TestObstacleGameData> _gameObstacleDatas = new Dictionary<EObstacleType, TestObstacleGameData>();
+
+    [Header("Enemy")]
+    [SerializeField] TestEnemyData[] _enemyAllDatas;
+    [SerializeField] Sprite[] _enemyIconSprites = null;
+    [SerializeField] Sprite[] _enemyRankSprites = null;
 
     private void Awake()
     {
@@ -77,21 +88,28 @@ public class ObjectDataManager : MonoBehaviour
         }
     }
 
-    public void GameTowerSetting(TestSelectTowerData[] selectTowerDatas)
+    public void GameInstallSetting(SelectTowerData[] selectTowerDatas,SelectObstacleData[] selectObstacleDatas)
     {
-        for(int i = 0; i < selectTowerDatas.Length; i++)
+        for (int i = 0; i < selectTowerDatas.Length; i++)
         {
             TestTowerGameData towerGameData = new TestTowerGameData(GetTowerData(selectTowerDatas[i].towerType));
             towerGameData.ResearchAdd(selectTowerDatas[i].researchDatas);
             _gameTowerDatas.Add(selectTowerDatas[i].towerType, towerGameData);
         }
+
+        for(int i = 0; i < selectObstacleDatas.Length; i++) 
+        {
+            TestObstacleGameData obstacleGameData = new TestObstacleGameData(GetObstacleData(selectObstacleDatas[i].obstacleType));
+            obstacleGameData.ResearchAdd(selectObstacleDatas[i].researchDatas);
+            _gameObstacleDatas.Add(selectObstacleDatas[i].obstacleType, obstacleGameData);
+        }
     }
 
     public TestTowerData GetTowerData(ETowerType towerType)
     {
-        for(int i = 0; i < _towerAllDatas.Length; i++)
+        for (int i = 0; i < _towerAllDatas.Length; i++)
         {
-            if(towerType == _towerAllDatas[i].towerType)
+            if (towerType == _towerAllDatas[i].towerType)
             {
                 return _towerAllDatas[i];
             }
@@ -99,11 +117,35 @@ public class ObjectDataManager : MonoBehaviour
         return null;
     }
 
-    public void ResearchCheck(ETowerType towerType,TestResearchData researchData)
+    public TestTowerData GetTowerData(EObjectName towerName)
+    {
+        for (int i = 0; i < _towerAllDatas.Length; i++)
+        {
+            if (towerName == _towerAllDatas[i].objectName)
+            {
+                return _towerAllDatas[i];
+            }
+        }
+        return null;
+    }
+
+    public TestObstacleData GetObstacleData(EObstacleType obstacleType)
+    {
+        for (int i = 0; i < _obstacleAllDatas.Length; i++)
+        {
+            if (obstacleType == _obstacleAllDatas[i].obstacleType)
+            {
+                return _obstacleAllDatas[i];
+            }
+        }
+        return null;
+    }
+
+    public void ResearchCheck(ETowerType towerType, TestResearchData researchData)
     {
         if (_gameTowerDatas.ContainsKey(towerType))
         {
-            ResearchUpdate(towerType,researchData);
+            ResearchUpdate(towerType, researchData);
         }
         else
         {
@@ -140,29 +182,40 @@ public class ObjectDataManager : MonoBehaviour
 
     public TestInstallData[] GetInstallData()
     {
-        List<TestInstallData> installTowerDatas = new List<TestInstallData>();
+        List<TestInstallData> installDatas = new List<TestInstallData>();
 
-        foreach(ETowerType towerType in _gameTowerDatas.Keys)
+        foreach (ETowerType towerType in _gameTowerDatas.Keys)
         {
             TestTowerGameData towerGameData = _gameTowerDatas[towerType];
             TestInstallData installTowerData = new TestInstallData();
             installTowerData.objectType = EObjectType.Tower;
             installTowerData.objectName = ObjectNameCheck(towerGameData.towerType);
             installTowerData.installCost = towerGameData.buildCost;
-            installTowerData.objectImage = _towerImages[(int)towerType];
-            installTowerDatas.Add(installTowerData);
+            installTowerData.objectImage = GetImage(towerGameData.objectName);
+            installDatas.Add(installTowerData);
         }
 
-        return installTowerDatas.ToArray();
+        foreach(EObstacleType obstacleType in _gameObstacleDatas.Keys)
+        {
+            TestObstacleGameData obstacleGameData = _gameObstacleDatas[obstacleType];
+            TestInstallData installObstacleData = new TestInstallData();
+            installObstacleData.objectType = EObjectType.Obstacle;
+            installObstacleData.objectName = ObjectNameCheck(obstacleGameData.obstacleType);
+            installObstacleData.installCost = obstacleGameData.buildCost;
+            installObstacleData.objectImage = GetImage(obstacleGameData.objectName);
+            installDatas.Add(installObstacleData);
+        }
+
+        return installDatas.ToArray();
     }
 
-    public TestGhost GetBulidGhost(ETowerType towerType)
+    public TestGhost GetBuildGhost(EObjectName objectName)
     {
-        for(int i = 0; i < _prefabGhostTowers.Length; i++)
+        for (int i = 0; i < _prefabGhosts.Length; i++)
         {
-            if(_prefabGhostTowers[i]._towerType == towerType)
+            if (objectName == _prefabGhosts[i]._objectName)
             {
-                return _prefabGhostTowers[i];
+                return _prefabGhosts[i];
             }
         }
         return null;
@@ -180,9 +233,64 @@ public class ObjectDataManager : MonoBehaviour
         return null;
     }
 
-    public Sprite GetTowerImage(EObjectType towerType)
+    public TestTower GetTower(EObjectName objectName)
     {
-        return _towerImages[(int)towerType];
+        for (int i = 0; i < _prefabTowers.Length; i++)
+        {
+            if (_prefabTowers[i]._objectName == objectName)
+            {
+                return _prefabTowers[i];
+            }
+        }
+        return null;
+    }
+
+    public TestObstacle GetObstacle(EObjectName objectName)
+    {
+        for (int i = 0; i < _prefabObstacle.Length; i++)
+        {
+            if (_prefabObstacle[i]._objectName == objectName)
+            {
+                return _prefabObstacle[i];
+            }
+        }
+        return null;
+    }
+
+    public Sprite GetImage(EObjectName objectName)
+    {
+        int objectImageNumber=0;
+        switch (objectName)
+        {
+            case EObjectName.KW9A:
+                objectImageNumber = 0;
+                break;
+            case EObjectName.P013:
+                break;
+            case EObjectName.NMDA:
+                break;
+            case EObjectName.FireWall:
+                objectImageNumber = 1;
+                break;
+        }
+        return _objectImages[objectImageNumber];
+    }
+
+    public Sprite GetEnemyImage(EEnemyType enemyType,bool rankImage)
+    {
+        if (rankImage)
+        {
+            for(int i = 0; i < _enemyAllDatas.Length; i++)
+            {
+                if (_enemyAllDatas[i].enemyName == enemyType)
+                    return _enemyRankSprites[(int)_enemyAllDatas[i].ratingType];
+            }
+        }
+        else
+        {
+            return _enemyIconSprites[(int)enemyType];
+        }
+        return _enemyRankSprites[0];
     }
 
     EObjectName ObjectNameCheck(ETowerType towerType)

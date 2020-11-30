@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 5086142578960623962}
   - component: {fileID: 5088462626831436601}
   m_Layer: 0
-  m_Name: GhostRocketTower
+  m_Name: Ghost_KW9A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -285,13 +285,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9699eba3c4972e541a4579d533d5c003, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _towerType: 1
-  installCost: 0
+  _objectType: 2
+  _objectName: 1
+  _installCost: 0
   _demision:
     x: 2
     y: 2
-  towerFitType: 1
-  fitPos: {x: 0, y: 0, z: 0}
+  _gridPos:
+    x: 0
+    y: 0
+  _towerFitType: 1
+  _fitPos: {x: 0, y: 0, z: 0}
+  _parentTile: {fileID: 0}
   _materialRenders:
   - {fileID: 5102347406014689038}
   - {fileID: 5100519413983293512}

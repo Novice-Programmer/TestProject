@@ -66,9 +66,9 @@ public class TestResourceManager : MonoBehaviour
         }
         else if(wave == _stageData.maxWave - 1)
         {
-            if (_stageData.stage > TestPlayerDataManager.Instance.Stage)
+            if (_stageData.stage > PlayerDataManager.Instance.Stage)
             {
-                TestPlayerDataManager.Instance.Stage = _stageData.stage;
+                PlayerDataManager.Instance.Stage = _stageData.stage;
                 SpaceMineralValue = _stageData.firstAllClearMineral;
             }
             SpaceMineralValue = _stageData.stageClearMineral + (int)(_stageData.stageClearMineral * 0.01f * _researchResult.mineralAddRate);

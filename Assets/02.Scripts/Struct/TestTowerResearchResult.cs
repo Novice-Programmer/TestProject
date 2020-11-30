@@ -4,6 +4,8 @@ public enum ESpecialResearch
 {
     KW9A_MultipleRocket,
     KW9A_BigBangRocket,
+    FireWall_IceWall,
+    FireWall_DiamondWall,
     None
 }
 

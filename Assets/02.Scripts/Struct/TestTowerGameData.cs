@@ -4,6 +4,7 @@ using System.Collections.Generic;
 [Serializable]
 public struct TestTowerGameData
 {
+    public EObjectName objectName;
     public ETowerType towerType;
     public string towerName;
     public string description;
@@ -29,6 +30,7 @@ public struct TestTowerGameData
 
     public TestTowerGameData(TestTowerData towerData)
     {
+        objectName = towerData.objectName;
         towerType = towerData.towerType;
         towerName = towerData.towerName;
         description = towerData.description;

@@ -17,8 +17,8 @@ public class TestGameManager : MonoBehaviour
 
     private void Start()
     {
-        ObjectDataManager.Instance.GameTowerSetting(TestPlayerDataManager.Instance.GetPlayerSelectTower());
-        TestResourceManager.Instance.GameResourceSetting(TestPlayerDataManager.Instance.GetResourceResearchData());
+        ObjectDataManager.Instance.GameInstallSetting(PlayerDataManager.Instance.GetPlayerSelectTower(), PlayerDataManager.Instance.GetPlayerSelectObstacle());
+        TestResourceManager.Instance.GameResourceSetting(PlayerDataManager.Instance.GetResourceResearchData());
         TestGameUI.Instance.GameUISetting();
         TestResourceManager.Instance.TowerPartPayment(EPaymentType.Initial, _wave);
     }
@@ -62,14 +62,21 @@ public class TestGameManager : MonoBehaviour
 
     public void Install(EObjectType objectType, EObjectName objectName, int installCost)
     {
-        TestInputManager.Instance.InstallTower(objectType, objectName, installCost);
+        TestInputManager.Instance.Install(objectType, objectName, installCost);
     }
 
-    public void TowerBulid(TestGhost ghostTowerData)
+    public void TowerBuild(TestGhost ghostData)
     {
-        TestResourceManager.Instance.TowerPartValue = -ghostTowerData.installCost;
-        TestTower tower = Instantiate(ObjectDataManager.Instance.GetTower(ghostTowerData._towerType), ghostTowerData.fitPos, Quaternion.identity);
-        tower.BuildingTower(ghostTowerData);
+        TestResourceManager.Instance.TowerPartValue = -ghostData._installCost;
+        TestTower tower = Instantiate(ObjectDataManager.Instance.GetTower(ghostData._objectName), ghostData._fitPos, Quaternion.identity);
+        tower.BuildingTower(ghostData);
+    }
+
+    public void ObstacleBuild(TestGhost ghostData)
+    {
+        TestResourceManager.Instance.TowerPartValue = -ghostData._installCost;
+        TestObstacle obstacle = Instantiate(ObjectDataManager.Instance.GetObstacle(ghostData._objectName), ghostData._fitPos, Quaternion.identity);
+        obstacle.BuildingObstacle(ghostData);
     }
 
     public void GameOver()

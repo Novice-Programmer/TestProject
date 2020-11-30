@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class TestGhost : MonoBehaviour
 {
-    public ETowerType _towerType = ETowerType.None;
-    public int installCost;
+    public EObjectType _objectType = EObjectType.None;
+    public EObjectName _objectName = EObjectName.None;
+    public int _installCost;
     public TestIntVector2 _demision;
     public TestIntVector2 _gridPos;
-    public ETowerFitType towerFitType = ETowerFitType.Overlaps;
-    public Vector3 fitPos;
-    public TestTile parentTile;
+    public EFitType _towerFitType = EFitType.Overlaps;
+    public Vector3 _fitPos;
+    public TestTile _parentTile;
     [SerializeField] MeshRenderer[] _materialRenders = null;
     [SerializeField] Material _fitMaterial = null;
     [SerializeField] Material _outMaterial = null;
@@ -18,20 +19,21 @@ public class TestGhost : MonoBehaviour
 
     private void Start()
     {
-        _rangeObject.transform.localScale *= ObjectDataManager.Instance.GetTowerData(_towerType).atkRange;
+        if(_objectType== EObjectType.Tower)
+        _rangeObject.transform.localScale *= ObjectDataManager.Instance.GetTowerData(_objectName).atkRange;
     }
 
-    public void FitMaterialCheck(ETowerFitType towerFitType)
+    public void FitMaterialCheck(EFitType towerFitType)
     {
         switch (towerFitType)
         {
-            case ETowerFitType.Fits:
+            case EFitType.Fits:
                 MaterialApply(_fitMaterial);
                 break;
-            case ETowerFitType.Overlaps:
+            case EFitType.Overlaps:
                 MaterialApply(_outMaterial);
                 break;
-            case ETowerFitType.OutOfBounds:
+            case EFitType.OutOfBounds:
                 MaterialApply(_outMaterial);
                 break;
         }

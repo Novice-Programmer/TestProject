@@ -25,6 +25,8 @@ public enum EResearchTarget
     KW9A,
     P013,
     Tower,
+    FireWall,
+    Obstacle,
     Resource,
     None = 999
 }

@@ -5,34 +5,32 @@ using UnityEngine.UI;
 
 public class TestUIWave : MonoBehaviour
 {
-	[SerializeField] Button _waveStartBtn = null;
-	[SerializeField] TestWaveEnemyUI _prefabWaveEnemy = null;
-	[SerializeField] Transform _waveEnemyContainer = null;
+    [SerializeField] Button _waveStartBtn = null;
+    [SerializeField] TestWaveEnemyUI _prefabWaveEnemy = null;
+    [SerializeField] Transform _waveEnemyContainer = null;
     [SerializeField] Text _waveNumberTxt = null;
-	[SerializeField] Text _waveEnemyNumberTxt = null;
-    [SerializeField] Sprite[] _enemyIconSprites = null;
-    [SerializeField] Sprite[] _enemyRankSprites = null;
+    [SerializeField] Text _waveEnemyNumberTxt = null;
 
-	int _enemyNumber;
+    int _enemyNumber;
 
     Dictionary<int, List<EEnemyType>> _waveEnemyList = new Dictionary<int, List<EEnemyType>>();
     Dictionary<EEnemyType, List<TestWaveEnemyUI>> _enemyTypeUIDic = new Dictionary<EEnemyType, List<TestWaveEnemyUI>>();
 
-	public void ClickWaveStart()
-	{
-		_waveStartBtn.gameObject.SetActive(false);
-		TestGameManager.Instance.WaveStart();
+    public void ClickWaveStart()
+    {
+        _waveStartBtn.gameObject.SetActive(false);
+        TestGameManager.Instance.WaveStart();
         TestInputManager.Instance.UITouch();
     }
 
     public void NextWave(int wave)
     {
-        _waveNumberTxt.text = "Wave" + (wave+1).ToString();
+        _waveNumberTxt.text = "Wave" + (wave + 1).ToString();
         _waveStartBtn.gameObject.SetActive(true);
         WaveEnemyUISetting(wave);
     }
 
-	public void StageEnemyUIInit(TestWave[] waves)
+    public void StageEnemyUIInit(TestWave[] waves)
     {
         Dictionary<EEnemyType, int> enemy = new Dictionary<EEnemyType, int>();
         for (int i = 0; i < waves.Length; i++)
@@ -82,23 +80,23 @@ public class TestUIWave : MonoBehaviour
         foreach (EEnemyType enemyType in enemy.Keys)
         {
             List<TestWaveEnemyUI> waveEnemyUIList = new List<TestWaveEnemyUI>();
-            for(int i = 0; i < enemy[enemyType]; i++)
+            for (int i = 0; i < enemy[enemyType]; i++)
             {
                 TestWaveEnemyUI waveEnemyUI = Instantiate(_prefabWaveEnemy, _waveEnemyContainer);
-                waveEnemyUI.WaveEnemyInfo(_enemyIconSprites[(int)enemyType], _enemyRankSprites[(int)enemyType]);
+                waveEnemyUI.WaveEnemyInfo(ObjectDataManager.Instance.GetEnemyImage(enemyType, false), ObjectDataManager.Instance.GetEnemyImage(enemyType, true));
                 waveEnemyUIList.Add(waveEnemyUI);
                 waveEnemyUI.gameObject.SetActive(false);
             }
-            _enemyTypeUIDic.Add(enemyType,waveEnemyUIList);
+            _enemyTypeUIDic.Add(enemyType, waveEnemyUIList);
         }
         WaveEnemyUISetting(0);
     }
 
-	void WaveEnemyUISetting(int wave)
+    void WaveEnemyUISetting(int wave)
     {
         _enemyNumber = _waveEnemyList[wave].Count;
-		_waveEnemyNumberTxt.text = _enemyNumber.ToString();
-        for(int i = 0; i < _waveEnemyList[wave].Count; i++)
+        _waveEnemyNumberTxt.text = _enemyNumber.ToString();
+        for (int i = 0; i < _waveEnemyList[wave].Count; i++)
         {
             WaveEnemyView(_waveEnemyList[wave][i]);
         }
@@ -107,7 +105,7 @@ public class TestUIWave : MonoBehaviour
     void WaveEnemyView(EEnemyType enemyType)
     {
         List<TestWaveEnemyUI> typeEnemy = _enemyTypeUIDic[enemyType];
-        for(int i = 0; i < typeEnemy.Count; i++)
+        for (int i = 0; i < typeEnemy.Count; i++)
         {
             if (!typeEnemy[i].gameObject.activeSelf)
             {
@@ -120,7 +118,7 @@ public class TestUIWave : MonoBehaviour
     public void WaveEnemyAppearance(EEnemyType enemyType)
     {
         List<TestWaveEnemyUI> typeEnemy = _enemyTypeUIDic[enemyType];
-        for(int i = 0; i < typeEnemy.Count; i++)
+        for (int i = 0; i < typeEnemy.Count; i++)
         {
             if (typeEnemy[i].gameObject.activeSelf)
             {

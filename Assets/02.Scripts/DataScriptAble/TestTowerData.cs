@@ -13,7 +13,7 @@ public enum ETowerType
 [CreateAssetMenu(fileName = "TestData", menuName = "Test/TowerData", order = 2)]
 public class TestTowerData : ScriptableObject
 {
-    public EObjectType objectType; // 오브젝트 종류
+    public EObjectName objectName;
     public ETowerType towerType; // 타워 종류
     public string towerName; // 타워 이름
     public string description; // 설명

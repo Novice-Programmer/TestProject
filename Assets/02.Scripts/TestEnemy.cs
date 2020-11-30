@@ -16,8 +16,9 @@ public enum EStateEnemy
     None
 }
 
-public enum ERatingEnemy
+public enum ERatingType
 {
+    None,
     Normal,
     SpecialEnemy,
     MineralEnemy,
@@ -28,7 +29,7 @@ public abstract class TestEnemy : ObjectHit
 {
     [SerializeField] protected TestEnemyData _enemyData;
 
-    public ERatingEnemy _rating = ERatingEnemy.Normal;
+    public ERatingType _rating = ERatingType.Normal;
     public EStateEnemy _state = EStateEnemy.Idle;
     protected int _wavePointIndex = 0;
     protected bool _action = false;

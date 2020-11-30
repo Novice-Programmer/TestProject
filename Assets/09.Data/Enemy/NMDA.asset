@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7d07ce502e435d47a500d032c8b781e, type: 3}
   m_Name: NMDA
   m_EditorClassIdentifier: 
-  enemy: 0
+  enemyName: 1
   fileName: NMDA
-  enemyName: "\uC54C\uBE44\uB178\uB4DC\uB798\uACE4"
+  enemyFullName: "\uC54C\uBE44\uC628 \uB4DC\uB798\uACE4"
   description: "\uD654\uC131\uC5D0\uC11C \uBC1C\uACAC\uB418\uB294 \uC801\uB300\uC801\uC778
     \uC0DD\uBA85\uCCB4"
   weakType: 0

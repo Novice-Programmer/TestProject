@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestUITower : MonoBehaviour
+public class TestUIInfo : MonoBehaviour
 {
     [SerializeField] InstallSpawnButton _prefabInstallBtn = null;
     [SerializeField] Transform _insBtnContainer = null;
@@ -43,6 +43,10 @@ public class TestUITower : MonoBehaviour
 
     public void ClickTowerViewBtn()
     {
+        if(TestInputManager.TouchMode != ETouchMode.Touch)
+        {
+            return;
+        }
         _towerInfoContainer.gameObject.SetActive(false);
         if (_towerView)
         {
@@ -69,7 +73,7 @@ public class TestUITower : MonoBehaviour
     void TowerUISetting(TestTower tower)
     {
         _towerName.text = tower._gameTowerData.towerName;
-        _towerIconImage.sprite = ObjectDataManager.Instance.GetTowerImage(tower._towerType);
+        _towerIconImage.sprite = ObjectDataManager.Instance.GetImage(tower._objectName);
         bool towerRepairCheck;
         _towerRepairCostTxt.text = "Cost " + tower.TowerRepairCost();
         if (tower._hp > (tower._maxHP * 0.9f))

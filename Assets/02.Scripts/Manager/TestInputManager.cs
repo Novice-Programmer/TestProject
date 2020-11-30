@@ -5,8 +5,8 @@ using UnityEngine;
 public enum ETouchMode
 {
     Touch,
-    TowerBuliding,
-    ObstacleBuliding
+    TowerBuilding,
+    ObstacleBuilding
 }
 
 public class TestInputManager : MonoBehaviour
@@ -56,7 +56,7 @@ public class TestInputManager : MonoBehaviour
         {
             _doubleTouchCheck = false;
         }
-        if (TouchMode == ETouchMode.TowerBuliding)
+        if (TouchMode == ETouchMode.TowerBuilding || TouchMode == ETouchMode.ObstacleBuilding)
         {
             if (Input.GetMouseButton(1))
             {
@@ -78,22 +78,48 @@ public class TestInputManager : MonoBehaviour
 
                     TestNode node = hit.transform.GetComponent<TestNode>();
 
-                    if (node._nodeType == ENodeType.TowerNode)
+                    if (TouchMode==ETouchMode.TowerBuilding&& node._nodeType == ENodeType.TowerNode)
                     {
-                        ETowerFitType towerFitType = node._parentTile.Fits(node._pos, BuildGhost._demision);
+                        EFitType towerFitType = node._parentTile.Fits(node._pos, BuildGhost._demision);
                         BuildGhost.FitMaterialCheck(towerFitType);
-                        if (towerFitType == ETowerFitType.Fits)
+                        if (towerFitType == EFitType.Fits)
                         {
                             Vector3 nodePosition = node._parentTile.NodeToPosition(node._pos, BuildGhost._demision);
                             BuildGhost.transform.position = nodePosition;
-                            BuildGhost.towerFitType = ETowerFitType.Fits;
-                            BuildGhost.fitPos = nodePosition;
+                            BuildGhost._towerFitType = EFitType.Fits;
+                            BuildGhost._fitPos = nodePosition;
                             if (Input.GetMouseButton(0))
                             {
                                 node._parentTile.Occupy(node._pos, BuildGhost._demision);
-                                BuildGhost.parentTile = node._parentTile;
+                                BuildGhost._parentTile = node._parentTile;
                                 BuildGhost._gridPos = node._pos;
-                                TestGameManager.Instance.TowerBulid(BuildGhost);
+                                TestGameManager.Instance.TowerBuild(BuildGhost);
+                                Destroy(BuildGhost.gameObject);
+                                BuildGhost = null;
+                                TouchMode = ETouchMode.Touch;
+                            }
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else if(TouchMode == ETouchMode.ObstacleBuilding&& node._nodeType == ENodeType.ObstacleNode)
+                    {
+                        EFitType towerFitType = node._parentTile.Fits(node._pos, BuildGhost._demision);
+                        BuildGhost.FitMaterialCheck(towerFitType);
+                        if (towerFitType == EFitType.Fits)
+                        {
+                            Vector3 nodePosition = node._parentTile.NodeToPosition(node._pos, BuildGhost._demision);
+                            BuildGhost.transform.position = nodePosition;
+                            BuildGhost._towerFitType = EFitType.Fits;
+                            BuildGhost._fitPos = nodePosition;
+                            if (Input.GetMouseButton(0))
+                            {
+                                node._parentTile.Occupy(node._pos, BuildGhost._demision);
+                                BuildGhost._parentTile = node._parentTile;
+                                BuildGhost._gridPos = node._pos;
+                                TestGameManager.Instance.ObstacleBuild(BuildGhost);
                                 Destroy(BuildGhost.gameObject);
                                 BuildGhost = null;
                                 TouchMode = ETouchMode.Touch;
@@ -167,7 +193,7 @@ public class TestInputManager : MonoBehaviour
                 if (Input.GetMouseButtonUp(0))
                 {
                     TestTower tower = hit.transform.GetComponent<TestTower>();
-                    if (tower._towerBulidSuccess)
+                    if (tower._towerBuildSuccess)
                     {
                         if (SelectTower != null && SelectTower != tower)
                         {
@@ -238,12 +264,14 @@ public class TestInputManager : MonoBehaviour
         }
     }
 
-    public void InstallTower(EObjectType objectType, EObjectName objectName, int installCost)
+    public void Install(EObjectType objectType, EObjectName objectName, int installCost)
     {
         if (objectType == EObjectType.Tower)
-            TouchMode = ETouchMode.TowerBuliding;
-        TestGhost ghost = Instantiate(ObjectDataManager.Instance.GetBulidGhost(objectName));
-        ghost.installCost = installCost;
+            TouchMode = ETouchMode.TowerBuilding;
+        else if (objectType == EObjectType.Obstacle)
+            TouchMode = ETouchMode.ObstacleBuilding;
+        TestGhost ghost = Instantiate(ObjectDataManager.Instance.GetBuildGhost(objectName));
+        ghost._installCost = installCost;
         BuildGhost = ghost;
     }
 

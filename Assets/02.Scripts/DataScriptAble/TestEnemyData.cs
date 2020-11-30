@@ -25,6 +25,7 @@ public class TestEnemyData : ScriptableObject
     public string fileName; // 파일 이름
     public string enemyFullName; // 이름
     public string description; // 설명
+    public ERatingType ratingType;
     public EWeakType weakType; // 취약 속성
     public int hp; // 체력
     public int mp; // 마나

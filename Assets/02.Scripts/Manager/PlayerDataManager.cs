@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestPlayerDataManager : MonoBehaviour
+public class PlayerDataManager : MonoBehaviour
 {
-    public static TestPlayerDataManager Instance { set; get; }
+    public static PlayerDataManager Instance { set; get; }
 
     [SerializeField] List<EResearch> _playerAllResearch = new List<EResearch>();
     [SerializeField] List<ETowerType> _playerSelectTower = new List<ETowerType>();
+    [SerializeField] List<EObstacleType> _playerSelectObstacle = new List<EObstacleType>();
 
     public int Stage = 0;
 
@@ -16,9 +17,9 @@ public class TestPlayerDataManager : MonoBehaviour
         Instance = this;
     }
 
-    public TestSelectTowerData[] GetPlayerSelectTower()
+    public SelectTowerData[] GetPlayerSelectTower()
     {
-        List<TestSelectTowerData> selectTowerDatas = new List<TestSelectTowerData>();
+        List<SelectTowerData> selectTowerDatas = new List<SelectTowerData>();
 
         for (int i = 0; i < _playerSelectTower.Count; i++)
         {
@@ -49,10 +50,46 @@ public class TestPlayerDataManager : MonoBehaviour
                     researchDatas.Add(researchData);
                 }
             }
-            selectTowerDatas.Add(new TestSelectTowerData(towerType, researchDatas.ToArray()));
+            selectTowerDatas.Add(new SelectTowerData(towerType, researchDatas.ToArray()));
         }
 
         return selectTowerDatas.ToArray();
+    }
+
+    public SelectObstacleData[] GetPlayerSelectObstacle()
+    {
+        List<SelectObstacleData> selectObstacleDatas = new List<SelectObstacleData>();
+
+        for(int i = 0; i < _playerSelectObstacle.Count; i++)
+        {
+            EObstacleType obstacleType = _playerSelectObstacle[i];
+            List<TestResearchData> researchDatas = new List<TestResearchData>();
+            EResearchTarget target = EResearchTarget.None;
+            switch (obstacleType)
+            {
+                case EObstacleType.FireWall:
+                    target = EResearchTarget.FireWall;
+                    break;
+            }
+            for (int j = 0; j < _playerAllResearch.Count; j++)
+            {
+                TestResearchData researchData = TestResearchManager.Instance.GetResearchData(_playerAllResearch[j]);
+                for (int k = 0; k < researchData.target.Length; k++)
+                {
+                    if (researchData.target[k] == target)
+                    {
+                        researchDatas.Add(researchData);
+                    }
+                }
+                if (researchData.target[0] == EResearchTarget.Obstacle)
+                {
+                    researchDatas.Add(researchData);
+                }
+            }
+            selectObstacleDatas.Add(new SelectObstacleData(obstacleType, researchDatas.ToArray()));
+        }
+
+        return selectObstacleDatas.ToArray();
     }
 
     public TestResearchData[] GetResourceResearchData()

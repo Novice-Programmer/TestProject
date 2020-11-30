@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a023cfd7d53464695991906485852e, type: 3}
   m_Name: KW9A
   m_EditorClassIdentifier: 
+  objectName: 1
   towerType: 1
   towerName: "\uB85C\uCF13 \uD3EC"
-  description: "\uB85C\uCF13 \uBC1C\uC0AC"
+  description: "\uB85C\uCF13 \uBC1C\uC0AC\uB97C \uD558\uB294 \uD0C0\uC6CC\uC785\uB2C8\uB2E4"
   size:
     x: 2
     y: 2

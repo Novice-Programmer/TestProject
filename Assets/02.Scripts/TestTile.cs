@@ -11,7 +11,7 @@ public enum ETileType
     None
 }
 
-public enum ETowerFitType
+public enum EFitType
 {
 	Fits,
 	Overlaps,
@@ -63,16 +63,16 @@ public class TestTile : MonoBehaviour
 	public Vector3 NodeToPosition(TestIntVector2 nodePos, TestIntVector2 size)
     {
 		Vector3 nodePosition = transform.position;
-		nodePosition.x += nodePos.x + size.x -1;
-		nodePosition.z += nodePos.y + size.y -1;
+		nodePosition.x += (nodePos.x + size.x)/2f;
+		nodePosition.z += (nodePos.y + size.y)/2f;
 		return nodePosition;
     }
 
-	public ETowerFitType Fits(TestIntVector2 gridPos, TestIntVector2 size)
+	public EFitType Fits(TestIntVector2 gridPos, TestIntVector2 size)
 	{
 		if ((size.x > _dimensions.x) || (size.y > _dimensions.y))
 		{
-			return ETowerFitType.OutOfBounds;
+			return EFitType.OutOfBounds;
 		}
 
 		TestIntVector2 extents = gridPos + size;
@@ -80,7 +80,7 @@ public class TestTile : MonoBehaviour
 		if ((gridPos.x < 0) || (gridPos.y < 0) ||
 			(extents.x > _dimensions.x) || (extents.y > _dimensions.y))
 		{
-			return ETowerFitType.OutOfBounds;
+			return EFitType.OutOfBounds;
 		}
 
 		for (int y = gridPos.y; y < extents.y; y++)
@@ -89,12 +89,12 @@ public class TestTile : MonoBehaviour
 			{
 				if (_availableNodes[x, y])
 				{
-					return ETowerFitType.Overlaps;
+					return EFitType.Overlaps;
 				}
 			}
 		}
 
-		return ETowerFitType.Fits;
+		return EFitType.Fits;
 	}
 
 	public void Occupy(TestIntVector2 gridPos, TestIntVector2 size)
