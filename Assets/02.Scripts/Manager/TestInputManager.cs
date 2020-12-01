@@ -15,7 +15,7 @@ public class TestInputManager : MonoBehaviour
     public static TestInputManager Instance { set; get; }
     public static ETouchMode TouchMode = ETouchMode.Touch;
     public static TestGhost BuildGhost = null;
-    public static TestTower SelectTower = null;
+    public static ObjectGame SelectObject = null;
 
     [Header("CameraMove")]
     [SerializeField] float _minX = 0;
@@ -181,30 +181,39 @@ public class TestInputManager : MonoBehaviour
         else
         {
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-            int towerLayerMask = 1 << LayerMask.NameToLayer("Tower");
+            int selectLayerMask = 1 << LayerMask.NameToLayer("Tower");
 
-            if (SelectTower != null)
+            if (SelectObject != null)
             {
                 if (Input.GetMouseButtonUp(1))
                 {
-                    SelectTower.TowerSelect(false);
-                    SelectTower = null;
+                    switch (SelectObject._objectType)
+                    {
+                        case EObjectType.Enemy:
+                            break;
+                        case EObjectType.Tower:
+                            SelectObject.Select(false);
+                            SelectObject = null;
+                            break;
+                        case EObjectType.Obstacle:
+                            break;
+                    }
                 }
             }
 
-            if (Physics.Raycast(ray, out RaycastHit hit, 50f, towerLayerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, 50f, selectLayerMask))
             {
                 if (Input.GetMouseButtonUp(0))
                 {
-                    TestTower tower = hit.transform.GetComponent<TestTower>();
-                    if (tower._towerBuildSuccess)
+                    ObjectGame objectGame = hit.transform.GetComponent<ObjectGame>();
+                    if (objectGame._objectSelectActive)
                     {
-                        if (SelectTower != null && SelectTower != tower)
+                        if (SelectObject != null && SelectObject != objectGame)
                         {
-                            SelectTower.TowerSelect(false);
+                            SelectObject.Select(false);
                         }
-                        tower.TowerSelect();
-                        SelectTower = tower;
+                        objectGame.Select();
+                        SelectObject = objectGame;
                     }
                 }
             }
@@ -265,6 +274,15 @@ public class TestInputManager : MonoBehaviour
                         _timeCheck = 0;
                 }
             }
+            if (Input.GetMouseButtonUp(1))
+            {
+                if (SelectObject != null)
+                {
+                    SelectObject.Select(false);
+                    SelectObject = null;
+                }
+            }
+
         }
     }
 
@@ -279,12 +297,12 @@ public class TestInputManager : MonoBehaviour
         BuildGhost = ghost;
     }
 
-    public void TowerSelectClose()
+    public void ObjectSelectClose()
     {
-        if (SelectTower != null)
+        if (SelectObject != null)
         {
-            SelectTower.TowerSelect(false);
-            SelectTower = null;
+            SelectObject.Select(false);
+            SelectObject = null;
         }
     }
 

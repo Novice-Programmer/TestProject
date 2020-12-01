@@ -16,7 +16,7 @@ public enum EObstacleType
     FireWall,
 }
 
-public class TestObstacle : ObjectHit
+public class TestObstacle : ObjectGame
 {
     public EObjectName _objectName = EObjectName.None;
     public EObstacleType _obstacleName = EObstacleType.None;

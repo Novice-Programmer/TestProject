@@ -164,7 +164,7 @@ public class TestUIInfo : MonoBehaviour
             _selectTower.TowerRepair();
             _selectTower.TotalCostAdd(_selectTower.TowerRepairCost());
         }
-        TestInputManager.Instance.TowerSelectClose();
+        TestInputManager.Instance.ObjectSelectClose();
         _selectTower = null;
         TestInputManager.Instance.UITouch();
     }
@@ -172,7 +172,7 @@ public class TestUIInfo : MonoBehaviour
     public void ClickTowerSell()
     {
         TestResourceManager.Instance.TowerPartValue = _selectTower.TowerGetSellNumber();
-        TestInputManager.Instance.TowerSelectClose();
+        TestInputManager.Instance.ObjectSelectClose();
         _selectTower.SellTower();
         _selectTower = null;
         TestInputManager.Instance.UITouch();
@@ -184,7 +184,7 @@ public class TestUIInfo : MonoBehaviour
         _selectTower.TotalCostAdd(_selectTower.UpgradeCost(EUpgradeType.Defence));
         _selectTower._upgradeDEF = ObjectDataManager.Instance.GetUpgradeData(_selectTower._towerType, EUpgradeType.Defence, ++_selectTower._levelDEF);
         _selectTower.TowerUpgrade(EUpgradeType.Defence);
-        TestInputManager.Instance.TowerSelectClose();
+        TestInputManager.Instance.ObjectSelectClose();
         _selectTower = null;
         TestInputManager.Instance.UITouch();
     }
@@ -195,7 +195,7 @@ public class TestUIInfo : MonoBehaviour
         _selectTower.TotalCostAdd(_selectTower.UpgradeCost(EUpgradeType.Attack));
         _selectTower._upgradeATK = ObjectDataManager.Instance.GetUpgradeData(_selectTower._towerType, EUpgradeType.Attack, ++_selectTower._levelATK);
         _selectTower.TowerUpgrade(EUpgradeType.Attack);
-        TestInputManager.Instance.TowerSelectClose();
+        TestInputManager.Instance.ObjectSelectClose();
         _selectTower = null;
         TestInputManager.Instance.UITouch();
     }
@@ -206,7 +206,7 @@ public class TestUIInfo : MonoBehaviour
         _selectTower.TotalCostAdd(_selectTower.UpgradeCost(EUpgradeType.Special));
         _selectTower._upgradeSP = ObjectDataManager.Instance.GetUpgradeData(_selectTower._towerType, EUpgradeType.Special, ++_selectTower._levelSP);
         _selectTower.TowerUpgrade(EUpgradeType.Special);
-        TestInputManager.Instance.TowerSelectClose();
+        TestInputManager.Instance.ObjectSelectClose();
         _selectTower = null;
         TestInputManager.Instance.UITouch();
     }

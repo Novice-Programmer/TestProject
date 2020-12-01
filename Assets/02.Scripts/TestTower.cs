@@ -12,7 +12,7 @@ public enum ETowerState
     Breakdown
 }
 
-public abstract class TestTower : ObjectHit
+public abstract class TestTower : ObjectGame
 {
     [Header("TowerInfo")]
     public EObjectName _objectName = EObjectName.None;
@@ -56,9 +56,6 @@ public abstract class TestTower : ObjectHit
 
     float _attackCountdown = 0;
     int _totalCost = 0;
-
-    bool _towerSelect = false;
-    public bool _towerBuildSuccess = false;
 
     TestTile _parentTile;
     TestIntVector2 _gridPosition;
@@ -246,17 +243,17 @@ public abstract class TestTower : ObjectHit
     IEnumerator BuildSuccess()
     {
         yield return new WaitForSeconds(0.5f);
-        _towerBuildSuccess = true;
+        _objectSelectActive = true;
     }
 
-    public void TowerSelect(bool towerSelectOff = true)
+    public override void Select(bool selectOff = true)
     {
-        _towerSelect = !_towerSelect;
-        if (!towerSelectOff)
+        _objectSelect = !_objectSelect;
+        if (!_objectSelectActive)
         {
-            _towerSelect = false;
+            _objectSelect = false;
         }
-        if (_towerSelect)
+        if (_objectSelect)
         {
             TestGameUI.Instance.TowerClick(this);
         }
@@ -264,7 +261,7 @@ public abstract class TestTower : ObjectHit
         {
             TestGameUI.Instance.ViewUIOff();
         }
-        _rangeObject.SetActive(_towerSelect);
+        _rangeObject.SetActive(_objectSelect);
     }
 
     private void OnDrawGizmosSelected()

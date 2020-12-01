@@ -7,7 +7,8 @@ public enum EObjectType
     None,
     Enemy,
     Tower,
-    Obstacle
+    Obstacle,
+    Commander
 }
 
 public enum EObjectName

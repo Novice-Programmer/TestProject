@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestCommander : ObjectHit
+public class TestCommander : ObjectGame
 {
     public static TestCommander Instance { set; get; }
     [SerializeField] TestWorldStatusUI _statusUI = null;

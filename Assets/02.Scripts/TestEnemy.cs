@@ -25,7 +25,7 @@ public enum ERatingType
     Boss
 }
 
-public abstract class TestEnemy : ObjectHit
+public abstract class TestEnemy : ObjectGame
 {
     [SerializeField] protected TestEnemyData _enemyData;
 
@@ -51,7 +51,7 @@ public abstract class TestEnemy : ObjectHit
     NavMeshAgent _enemyAI;
     Animator _enemyAnim;
     public Transform _target;
-    EHitType _prevTarget;
+    EObjectType _prevTarget;
 
     [SerializeField] float _obstacleCheckRange = 2.0f;
 
@@ -232,7 +232,7 @@ public abstract class TestEnemy : ObjectHit
 
         if (nearestObstacle != null)
         {
-            _prevTarget = EHitType.Obstacle;
+            _prevTarget = EObjectType.Obstacle;
             _state = EStateEnemy.Attack;
             _attackTime = 0;
             _timeCheck = 0;
@@ -270,7 +270,7 @@ public abstract class TestEnemy : ObjectHit
 
         if (nearestTower != null)
         {
-            _prevTarget = EHitType.Tower;
+            _prevTarget = EObjectType.Tower;
             _state = EStateEnemy.Attack;
             _attackTime = 0;
             _target = nearestTower.GetComponent<TestTower>().transform;
@@ -287,7 +287,7 @@ public abstract class TestEnemy : ObjectHit
 
         if (_target != null)
         {
-            if (_target.GetComponent<ObjectHit>()._hitType == EHitType.Tower)
+            if (_target.GetComponent<ObjectGame>()._objectType == EObjectType.Tower)
             {
                 if (_timeCheck >= 2.5f && _attackNumber == 0)
                 {
@@ -309,7 +309,7 @@ public abstract class TestEnemy : ObjectHit
 
         else
         {
-            if (_prevTarget != EHitType.Obstacle)
+            if (_prevTarget != EObjectType.Obstacle)
             {
                 GetNextWayPoint(_wavePointIndex);
                 _state = EStateEnemy.AttackSearch;
@@ -332,18 +332,18 @@ public abstract class TestEnemy : ObjectHit
             return;
         }
 
-        AttackRangeCheck(_target.GetComponent<ObjectHit>()._hitType);
+        AttackRangeCheck(_target.GetComponent<ObjectGame>()._objectType);
     }
 
     void AttackCommander()
     {
-        AttackRangeCheck(_target.GetComponent<ObjectHit>()._hitType);
+        AttackRangeCheck(_target.GetComponent<ObjectGame>()._objectType);
     }
 
-    void AttackRangeCheck(EHitType hitType)
+    void AttackRangeCheck(EObjectType objectType)
     {
         float addRange;
-        if (hitType == EHitType.Commander)
+        if (objectType == EObjectType.Commander)
         {
             addRange = 1.0f;
         }
@@ -352,7 +352,7 @@ public abstract class TestEnemy : ObjectHit
             addRange = 0.0f;
         }
 
-        bool towerCheck = hitType == EHitType.Tower;
+        bool towerCheck = objectType == EObjectType.Tower;
 
         bool attack = true;
         if (Vector3.Distance(transform.position, _target.position) < _enemyData.atkRange + addRange)

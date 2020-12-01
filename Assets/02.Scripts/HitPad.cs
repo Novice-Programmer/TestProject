@@ -50,7 +50,7 @@ public class HitPad : MonoBehaviour
     {
         if (other.CompareTag(_targetTag))
         {
-            ObjectHit objectHit = other.GetComponent<ObjectHit>();
+            ObjectGame objectHit = other.GetComponent<ObjectGame>();
             if (objectHit.BuffCheck(_badBuffType))
             {
                 TestBadBuff badBuff = Instantiate(_badBuff, other.transform);

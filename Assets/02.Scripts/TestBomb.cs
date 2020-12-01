@@ -47,7 +47,7 @@ public class TestBomb : MonoBehaviour
             {
                 if (_dealCheck)
                 {
-                    ObjectHit objectHit = hitObject.GetComponent<ObjectHit>();
+                    ObjectGame objectHit = hitObject.GetComponent<ObjectGame>();
                     objectHit.Hit((int)_valeus[0], _weakType);
                 }
             }
@@ -60,7 +60,7 @@ public class TestBomb : MonoBehaviour
         {
             if (_oneTarget)
             {
-                ObjectHit objectHit = other.GetComponent<ObjectHit>();
+                ObjectGame objectHit = other.GetComponent<ObjectGame>();
                 objectHit.Hit((int)_valeus[0], _weakType);
                 GetComponent<BoxCollider>().enabled = false;
             }

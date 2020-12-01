@@ -15,7 +15,7 @@ public class TestBadBuff : MonoBehaviour
 {
     public EBadBuff type;
     public EWeakType weakType;
-    public ObjectHit target;
+    public ObjectGame target;
     public int hp;
     public int mp;
     public int atk;
@@ -54,7 +54,7 @@ public class TestBadBuff : MonoBehaviour
         }
     }
 
-    public void TargetSetting(ObjectHit target)
+    public void TargetSetting(ObjectGame target)
     {
         this.target = target;
     }

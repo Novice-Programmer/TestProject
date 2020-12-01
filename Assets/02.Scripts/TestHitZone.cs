@@ -17,7 +17,7 @@ public class TestHitZone : MonoBehaviour
     {
         if (other.CompareTag(_targetTag))
         {
-            ObjectHit objectHit = other.GetComponent<ObjectHit>();
+            ObjectGame objectHit = other.GetComponent<ObjectGame>();
             objectHit.Hit(_damage,EWeakType.None);
         }
     }
