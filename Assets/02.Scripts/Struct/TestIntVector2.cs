@@ -19,4 +19,9 @@ public struct TestIntVector2
 	{
 		return new TestIntVector2(left.x + right.x, left.y + right.y);
 	}
+
+	public static TestIntVector2 operator -(TestIntVector2 left, TestIntVector2 right)
+	{
+		return new TestIntVector2(left.x - right.x, left.y - right.y);
+	}
 }

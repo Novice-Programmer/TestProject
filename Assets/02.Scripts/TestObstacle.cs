@@ -28,6 +28,8 @@ public class TestObstacle : ObjectHit
     [SerializeField] TestWorldStatusUI _duraBar = null;
     TestTile _parentTile;
     TestIntVector2 _gridPosition;
+    TestIntVector2 _dimensions;
+    EFitType _fitType;
 
     private void Start()
     {
@@ -61,5 +63,27 @@ public class TestObstacle : ObjectHit
     {
         _parentTile = ghost._parentTile;
         _gridPosition = ghost._gridPos;
+        _dimensions = ghost._demision;
+        _fitType = ghost._fitType;
+        switch (ghost._rotateType)
+        {
+            case ERotateType.degree0:
+                break;
+            case ERotateType.degree90:
+                transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                break;
+            case ERotateType.degree180:
+                transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                break;
+            case ERotateType.degree270:
+                transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
+                break;
+        }
+    }
+
+    public void SellObstacle()
+    {
+        _parentTile.Clear(_gridPosition, _dimensions, _fitType);
+        Destroy(gameObject);
     }
 }

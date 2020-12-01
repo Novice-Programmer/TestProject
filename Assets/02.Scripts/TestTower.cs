@@ -62,6 +62,7 @@ public abstract class TestTower : ObjectHit
 
     TestTile _parentTile;
     TestIntVector2 _gridPosition;
+    EFitType _fitType;
 
     private void Start()
     {
@@ -276,6 +277,7 @@ public abstract class TestTower : ObjectHit
     {
         _parentTile = ghostTower._parentTile;
         _gridPosition = ghostTower._gridPos;
+        _fitType = ghostTower._fitType;
     }
 
     public void TowerRepair()
@@ -294,7 +296,7 @@ public abstract class TestTower : ObjectHit
 
     public void SellTower()
     {
-        _parentTile.Clear(_gridPosition, _dimensions);
+        _parentTile.Clear(_gridPosition, _dimensions,_fitType);
         Destroy(gameObject);
     }
 

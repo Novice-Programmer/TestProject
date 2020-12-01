@@ -67,10 +67,9 @@ public class TestInputManager : MonoBehaviour
             else
             {
                 Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
                 int layerMask = 1 << LayerMask.NameToLayer("Tile");
 
-                if (Physics.Raycast(ray, out hit, 100f, layerMask))
+                if (Physics.Raycast(ray, out RaycastHit hit, 100f, layerMask))
                 {
                     Vector3 position = hit.point;
                     position.y -= 1;
@@ -78,19 +77,19 @@ public class TestInputManager : MonoBehaviour
 
                     TestNode node = hit.transform.GetComponent<TestNode>();
 
-                    if (TouchMode==ETouchMode.TowerBuilding&& node._nodeType == ENodeType.TowerNode)
+                    if (TouchMode == ETouchMode.TowerBuilding && node._nodeType == ENodeType.TowerNode)
                     {
-                        EFitType towerFitType = node._parentTile.Fits(node._pos, BuildGhost._demision);
-                        BuildGhost.FitMaterialCheck(towerFitType);
-                        if (towerFitType == EFitType.Fits)
+                        EFitType fitType = node._parentTile.Fits(node._pos, BuildGhost._demision);
+                        BuildGhost.FitMaterialCheck(fitType);
+                        if (fitType != EFitType.OutOfBounds && fitType != EFitType.Overlaps)
                         {
-                            Vector3 nodePosition = node._parentTile.NodeToPosition(node._pos, BuildGhost._demision);
+                            Vector3 nodePosition = node._parentTile.NodeToPosition(node._pos, BuildGhost._demision, fitType);
                             BuildGhost.transform.position = nodePosition;
-                            BuildGhost._towerFitType = EFitType.Fits;
+                            BuildGhost._fitType = fitType;
                             BuildGhost._fitPos = nodePosition;
                             if (Input.GetMouseButton(0))
                             {
-                                node._parentTile.Occupy(node._pos, BuildGhost._demision);
+                                node._parentTile.Occupy(node._pos, BuildGhost._demision, fitType);
                                 BuildGhost._parentTile = node._parentTile;
                                 BuildGhost._gridPos = node._pos;
                                 TestGameManager.Instance.TowerBuild(BuildGhost);
@@ -101,22 +100,22 @@ public class TestInputManager : MonoBehaviour
                         }
                         else
                         {
-
+                            BuildGhost.NoneCheck();
                         }
                     }
-                    else if(TouchMode == ETouchMode.ObstacleBuilding&& node._nodeType == ENodeType.ObstacleNode)
+                    else if (TouchMode == ETouchMode.ObstacleBuilding && node._nodeType == ENodeType.ObstacleNode)
                     {
-                        EFitType towerFitType = node._parentTile.Fits(node._pos, BuildGhost._demision);
-                        BuildGhost.FitMaterialCheck(towerFitType);
-                        if (towerFitType == EFitType.Fits)
+                        EFitType fitType = node._parentTile.Fits(node._pos, BuildGhost._demision);
+                        BuildGhost.FitMaterialCheck(fitType);
+                        if (fitType != EFitType.OutOfBounds && fitType != EFitType.Overlaps)
                         {
-                            Vector3 nodePosition = node._parentTile.NodeToPosition(node._pos, BuildGhost._demision);
+                            Vector3 nodePosition = node._parentTile.NodeToPosition(node._pos, BuildGhost._demision, fitType);
                             BuildGhost.transform.position = nodePosition;
-                            BuildGhost._towerFitType = EFitType.Fits;
+                            BuildGhost._fitType = fitType;
                             BuildGhost._fitPos = nodePosition;
                             if (Input.GetMouseButton(0))
                             {
-                                node._parentTile.Occupy(node._pos, BuildGhost._demision);
+                                node._parentTile.Occupy(node._pos, BuildGhost._demision, fitType);
                                 BuildGhost._parentTile = node._parentTile;
                                 BuildGhost._gridPos = node._pos;
                                 TestGameManager.Instance.ObstacleBuild(BuildGhost);
@@ -127,7 +126,7 @@ public class TestInputManager : MonoBehaviour
                         }
                         else
                         {
-
+                            BuildGhost.NoneCheck();
                         }
                     }
                     else
@@ -140,6 +139,11 @@ public class TestInputManager : MonoBehaviour
                     Vector3 position = hit.point;
                     BuildGhost.transform.position = position;
                     BuildGhost.NoneCheck();
+                }
+
+                if (Input.GetKeyUp(KeyCode.R))
+                {
+                    BuildGhost.RotateObject();
                 }
 
                 if (Input.mousePosition.x >= Screen.width - _panBorderThicknessX)
