@@ -32,10 +32,11 @@ public class TestCommander : ObjectGame
     {
         _hp -= damage;
         _statusUI.HPChange(_hp);
-        TestGameUI.Instance.CommanderHit(_hp);
         if (_hp <= 0)
         {
-            TestGameManager.Instance.GameOver();
+            _hp = 0;
+            TestGameManager.Instance.GameEnd();
         }
+        TestGameUI.Instance.CommanderHit(_hp);
     }
 }

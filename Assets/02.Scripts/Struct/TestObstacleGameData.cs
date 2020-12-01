@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
 public struct TestObstacleGameData
@@ -7,7 +8,7 @@ public struct TestObstacleGameData
     public EObstacleType obstacleType;
     public EAttackAble attackAble;
     public EObjectName objectName;
-    public string obstacleName;
+    public string obstacleNameString;
     public string description;
     public int durability;
     public int reduceValue;
@@ -21,7 +22,7 @@ public struct TestObstacleGameData
     {
         obstacleType = obstacleData.obstacleType;
         attackAble = obstacleData.attackAble;
-        obstacleName = obstacleData.obstacleName;
+        obstacleNameString = obstacleData.obstacleName;
         objectName = obstacleData.objectName;
         description = obstacleData.description;
         durability = obstacleData.durability;
@@ -37,20 +38,20 @@ public struct TestObstacleGameData
         researchResult = new ObstacleResearchResult();
     }
 
-    public void ResearchAdd(params TestResearchData[] towerResearchs)
+    public void ResearchAdd(params TestResearchData[] obstacleResearchs)
     {
-        for (int i = 0; i < towerResearchs.Length; i++)
+        for (int i = 0; i < obstacleResearchs.Length; i++)
         {
-            switch (towerResearchs[i].research)
+            switch (obstacleResearchs[i].research)
             {
                 case EResearch.ReorganizatedOfDesign:
                     researchResult.costReduceRate += -10;
                     researchResult.valueIncreaseRate += 10;
                     break;
             }
-            researchs.Add(towerResearchs[i].research);
+            researchs.Add(obstacleResearchs[i].research);
         }
-
+        
         int reduceCost = (int)(buildCost * researchResult.costReduceRate * 0.01f);
         if (buildCost + reduceCost > 0)
         {

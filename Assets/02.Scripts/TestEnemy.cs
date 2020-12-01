@@ -27,7 +27,7 @@ public enum ERatingType
 
 public abstract class TestEnemy : ObjectGame
 {
-    [SerializeField] protected TestEnemyData _enemyData;
+    public TestEnemyData _enemyData;
 
     public ERatingType _rating = ERatingType.Normal;
     public EStateEnemy _state = EStateEnemy.Idle;
@@ -89,12 +89,20 @@ public abstract class TestEnemy : ObjectGame
         _statusUI.HPChange(_hp);
         _mp = 0;
         StatusCheck();
+        StartCoroutine(ActiveSuccess());
         StartCoroutine(BadBuffCheck());
+    }
+    IEnumerator ActiveSuccess()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _objectSelectActive = true;
     }
 
     public void Disactive()
     {
         TestWaveManager.Instance.WaveEnemyDie();
+        StopCoroutine("BuildSuccess");
+        StopCoroutine("BadBuffCheck");
         gameObject.SetActive(false);
     }
 
@@ -220,7 +228,7 @@ public abstract class TestEnemy : ObjectGame
         GameObject nearestObstacle = null;
         foreach (GameObject obstacle in obstacles)
         {
-            if (obstacle.GetComponent<TestObstacle>()._obstacleType == EAttackAble.AttackDisable)
+            if (obstacle.GetComponent<TestObstacle>()._attackAble == EAttackAble.AttackDisable)
                 continue;
             float distanceToObstacle = Vector3.Distance(transform.position, obstacle.transform.position);
             if (distanceToObstacle < shortestDistance)
@@ -516,5 +524,22 @@ public abstract class TestEnemy : ObjectGame
             _mp = 0;
         }
         _statusUI.MPChange(_mp);
+    }
+
+    public override void Select(bool selectOff = true)
+    {
+        _objectSelect = !_objectSelect;
+        if (!_objectSelectActive)
+        {
+            _objectSelect = false;
+        }
+        if (_objectSelect)
+        {
+            TestGameUI.Instance.EnemyClick(this);
+        }
+        else
+        {
+            TestGameUI.Instance.ViewUIOff();
+        }
     }
 }

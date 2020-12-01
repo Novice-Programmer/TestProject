@@ -10,6 +10,8 @@ public class TestGameManager : MonoBehaviour
     float _timeCheck = 0;
     bool _waveStart = false;
 
+    List<GameObject> _installObjects = new List<GameObject>();
+
     private void Awake()
     {
         Instance = this;
@@ -70,6 +72,7 @@ public class TestGameManager : MonoBehaviour
         TestResourceManager.Instance.TowerPartValue = -ghostData._installCost;
         TestTower tower = Instantiate(ObjectDataManager.Instance.GetTower(ghostData._objectName), ghostData._fitPos, Quaternion.identity);
         tower.BuildingTower(ghostData);
+        _installObjects.Add(tower.gameObject);
     }
 
     public void ObstacleBuild(TestGhost ghostData)
@@ -77,10 +80,18 @@ public class TestGameManager : MonoBehaviour
         TestResourceManager.Instance.TowerPartValue = -ghostData._installCost;
         TestObstacle obstacle = Instantiate(ObjectDataManager.Instance.GetObstacle(ghostData._objectName), ghostData._fitPos, Quaternion.identity);
         obstacle.BuildingObstacle(ghostData);
+        _installObjects.Add(obstacle.gameObject);
     }
 
-    public void GameOver()
+    public void GameEnd()
     {
-        Debug.Log("GaveOver");
+        TestPoolManager.Instance.GameEnd();
+        for(int i = 0; i < _installObjects.Count; i++)
+        {
+            if (_installObjects[i] != null)
+            {
+                _installObjects[i].SetActive(false);
+            }
+        }
     }
 }

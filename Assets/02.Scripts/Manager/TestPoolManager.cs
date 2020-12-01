@@ -100,4 +100,15 @@ public class TestPoolManager : MonoBehaviour
         }
         return go;
     }
+
+    public void GameEnd()
+    {
+        foreach(List<GameObject> gameObjects in _poolObjects.Values)
+        {
+            for(int i = 0; i < gameObjects.Count; i++)
+            {
+                gameObjects[i].SetActive(false);
+            }
+        }
+    }
 }

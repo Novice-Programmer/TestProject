@@ -19,8 +19,10 @@ public enum EObstacleType
 public class TestObstacle : ObjectGame
 {
     public EObjectName _objectName = EObjectName.None;
-    public EObstacleType _obstacleName = EObstacleType.None;
-    public EAttackAble _obstacleType = EAttackAble.None;
+    public EObstacleType _obstacleType = EObstacleType.None;
+    public EAttackAble _attackAble = EAttackAble.None;
+    public TestObstacleGameData _obstacleGameData;
+    public int _sellGetCost;
     [SerializeField] HitPad _hitPad = null;
     [SerializeField] int _durability;
     [SerializeField] int _reduceValue;
@@ -35,6 +37,7 @@ public class TestObstacle : ObjectGame
     {
         _hitPad.HitPadSetting("Enemy", _values);
         _duraBar.StatusSetting(_durability);
+        _obstacleGameData = ObjectDataManager.Instance.GetObstacleGameData(_obstacleType);
     }
 
     public override void Hit(int damage, EWeakType weakType)
@@ -48,7 +51,7 @@ public class TestObstacle : ObjectGame
         if (_durability <= 0)
         {
             _durability = 0;
-            Destroy(gameObject);
+            DestroyObstacle();
         }
         _duraBar.HPChange(_durability);
     }
@@ -65,6 +68,7 @@ public class TestObstacle : ObjectGame
         _gridPosition = ghost._gridPos;
         _dimensions = ghost._demision;
         _fitType = ghost._fitType;
+        _sellGetCost = ghost._installCost / 5;
         switch (ghost._rotateType)
         {
             case ERotateType.degree0:
@@ -79,11 +83,36 @@ public class TestObstacle : ObjectGame
                 transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
                 break;
         }
+        StartCoroutine(BuildSuccess());
     }
 
-    public void SellObstacle()
+    IEnumerator BuildSuccess()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _objectSelectActive = true;
+    }
+
+    public void DestroyObstacle()
     {
         _parentTile.Clear(_gridPosition, _dimensions, _fitType);
+        StopCoroutine(BuildSuccess());
         Destroy(gameObject);
+    }
+
+    public override void Select(bool selectOff = true)
+    {
+        _objectSelect = !_objectSelect;
+        if (!_objectSelectActive)
+        {
+            _objectSelect = false;
+        }
+        if (_objectSelect)
+        {
+            TestGameUI.Instance.ObstacleClick(this);
+        }
+        else
+        {
+            TestGameUI.Instance.ViewUIOff();
+        }
     }
 }

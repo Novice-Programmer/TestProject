@@ -17,6 +17,7 @@ MonoBehaviour:
   enemyFullName: "\uC54C\uBE44\uC628 \uB4DC\uB798\uACE4"
   description: "\uD654\uC131\uC5D0\uC11C \uBC1C\uACAC\uB418\uB294 \uC801\uB300\uC801\uC778
     \uC0DD\uBA85\uCCB4"
+  ratingType: 1
   weakType: 0
   hp: 100
   mp: 20

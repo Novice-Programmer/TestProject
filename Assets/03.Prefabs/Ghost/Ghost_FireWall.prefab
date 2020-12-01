@@ -4773,7 +4773,7 @@ GameObject:
   - component: {fileID: 7771969456342990922}
   m_Layer: 0
   m_Name: Ghost_FireWall
-  m_TagString: Obstacle
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4811,12 +4811,16 @@ MonoBehaviour:
   _demision:
     x: 4
     y: 1
+  _saveDemision:
+    x: 0
+    y: 0
   _gridPos:
     x: 0
     y: 0
-  _towerFitType: 1
+  _fitType: 9
   _fitPos: {x: 0, y: 0, z: 0}
   _parentTile: {fileID: 0}
+  _rotateType: 0
   _materialRenders:
   - {fileID: 732593308906638362}
   _fitMaterial: {fileID: 2100000, guid: 6fe9580bd67b34580977e0aa4eab9755, type: 2}

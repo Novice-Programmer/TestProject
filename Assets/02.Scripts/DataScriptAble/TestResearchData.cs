@@ -28,6 +28,7 @@ public enum EResearchTarget
     FireWall,
     Obstacle,
     Resource,
+    ALL,
     None = 999
 }
 

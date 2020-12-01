@@ -688,7 +688,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f77ad6490119ac4abbc19fd04a4b096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitType: 2
+  _objectType: 2
+  _objectSelectActive: 0
+  _objectSelect: 0
   _objectName: 1
   _towerType: 1
   _towerState: 0
@@ -754,7 +756,6 @@ MonoBehaviour:
   _upgradeATK: {fileID: 0}
   _upgradeDEF: {fileID: 0}
   _upgradeSP: {fileID: 0}
-  _towerBulidSuccess: 0
   _firePointParent: {fileID: 3585982065503301039}
   _nuclearPoint: {fileID: 1283479328791187751}
 --- !u!54 &2033461621299218828

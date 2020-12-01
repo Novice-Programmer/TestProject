@@ -181,23 +181,14 @@ public class TestInputManager : MonoBehaviour
         else
         {
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-            int selectLayerMask = 1 << LayerMask.NameToLayer("Tower");
+            int selectLayerMask = 1 << LayerMask.NameToLayer("Tower") | 1 << LayerMask.NameToLayer("Enemy") | 1 << LayerMask.NameToLayer("Obstacle");
 
             if (SelectObject != null)
             {
                 if (Input.GetMouseButtonUp(1))
                 {
-                    switch (SelectObject._objectType)
-                    {
-                        case EObjectType.Enemy:
-                            break;
-                        case EObjectType.Tower:
-                            SelectObject.Select(false);
-                            SelectObject = null;
-                            break;
-                        case EObjectType.Obstacle:
-                            break;
-                    }
+                    SelectObject.Select(false);
+                    SelectObject = null;
                 }
             }
 
@@ -309,5 +300,6 @@ public class TestInputManager : MonoBehaviour
     public void UITouch()
     {
         _doubleTouchCheck = false;
+        _timeCheck = 0;
     }
 }

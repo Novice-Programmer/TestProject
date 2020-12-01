@@ -25,7 +25,7 @@ public class TestGameUI : MonoBehaviour
 
 	public EUIState UIState { get; private set; }
 
-	[SerializeField] TestUIInfo _uITower = null;
+	[SerializeField] TestUIInfo _uIInfo = null;
 	[SerializeField] TestUIWave _uiWave = null;
 	[SerializeField] TestUIResource _uiResource = null;
 	[SerializeField] TestPlayerUI _uiPlayer = null;
@@ -37,25 +37,37 @@ public class TestGameUI : MonoBehaviour
 
 	public void GameUISetting()
 	{
-		_uITower.InstallButtonSetting();
+		_uIInfo.InstallButtonSetting();
 	}
 
     public void ViewUIOff()
     {
-        _uITower.TowerViewOff();
+        _uIInfo.ViewOff();
     }
 
 	public void ResourceValueChange()
     {
-		_uITower.UIValueChange();
+		_uIInfo.UIValueChange();
 		_uiResource.UIValueChange();
     }
 
 	public void TowerClick(TestTower tower)
     {
-		_uITower.ClickTower(tower);
+		_uIInfo.ClickTower(tower);
 		TestInputManager.Instance.UITouch();
     }
+
+	public void ObstacleClick(TestObstacle obstacle)
+	{
+		_uIInfo.ClickObstacle(obstacle);
+		TestInputManager.Instance.UITouch();
+	}
+
+	public void EnemyClick(TestEnemy enemy)
+	{
+		_uIInfo.ClickEnemy(enemy);
+		TestInputManager.Instance.UITouch();
+	}
 
 	public void StageUIInit(TestWave[] waves)
     {
@@ -90,5 +102,10 @@ public class TestGameUI : MonoBehaviour
 	public void CommanderHit(int hp)
     {
 		_uiPlayer.ChangeHP(hp);
+    }
+
+	public void InfoViewOff()
+    {
+		_uIInfo.ViewOff();
     }
 }

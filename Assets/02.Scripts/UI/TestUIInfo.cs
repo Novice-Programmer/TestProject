@@ -24,14 +24,21 @@ public class TestUIInfo : MonoBehaviour
     [SerializeField] Text _towerSPTxt = null;
 
     [Header("ObstacleInfo")]
+    [SerializeField] GameObject _obstacleInfoContainer = null;
     [SerializeField] Text _obstacleName = null;
     [SerializeField] Image _obstacleIconImage = null;
-    [SerializeField] Button _obstacleCellBtn = null;
-    [SerializeField] Text _obstacleCellGetTxt = null;
+    [SerializeField] Button _obstacleSellBtn = null;
+    [SerializeField] Text _obstacleSellGetTxt = null;
 
     [Header("EnemyInfo")]
+    [SerializeField] GameObject _enemyInfoContainer = null;
+    [SerializeField] Text _enemyName = null;
+    [SerializeField] Image _enemyIconImage = null;
+
     bool _view = false;
     TestTower _selectTower;
+    TestEnemy _selectEnemy;
+    TestObstacle _selectObstacle;
 
     private void Awake()
     {
@@ -48,20 +55,22 @@ public class TestUIInfo : MonoBehaviour
         }
     }
 
-    public void ClickTowerViewBtn()
+    public void ClickInstallViewBtn()
     {
         if (TestInputManager.TouchMode != ETouchMode.Touch)
         {
             return;
         }
-        _towerInfoContainer.gameObject.SetActive(false);
+        _towerInfoContainer.SetActive(false);
+        _obstacleInfoContainer.SetActive(false);
+        _enemyInfoContainer.SetActive(false);
         if (_view)
         {
-            TowerViewOff();
+            ViewOff();
         }
         else
         {
-            TowerViewOn();
+            ViewOn();
         }
         TestInputManager.Instance.UITouch();
     }
@@ -70,21 +79,39 @@ public class TestUIInfo : MonoBehaviour
     {
         if (!_view)
         {
-            TowerViewOn();
+            ViewOn();
         }
         _towerInfoContainer.SetActive(true);
+        _obstacleInfoContainer.SetActive(false);
+        _enemyInfoContainer.SetActive(false);
         TowerUISetting(tower);
         TestInputManager.Instance.UITouch();
     }
 
     public void ClickObstacle(TestObstacle obstacle)
     {
-
+        if (!_view)
+        {
+            ViewOn();
+        }
+        _towerInfoContainer.SetActive(false);
+        _obstacleInfoContainer.SetActive(true);
+        _enemyInfoContainer.SetActive(false);
+        ObstacleUISetting(obstacle);
+        TestInputManager.Instance.UITouch();
     }
 
     public void ClickEnemy(TestEnemy enemy)
     {
-
+        if (!_view)
+        {
+            ViewOn();
+        }
+        _towerInfoContainer.SetActive(false);
+        _obstacleInfoContainer.SetActive(false);
+        _enemyInfoContainer.SetActive(true);
+        EnemyUISetting(enemy);
+        TestInputManager.Instance.UITouch();
     }
 
     void TowerUISetting(TestTower tower)
@@ -152,6 +179,20 @@ public class TestUIInfo : MonoBehaviour
         _selectTower = tower;
     }
 
+    void ObstacleUISetting(TestObstacle obstacle)
+    {
+        _obstacleName.text = obstacle._obstacleGameData.obstacleNameString;
+        _obstacleIconImage.sprite = ObjectDataManager.Instance.GetImage(obstacle._objectName);
+        _obstacleSellGetTxt.text = "Get " + obstacle._sellGetCost;
+        _selectObstacle = obstacle;
+    }
+
+    void EnemyUISetting(TestEnemy enemy)
+    {
+        _enemyName.text = enemy._enemyData.enemyFullName;
+        _enemyIconImage.sprite = ObjectDataManager.Instance.GetEnemyImage(enemy._enemyData.enemyName, false);
+    }
+
     public void UIValueChange()
     {
         for (int i = 0; i < _spawnButtons.Count; i++)
@@ -160,13 +201,13 @@ public class TestUIInfo : MonoBehaviour
         }
     }
 
-    public void TowerViewOn()
+    public void ViewOn()
     {
         _view = true;
         _viewAnimator.SetBool("View", true);
     }
 
-    public void TowerViewOff()
+    public void ViewOff()
     {
         _view = false;
         _viewAnimator.SetBool("View", false);
@@ -192,6 +233,15 @@ public class TestUIInfo : MonoBehaviour
         TestInputManager.Instance.ObjectSelectClose();
         _selectTower.SellTower();
         _selectTower = null;
+        TestInputManager.Instance.UITouch();
+    }
+
+    public void ClickObstacleSell()
+    {
+        TestResourceManager.Instance.TowerPartValue = _selectObstacle._sellGetCost;
+        TestInputManager.Instance.ObjectSelectClose();
+        _selectObstacle.DestroyObstacle();
+        _selectObstacle = null;
         TestInputManager.Instance.UITouch();
     }
 

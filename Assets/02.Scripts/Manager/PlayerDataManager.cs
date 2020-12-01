@@ -44,10 +44,10 @@ public class PlayerDataManager : MonoBehaviour
                     {
                         researchDatas.Add(researchData);
                     }
-                }
-                if (researchData.target[0] == EResearchTarget.Tower)
-                {
-                    researchDatas.Add(researchData);
+                    else if (researchData.target[k] == EResearchTarget.Tower || researchData.target[k] == EResearchTarget.ALL)
+                    {
+                        researchDatas.Add(researchData);
+                    }
                 }
             }
             selectTowerDatas.Add(new SelectTowerData(towerType, researchDatas.ToArray()));
@@ -80,10 +80,10 @@ public class PlayerDataManager : MonoBehaviour
                     {
                         researchDatas.Add(researchData);
                     }
-                }
-                if (researchData.target[0] == EResearchTarget.Obstacle)
-                {
-                    researchDatas.Add(researchData);
+                    else if (researchData.target[k] == EResearchTarget.Obstacle || researchData.target[k] == EResearchTarget.ALL)
+                    {
+                        researchDatas.Add(researchData);
+                    }
                 }
             }
             selectObstacleDatas.Add(new SelectObstacleData(obstacleType, researchDatas.ToArray()));

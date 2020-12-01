@@ -89,7 +89,7 @@ public class ObjectDataManager : MonoBehaviour
         }
     }
 
-    public void GameInstallSetting(SelectTowerData[] selectTowerDatas,SelectObstacleData[] selectObstacleDatas)
+    public void GameInstallSetting(SelectTowerData[] selectTowerDatas, SelectObstacleData[] selectObstacleDatas)
     {
         for (int i = 0; i < selectTowerDatas.Length; i++)
         {
@@ -98,7 +98,7 @@ public class ObjectDataManager : MonoBehaviour
             _gameTowerDatas.Add(selectTowerDatas[i].towerType, towerGameData);
         }
 
-        for(int i = 0; i < selectObstacleDatas.Length; i++) 
+        for (int i = 0; i < selectObstacleDatas.Length; i++)
         {
             TestObstacleGameData obstacleGameData = new TestObstacleGameData(GetObstacleData(selectObstacleDatas[i].obstacleType));
             obstacleGameData.ResearchAdd(selectObstacleDatas[i].researchDatas);
@@ -181,6 +181,11 @@ public class ObjectDataManager : MonoBehaviour
         return _gameTowerDatas[towerType];
     }
 
+    public TestObstacleGameData GetObstacleGameData(EObstacleType obstacleType)
+    {
+        return _gameObstacleDatas[obstacleType];
+    }
+
     public TestInstallData[] GetInstallData()
     {
         List<TestInstallData> installDatas = new List<TestInstallData>();
@@ -196,7 +201,7 @@ public class ObjectDataManager : MonoBehaviour
             installDatas.Add(installTowerData);
         }
 
-        foreach(EObstacleType obstacleType in _gameObstacleDatas.Keys)
+        foreach (EObstacleType obstacleType in _gameObstacleDatas.Keys)
         {
             TestObstacleGameData obstacleGameData = _gameObstacleDatas[obstacleType];
             TestInstallData installObstacleData = new TestInstallData();
@@ -260,7 +265,7 @@ public class ObjectDataManager : MonoBehaviour
 
     public Sprite GetImage(EObjectName objectName)
     {
-        int objectImageNumber=0;
+        int objectImageNumber = 0;
         switch (objectName)
         {
             case EObjectName.KW9A:
@@ -277,11 +282,11 @@ public class ObjectDataManager : MonoBehaviour
         return _objectImages[objectImageNumber];
     }
 
-    public Sprite GetEnemyImage(EEnemyType enemyType,bool rankImage)
+    public Sprite GetEnemyImage(EEnemyType enemyType, bool rankImage)
     {
         if (rankImage)
         {
-            for(int i = 0; i < _enemyAllDatas.Length; i++)
+            for (int i = 0; i < _enemyAllDatas.Length; i++)
             {
                 if (_enemyAllDatas[i].enemyName == enemyType)
                     return _enemyRankSprites[(int)_enemyAllDatas[i].ratingType];

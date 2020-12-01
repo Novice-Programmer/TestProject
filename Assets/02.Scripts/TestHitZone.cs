@@ -19,6 +19,7 @@ public class TestHitZone : MonoBehaviour
         {
             ObjectGame objectHit = other.GetComponent<ObjectGame>();
             objectHit.Hit(_damage,EWeakType.None);
+            gameObject.SetActive(false);
         }
     }
 }
