@@ -23,7 +23,14 @@ public class TestUIInfo : MonoBehaviour
     [SerializeField] Button _towerUpgradeSPBtn = null;
     [SerializeField] Text _towerSPTxt = null;
 
-    bool _towerView = false;
+    [Header("ObstacleInfo")]
+    [SerializeField] Text _obstacleName = null;
+    [SerializeField] Image _obstacleIconImage = null;
+    [SerializeField] Button _obstacleCellBtn = null;
+    [SerializeField] Text _obstacleCellGetTxt = null;
+
+    [Header("EnemyInfo")]
+    bool _view = false;
     TestTower _selectTower;
 
     private void Awake()
@@ -43,12 +50,12 @@ public class TestUIInfo : MonoBehaviour
 
     public void ClickTowerViewBtn()
     {
-        if(TestInputManager.TouchMode != ETouchMode.Touch)
+        if (TestInputManager.TouchMode != ETouchMode.Touch)
         {
             return;
         }
         _towerInfoContainer.gameObject.SetActive(false);
-        if (_towerView)
+        if (_view)
         {
             TowerViewOff();
         }
@@ -61,13 +68,23 @@ public class TestUIInfo : MonoBehaviour
 
     public void ClickTower(TestTower tower)
     {
-        if (!_towerView)
+        if (!_view)
         {
             TowerViewOn();
         }
         _towerInfoContainer.SetActive(true);
         TowerUISetting(tower);
         TestInputManager.Instance.UITouch();
+    }
+
+    public void ClickObstacle(TestObstacle obstacle)
+    {
+
+    }
+
+    public void ClickEnemy(TestEnemy enemy)
+    {
+
     }
 
     void TowerUISetting(TestTower tower)
@@ -83,7 +100,7 @@ public class TestUIInfo : MonoBehaviour
         }
         else if (TestResourceManager.Instance.TowerPartValue < tower.TowerRepairCost())
             towerRepairCheck = false;
-        else 
+        else
             towerRepairCheck = true;
         _towerRepairBtn.interactable = towerRepairCheck;
         _towerSellGetTxt.text = "Get " + tower.TowerGetSellNumber();
@@ -145,13 +162,13 @@ public class TestUIInfo : MonoBehaviour
 
     public void TowerViewOn()
     {
-        _towerView = true;
+        _view = true;
         _viewAnimator.SetBool("View", true);
     }
 
     public void TowerViewOff()
     {
-        _towerView = false;
+        _view = false;
         _viewAnimator.SetBool("View", false);
     }
 
