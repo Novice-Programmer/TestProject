@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1ee13261d9b5814ca63d34baf95fa33, type: 3}
+  m_Script: {fileID: 11500000, guid: 509b632401a9b1c44ace15feecd681db, type: 3}
   m_Name: ROD
   m_EditorClassIdentifier: 
-  ID: 1000000002
-  type: 4
-  requireResearch: 999
-  research: 0
-  target: 0200000004000000
+  research: 1
+  requireResearch: 0
+  type: 3
+  targetNames: 0600000007000000

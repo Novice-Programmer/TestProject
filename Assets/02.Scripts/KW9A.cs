@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KW9A : TestTower
+public class KW9A : Tower
 {
     [Header("KW9A")]
     [SerializeField] Transform _firePointParent = null;

@@ -40,10 +40,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6758747863549913940}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 080bf6b4198320c439f26fb3029079bb, type: 3}
+  m_Script: {fileID: 11500000, guid: f3be1f2e2e883144798e17ade0702147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tileType: 0
+  _tileType: 3
   _nodePrefab: {fileID: 7186149433495446276, guid: 20b5842c8f13c04468ca71d8f19007bc,
     type: 3}
   _dimensions:

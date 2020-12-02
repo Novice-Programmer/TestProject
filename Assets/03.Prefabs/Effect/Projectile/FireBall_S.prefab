@@ -14196,6 +14196,7 @@ GameObject:
   - component: {fileID: 2846810155834765542}
   - component: {fileID: 8113537333557110851}
   - component: {fileID: 8006196636998938410}
+  - component: {fileID: 5259392485988792801}
   m_Layer: 0
   m_Name: FireBall_S
   m_TagString: Untagged
@@ -18912,13 +18913,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2846810155820994598}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 949ca8d3a7755f24fbc9bd2446796762, type: 3}
+  m_Script: {fileID: 11500000, guid: a7506c809d71dd34298c8da7961f0634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weakType: 0
-  _bombTime: 0.8
-  _hitPad: {fileID: 0}
+  _weakType: 1
+  _bombTime: 0.5
+  _hitField: {fileID: 0}
   _oneTarget: 1
+  _targetTag: 
 --- !u!65 &8006196636998938410
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18932,6 +18934,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5259392485988792801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846810155820994598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1617e1ba83df3345a2917d1582d36fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2846810155820994600
 GameObject:
   m_ObjectHideFlags: 0

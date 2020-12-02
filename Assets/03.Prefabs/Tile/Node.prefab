@@ -183,7 +183,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7186149433495446298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c0b46a679a3fde4ea3c18ebe29966fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 705d5464298be224bb4295a389f4bd9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _height: 0
@@ -192,7 +192,6 @@ MonoBehaviour:
   _pos:
     x: 0
     y: 0
-  _noneTileM: {fileID: 2100000, guid: 1d2f8f956d768bd4dab2e0ea71fd1555, type: 2}
   _useTileM: {fileID: 2100000, guid: 47002fe578fe13740b40dd34482c5876, type: 2}
   _towerTileM: {fileID: 2100000, guid: 25f07275485fed249a930fd874ace558, type: 2}
   _obstacleTileM: {fileID: 2100000, guid: 6e9c623323cba3b4692daa531d59bc93, type: 2}

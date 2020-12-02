@@ -4802,7 +4802,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7771969456342990923}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9699eba3c4972e541a4579d533d5c003, type: 3}
+  m_Script: {fileID: 11500000, guid: 7552af273c4f30b4892950e4c7d7ef8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _objectType: 3
@@ -4811,9 +4811,6 @@ MonoBehaviour:
   _demision:
     x: 4
     y: 1
-  _saveDemision:
-    x: 0
-    y: 0
   _gridPos:
     x: 0
     y: 0
@@ -4821,8 +4818,7 @@ MonoBehaviour:
   _fitPos: {x: 0, y: 0, z: 0}
   _parentTile: {fileID: 0}
   _rotateType: 0
-  _materialRenders:
-  - {fileID: 732593308906638362}
+  _materialRenders: []
   _fitMaterial: {fileID: 2100000, guid: 6fe9580bd67b34580977e0aa4eab9755, type: 2}
   _outMaterial: {fileID: 2100000, guid: a33edf12f3c0044e8ba582a16ddaae3f, type: 2}
   _rangeObject: {fileID: 5117481617282906408}

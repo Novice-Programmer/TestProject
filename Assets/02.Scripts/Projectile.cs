@@ -6,7 +6,7 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] float _maxTime = 30.0f;
     [Header("Status")]
-    [SerializeField] TestBomb _bombObject = null;
+    [SerializeField] BombEffect _bombObject = null;
     [SerializeField] float[] _values = null;
 
     [Header("TransValue")]
@@ -28,7 +28,7 @@ public class Projectile : MonoBehaviour
         _timeCheck += Time.deltaTime;
         if (_timeCheck >= _maxTime)
         {
-            TestBomb bomb = Instantiate(_bombObject, transform.position, transform.rotation);
+            BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);
             bomb.BombSetting(_tagetTag, _values);
             Destroy(gameObject);
         }
@@ -83,13 +83,13 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Field"))
         {
-            TestBomb bomb = Instantiate(_bombObject, transform.position, transform.rotation);
+            BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);
             bomb.BombSetting(_tagetTag, _values);
             Destroy(gameObject);
         }
         else if (other.CompareTag(_tagetTag))
         {
-            TestBomb bomb = Instantiate(_bombObject, transform.position, transform.rotation);
+            BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);
             bomb.BombSetting(_tagetTag, _values);
             Destroy(gameObject);
         }

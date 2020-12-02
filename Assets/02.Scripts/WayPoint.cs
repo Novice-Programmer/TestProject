@@ -15,7 +15,7 @@ public class WayPoint : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            TestEnemy enemy = other.GetComponent<TestEnemy>();
+            Enemy enemy = other.GetComponent<Enemy>();
             if (enemy._state == EStateEnemy.Move)
                 enemy.GetNextWayPoint(_wayPointNumber);
             else if(enemy._state == EStateEnemy.AttackSearch && enemy._target==null)

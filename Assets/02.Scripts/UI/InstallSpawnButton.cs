@@ -7,14 +7,14 @@ using UnityEngine.UI;
 
 public class InstallSpawnButton : MonoBehaviour
 {
-    [SerializeField] TestInstallData _buttonData;
+    [SerializeField] InstallData _buttonData;
     [SerializeField] GameObject _lockBtn = null;
     [SerializeField] Image _towerImage = null;
     [SerializeField] Text _partCostTxt = null;
 
     int _installCost = 0;
 
-    public void ButtonDataSetting(TestInstallData buttonData)
+    public void ButtonDataSetting(InstallData buttonData)
     {
         _buttonData = buttonData;
         _towerImage.sprite = _buttonData.objectImage;
@@ -24,7 +24,7 @@ public class InstallSpawnButton : MonoBehaviour
 
     public void InstallMoneyCheck()
     {
-        if (TestResourceManager.Instance.TowerPartValue > _installCost)
+        if (ResourceManager.Instance.TowerPartValue > _installCost)
         {
             _partCostTxt.color = Color.black;
             _lockBtn.SetActive(false);
@@ -38,8 +38,8 @@ public class InstallSpawnButton : MonoBehaviour
 
     public void InstallClick()
     {
-        TestGameUI.Instance.ViewUIOff();
-        TestGameManager.Instance.Install(_buttonData.objectType, _buttonData.objectName, _buttonData.installCost);
-        TestInputManager.Instance.UITouch();
+        GameUI.Instance.ViewUIOff();
+        GameManager.Instance.Install(_buttonData.objectType, _buttonData.objectName, _buttonData.installCost);
+        InputManager.Instance.UITouch();
     }
 }

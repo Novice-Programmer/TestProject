@@ -248,7 +248,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5086142578960623962}
-  - component: {fileID: 5088462626831436601}
+  - component: {fileID: 4065057786071713463}
   m_Layer: 0
   m_Name: Ghost_KW9A
   m_TagString: Untagged
@@ -273,7 +273,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5088462626831436601
+--- !u!114 &4065057786071713463
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -282,26 +282,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 5088462626831436606}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9699eba3c4972e541a4579d533d5c003, type: 3}
+  m_Script: {fileID: 11500000, guid: 7552af273c4f30b4892950e4c7d7ef8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _objectType: 2
   _objectName: 1
   _installCost: 0
   _demision:
-    x: 2
-    y: 2
+    x: 0
+    y: 0
   _gridPos:
     x: 0
     y: 0
-  _towerFitType: 1
+  _fitType: 9
   _fitPos: {x: 0, y: 0, z: 0}
   _parentTile: {fileID: 0}
-  _materialRenders:
-  - {fileID: 5102347406014689038}
-  - {fileID: 5100519413983293512}
-  - {fileID: 5100363653179532362}
-  - {fileID: 5100779836275020718}
+  _rotateType: 0
+  _materialRenders: []
   _fitMaterial: {fileID: 2100000, guid: 6fe9580bd67b34580977e0aa4eab9755, type: 2}
   _outMaterial: {fileID: 2100000, guid: a33edf12f3c0044e8ba582a16ddaae3f, type: 2}
   _rangeObject: {fileID: 5167279179954527682}

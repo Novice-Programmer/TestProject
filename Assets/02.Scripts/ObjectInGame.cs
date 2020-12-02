@@ -17,7 +17,7 @@ public abstract class ObjectGame : MonoBehaviour
 
     }
 
-    public virtual void BadBuff(TestBadBuff badBuff)
+    public virtual void BadBuff(BadBuff badBuff)
     {
 
     }
@@ -27,7 +27,7 @@ public abstract class ObjectGame : MonoBehaviour
         return false;
     }
 
-    public virtual void BadBuffUpdate(TestBadBuff badBuff)
+    public virtual void BadBuffUpdate(BadBuff badBuff)
     {
     }
 

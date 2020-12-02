@@ -9516,12 +9516,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3717756204655897091}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 949ca8d3a7755f24fbc9bd2446796762, type: 3}
+  m_Script: {fileID: 11500000, guid: a7506c809d71dd34298c8da7961f0634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weakType: 4
-  _bombTime: 0.3
-  _hitPad: {fileID: 0}
+  _weakType: 1
+  _bombTime: 0.5
+  _hitField: {fileID: 0}
   _oneTarget: 1
 --- !u!65 &39242429986958057
 BoxCollider:

@@ -56,17 +56,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 45719710206331506}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 587f261c83e614e44a41de92e8b07c47, type: 3}
+  m_Script: {fileID: 11500000, guid: b803502d51468e74a89565484d7c89ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _objectType: 3
   _objectSelectActive: 0
   _objectSelect: 0
   _objectName: 4
-  _obstacleType: 1
   _attackAble: 1
   _gameObstacleData:
-    obstacleType: 0
     attackAble: 0
     objectName: 0
     obstacleNameString: 
@@ -82,8 +80,8 @@ MonoBehaviour:
     researchs: 
     specialResearch: 0
   _sellGetCost: 0
-  _hitPad: {fileID: 348147613312675665}
-  _durability: 100
+  _hitPad: {fileID: 0}
+  _durability: 0
   _reduceValue: 0
   _values: []
 --- !u!54 &4912116971551051791
@@ -114,7 +112,7 @@ GameObject:
   - component: {fileID: 3275782305377285323}
   - component: {fileID: 3275782305377285322}
   - component: {fileID: 7991705924496151789}
-  - component: {fileID: 348147613312675665}
+  - component: {fileID: 1603322903210618882}
   m_Layer: 0
   m_Name: FireEffect
   m_TagString: Untagged
@@ -4718,7 +4716,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0.25}
---- !u!114 &348147613312675665
+--- !u!114 &1603322903210618882
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4727,7 +4725,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3275782305377285320}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69c940b37e8de6b4d9e92fb8972593f2, type: 3}
+  m_Script: {fileID: 11500000, guid: d92f8106eee79bf4295a0e84fcef4dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _badBuff: {fileID: 5793868806160123057, guid: d73e24223d1a2d347a80c47ff954133c,

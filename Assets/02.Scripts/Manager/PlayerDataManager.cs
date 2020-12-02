@@ -7,8 +7,7 @@ public class PlayerDataManager : MonoBehaviour
     public static PlayerDataManager Instance { set; get; }
 
     [SerializeField] List<EResearch> _playerAllResearch = new List<EResearch>();
-    [SerializeField] List<ETowerType> _playerSelectTower = new List<ETowerType>();
-    [SerializeField] List<EObstacleType> _playerSelectObstacle = new List<EObstacleType>();
+    [SerializeField] List<ObjectData> _selectObjects = new List<ObjectData>();
 
     public int Stage = 0;
 
@@ -17,88 +16,51 @@ public class PlayerDataManager : MonoBehaviour
         Instance = this;
     }
 
-    public SelectTowerData[] GetPlayerSelectTower()
+    public SelectData[] GetSelectObject()
     {
-        List<SelectTowerData> selectTowerDatas = new List<SelectTowerData>();
+        List<SelectData> selectDatas = new List<SelectData>();
 
-        for (int i = 0; i < _playerSelectTower.Count; i++)
+        for (int i = 0; i < _selectObjects.Count; i++)
         {
-            ETowerType towerType = _playerSelectTower[i];
-            List<TestResearchData> researchDatas = new List<TestResearchData>();
-            EResearchTarget target = EResearchTarget.None;
-            switch (towerType)
-            {
-                case ETowerType.KW9A:
-                    target = EResearchTarget.KW9A;
-                    break;
-                case ETowerType.P013:
-                    target = EResearchTarget.P013;
-                    break;
-            }
+            List<ResearchData> researchDatas = new List<ResearchData>();
             for (int j = 0; j < _playerAllResearch.Count; j++)
             {
-                TestResearchData researchData = TestResearchManager.Instance.GetResearchData(_playerAllResearch[j]);
-                for (int k = 0; k < researchData.target.Length; k++)
+                ResearchData researchData = ResearchManager.Instance.GetResearchData(_playerAllResearch[j]);
+                for (int k = 0; k < researchData.targetNames.Length; k++)
                 {
-                    if (researchData.target[k] == target)
+                    if (researchData.targetNames[k] == _selectObjects[i].objectName)
                     {
                         researchDatas.Add(researchData);
                     }
-                    else if (researchData.target[k] == EResearchTarget.Tower || researchData.target[k] == EResearchTarget.ALL)
+
+                    else if (researchData.targetNames[k] == EObjectName.ALL)
+                    {
+                        researchDatas.Add(researchData);
+                    }
+
+                    if (_selectObjects[i].objectType == EObjectType.Tower && researchData.targetNames[k] == EObjectName.Tower)
+                    {
+                        researchDatas.Add(researchData);
+                    }
+                    else if (_selectObjects[i].objectType == EObjectType.Obstacle && researchData.targetNames[k] == EObjectName.Obstacle)
                     {
                         researchDatas.Add(researchData);
                     }
                 }
             }
-            selectTowerDatas.Add(new SelectTowerData(towerType, researchDatas.ToArray()));
+            selectDatas.Add(new SelectData(_selectObjects[i].objectType, _selectObjects[i].objectName, researchDatas.ToArray()));
         }
 
-        return selectTowerDatas.ToArray();
+        return selectDatas.ToArray();
     }
 
-    public SelectObstacleData[] GetPlayerSelectObstacle()
+    public ResearchData[] GetResourceResearchData()
     {
-        List<SelectObstacleData> selectObstacleDatas = new List<SelectObstacleData>();
-
-        for(int i = 0; i < _playerSelectObstacle.Count; i++)
+        List<ResearchData> researchDatas = new List<ResearchData>();
+        for (int i = 0; i < _playerAllResearch.Count; i++)
         {
-            EObstacleType obstacleType = _playerSelectObstacle[i];
-            List<TestResearchData> researchDatas = new List<TestResearchData>();
-            EResearchTarget target = EResearchTarget.None;
-            switch (obstacleType)
-            {
-                case EObstacleType.FireWall:
-                    target = EResearchTarget.FireWall;
-                    break;
-            }
-            for (int j = 0; j < _playerAllResearch.Count; j++)
-            {
-                TestResearchData researchData = TestResearchManager.Instance.GetResearchData(_playerAllResearch[j]);
-                for (int k = 0; k < researchData.target.Length; k++)
-                {
-                    if (researchData.target[k] == target)
-                    {
-                        researchDatas.Add(researchData);
-                    }
-                    else if (researchData.target[k] == EResearchTarget.Obstacle || researchData.target[k] == EResearchTarget.ALL)
-                    {
-                        researchDatas.Add(researchData);
-                    }
-                }
-            }
-            selectObstacleDatas.Add(new SelectObstacleData(obstacleType, researchDatas.ToArray()));
-        }
-
-        return selectObstacleDatas.ToArray();
-    }
-
-    public TestResearchData[] GetResourceResearchData()
-    {
-        List<TestResearchData> researchDatas = new List<TestResearchData>();
-        for(int i = 0; i < _playerAllResearch.Count; i++)
-        {
-            TestResearchData researchData = TestResearchManager.Instance.GetResearchData(_playerAllResearch[i]);
-            if(researchData.type == EResearchType.Resource)
+            ResearchData researchData = ResearchManager.Instance.GetResearchData(_playerAllResearch[i]);
+            if (researchData.type == EResearchType.Resource)
             {
                 researchDatas.Add(researchData);
             }

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NightMareDragonA : TestEnemy
+public class NightMareDragonA : Enemy
 {
     [SerializeField] Transform _specialAttackPos = null;
     [SerializeField] GameObject _attackEffect = null;
     [SerializeField] Projectile _specialAttack = null;
-    [SerializeField] TestHitZone _attackZone = null;
+    [SerializeField] HitZone _attackZone = null;
     public override void TargetAttack()
     {
         base.TargetAttack();
