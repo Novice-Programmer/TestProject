@@ -277,6 +277,22 @@ public abstract class TestTower : ObjectGame
         _parentTile = ghostTower._parentTile;
         _gridPosition = ghostTower._gridPos;
         _fitType = ghostTower._fitType;
+
+        Vector3 rotateEulerV = Vector3.zero;
+
+        switch (ghostTower._rotateType)
+        {
+            case ERotateType.degree90:
+                rotateEulerV = new Vector3(0, 90, 0);
+                break;
+            case ERotateType.degree180:
+                rotateEulerV = new Vector3(0, 180, 0);
+                break;
+            case ERotateType.degree270:
+                rotateEulerV = new Vector3(0, 270, 0);
+                break;
+        }
+        transform.rotation = Quaternion.Euler(rotateEulerV + _parentTile.transform.rotation.eulerAngles);
     }
 
     public void TowerRepair()

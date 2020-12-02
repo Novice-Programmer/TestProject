@@ -70,7 +70,6 @@ public class TestTile : MonoBehaviour
 
     public Vector3 NodeToPosition(TestIntVector2 nodePos, TestIntVector2 size, EFitType fitType)
     {
-        Vector3 nodePosition = transform.position;
         Vector3 standardNodePos = _nodeTiles[nodePos.x, nodePos.y].transform.position;
         Vector3 lastNodePos;
         TestIntVector2 sizeValue = new TestIntVector2(size.x - 1, size.y - 1);
@@ -111,8 +110,7 @@ public class TestTile : MonoBehaviour
                 break;
         }
         lastNodePos = _nodeTiles[lastPos.x, lastPos.y].transform.position;
-        nodePosition = (lastNodePos + standardNodePos) / 2f;
-        return nodePosition;
+        return (lastNodePos + standardNodePos) / 2f;
     }
 
     public EFitType Fits(TestIntVector2 gridPos, TestIntVector2 size)
@@ -313,10 +311,10 @@ public class TestTile : MonoBehaviour
         switch (fitType)
         {
             case EFitType.MXPYFits:
-                extents = new TestIntVector2(size.x - gridPos.x, gridPos.y + size.y);
+                extents = new TestIntVector2(_dimensions.x - 1, gridPos.y + size.y);
                 for (int y = gridPos.y; y < extents.y; y++)
                 {
-                    for (int x = gridPos.x; x >= extents.x - 1; x--)
+                    for (int x = extents.x; x >= _dimensions.x - size.x; x--)
                     {
                         _availableNodes[x, y] = true;
                         _nodeTiles[x, y].StateSet(_tileType, ENodeState.Filled);
@@ -324,8 +322,8 @@ public class TestTile : MonoBehaviour
                 }
                 break;
             case EFitType.PXMYFits:
-                extents = new TestIntVector2(gridPos.x + size.x, size.y - gridPos.y);
-                for (int y = gridPos.y; y >= extents.y - 1; y--)
+                extents = new TestIntVector2(gridPos.x + size.x, _dimensions.y - 1);
+                for (int y = extents.y; y >= _dimensions.y - size.y; y--)
                 {
                     for (int x = gridPos.x; x < extents.x; x++)
                     {
@@ -335,10 +333,10 @@ public class TestTile : MonoBehaviour
                 }
                 break;
             case EFitType.MXMYFits:
-                extents = size - gridPos;
-                for (int y = gridPos.y; y >= extents.y - 1; y--)
+                extents = _dimensions + new TestIntVector2(-1, -1);
+                for (int y = extents.y; y >= _dimensions.y - size.y; y--)
                 {
-                    for (int x = gridPos.x; x >= extents.x - 1; x--)
+                    for (int x = extents.x; x >= _dimensions.x - size.x; x--)
                     {
                         _availableNodes[x, y] = true;
                         _nodeTiles[x, y].StateSet(_tileType, ENodeState.Filled);
@@ -357,7 +355,7 @@ public class TestTile : MonoBehaviour
                 }
                 break;
             case EFitType.EXMYFits:
-                extents = new TestIntVector2(_dimensions.x - 1, size.y - gridPos.y);
+                extents = new TestIntVector2(_dimensions.x - 1, gridPos.y - size.y);
                 for (int y = gridPos.y; y >= extents.y - 1; y--)
                 {
                     for (int x = extents.x; x >= _dimensions.x - size.x; x--)
@@ -379,7 +377,7 @@ public class TestTile : MonoBehaviour
                 }
                 break;
             case EFitType.MXEYFits:
-                extents = new TestIntVector2(size.x - gridPos.x, _dimensions.y - 1);
+                extents = new TestIntVector2(gridPos.x - size.x, _dimensions.y - 1);
                 for (int y = extents.y; y >= _dimensions.y - size.y; y--)
                 {
                     for (int x = gridPos.x; x >= extents.x - 1; x--)
@@ -420,10 +418,10 @@ public class TestTile : MonoBehaviour
         switch (fitType)
         {
             case EFitType.MXPYFits:
-                extents = new TestIntVector2(size.x - gridPos.x, gridPos.y + size.y);
+                extents = new TestIntVector2(_dimensions.x - 1, gridPos.y + size.y);
                 for (int y = gridPos.y; y < extents.y; y++)
                 {
-                    for (int x = gridPos.x; x >= extents.x - 1; x--)
+                    for (int x = extents.x; x >= _dimensions.x - size.x; x--)
                     {
                         _availableNodes[x, y] = false;
                         _nodeTiles[x, y].StateSet(_tileType);
@@ -431,8 +429,8 @@ public class TestTile : MonoBehaviour
                 }
                 break;
             case EFitType.PXMYFits:
-                extents = new TestIntVector2(gridPos.x + size.x, size.y - gridPos.y);
-                for (int y = gridPos.y; y >= extents.y - 1; y--)
+                extents = new TestIntVector2(gridPos.x + size.x, _dimensions.y - 1);
+                for (int y = extents.y; y >= _dimensions.y - size.y; y--)
                 {
                     for (int x = gridPos.x; x < extents.x; x++)
                     {
@@ -442,10 +440,10 @@ public class TestTile : MonoBehaviour
                 }
                 break;
             case EFitType.MXMYFits:
-                extents = size - gridPos;
-                for (int y = gridPos.y; y >= extents.y - 1; y--)
+                extents = _dimensions + new TestIntVector2(-1, -1);
+                for (int y = extents.y; y >= _dimensions.y - size.y; y--)
                 {
-                    for (int x = gridPos.x; x >= extents.x - 1; x--)
+                    for (int x = extents.x; x >= _dimensions.x - size.x; x--)
                     {
                         _availableNodes[x, y] = false;
                         _nodeTiles[x, y].StateSet(_tileType);
@@ -464,7 +462,7 @@ public class TestTile : MonoBehaviour
                 }
                 break;
             case EFitType.EXMYFits:
-                extents = new TestIntVector2(_dimensions.x - 1, size.y - gridPos.y);
+                extents = new TestIntVector2(_dimensions.x - 1, gridPos.y - size.y);
                 for (int y = gridPos.y; y >= extents.y - 1; y--)
                 {
                     for (int x = extents.x; x >= _dimensions.x - size.x; x--)
@@ -486,7 +484,7 @@ public class TestTile : MonoBehaviour
                 }
                 break;
             case EFitType.MXEYFits:
-                extents = new TestIntVector2(size.x - gridPos.x, _dimensions.y - 1);
+                extents = new TestIntVector2(gridPos.x - size.x, _dimensions.y - 1);
                 for (int y = extents.y; y >= _dimensions.y - size.y; y--)
                 {
                     for (int x = gridPos.x; x >= extents.x - 1; x--)

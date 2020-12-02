@@ -34,7 +34,6 @@ public class TestInputManager : MonoBehaviour
     int _touchX = 0;
     int _touchY = 0;
     [SerializeField] bool _doubleTouchCheck = false;
-
     float _timeCheck = 0;
 
     private void Awake()
@@ -100,6 +99,7 @@ public class TestInputManager : MonoBehaviour
                         }
                         else
                         {
+                            BuildGhost._parentTile = node._parentTile;
                             BuildGhost.NoneCheck();
                         }
                     }
@@ -126,6 +126,7 @@ public class TestInputManager : MonoBehaviour
                         }
                         else
                         {
+                            BuildGhost._parentTile = node._parentTile;
                             BuildGhost.NoneCheck();
                         }
                     }
@@ -143,7 +144,7 @@ public class TestInputManager : MonoBehaviour
 
                 if (Input.GetKeyUp(KeyCode.R))
                 {
-                    BuildGhost.RotateObject();
+                    BuildGhost.RotateObject(true);
                 }
 
                 if (Input.mousePosition.x >= Screen.width - _panBorderThicknessX)

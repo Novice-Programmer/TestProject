@@ -95,20 +95,22 @@ public class TestObstacle : ObjectGame
         _gridPosition = ghost._gridPos;
         _dimensions = ghost._demision;
         _fitType = ghost._fitType;
+
+        Vector3 rotateEulerV = Vector3.zero;
+
         switch (ghost._rotateType)
         {
-            case ERotateType.degree0:
-                break;
             case ERotateType.degree90:
-                transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                rotateEulerV = new Vector3(0, 90, 0);
                 break;
             case ERotateType.degree180:
-                transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                rotateEulerV = new Vector3(0, 180, 0);
                 break;
             case ERotateType.degree270:
-                transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
+                rotateEulerV = new Vector3(0, 270, 0);
                 break;
         }
+        transform.rotation = Quaternion.Euler(rotateEulerV + _parentTile.transform.rotation.eulerAngles);
         StartCoroutine(BuildSuccess());
     }
 

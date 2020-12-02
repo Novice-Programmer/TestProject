@@ -34,6 +34,11 @@ public class TestGhost : MonoBehaviour
             _rangeObject.transform.localScale *= ObjectDataManager.Instance.GetTowerData(_objectName).atkRange;
     }
 
+    private void Update()
+    {
+        RotateObject();
+    }
+
     public void FitMaterialCheck(EFitType towerFitType)
     {
         switch (towerFitType)
@@ -71,36 +76,48 @@ public class TestGhost : MonoBehaviour
         }
     }
 
-    public void RotateObject()
+    public void RotateObject(bool rotate = false)
     {
-        if (_rotateType == ERotateType.degree270)
+        if (rotate)
         {
-            _rotateType = ERotateType.degree0;
+            if (_rotateType == ERotateType.degree270)
+            {
+                _rotateType = ERotateType.degree0;
+            }
+
+            else
+            {
+                _rotateType++;
+            }
         }
 
-        else
-        {
-            _rotateType++;
-        }
+        Vector3 rotateEuler = Vector3.zero;
 
         switch (_rotateType)
         {
             case ERotateType.degree0:
-                transform.rotation = Quaternion.Euler(Vector3.zero);
                 _demision = _saveDemision;
                 break;
             case ERotateType.degree90:
-                transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                rotateEuler = new Vector3(0, 90, 0);
                 _demision = new TestIntVector2(_saveDemision.y, _saveDemision.x);
                 break;
             case ERotateType.degree180:
-                transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                rotateEuler = new Vector3(0, 180, 0);
                 _demision = _saveDemision;
                 break;
             case ERotateType.degree270:
-                transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
+                rotateEuler = new Vector3(0, 270, 0);
                 _demision = new TestIntVector2(_saveDemision.y, _saveDemision.x);
                 break;
+        }
+
+        transform.rotation = Quaternion.Euler(rotateEuler);
+
+        if (_parentTile != null)
+        {
+            Vector3 rotateAddEuler = _parentTile.transform.rotation.eulerAngles + rotateEuler;
+            transform.rotation = Quaternion.Euler(rotateAddEuler);
         }
     }
 }
