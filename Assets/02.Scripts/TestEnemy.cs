@@ -456,15 +456,14 @@ public abstract class TestEnemy : ObjectGame
     public void GetNextWayPoint(int wayPointNumber)
     {
         _wavePointIndex = wayPointNumber;
-        if (_wavePointIndex >= WayPointContainer._wayPoints.Length - 1)
+        _wavePointIndex++;
+        if (_wavePointIndex >= WayPointContainer._wayPoints.Length)
         {
-            Debug.Log("발동");
             _state = EStateEnemy.AttackCommander;
             _target = GameObject.FindGameObjectWithTag("Commander").transform;
             _enemyAI.destination = _target.transform.position;
             return;
         }
-        _wavePointIndex++;
         _enemyAI.destination = WayPointContainer._wayPoints[_wavePointIndex].position;
     }
 
