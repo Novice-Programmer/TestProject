@@ -9,7 +9,7 @@ public class TestBomb : MonoBehaviour
     [SerializeField] HitPad _hitPad = null;
     [SerializeField] bool _oneTarget = false;
 
-    string _targetTag;
+    [SerializeField] string _targetTag;
     float[] _valeus;
     float _timeCheck = 0.0f;
     bool _dealCheck = true;

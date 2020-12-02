@@ -392,12 +392,15 @@ public abstract class TestEnemy : ObjectGame
                     _attackNumber++;
                     if (_mp < 100)
                     {
+                        _action = true;
                         _enemyAnim.SetTrigger("Attack");
                     }
                     else
                     {
+                        _action = true;
                         _enemyAnim.SetTrigger("Skill");
                     }
+
                 }
             }
         }
@@ -420,6 +423,7 @@ public abstract class TestEnemy : ObjectGame
         _mp += _enemyData.mp;
         _statusUI.MPChange(_mp);
         _attackTime = 1 / _atkSpd;
+        _action = false;
     }
 
     public virtual void TargetSpecialAttack()
@@ -431,6 +435,7 @@ public abstract class TestEnemy : ObjectGame
         _mp = 0;
         _statusUI.MPChange(_mp);
         _attackTime = 1 / _atkSpd;
+        _action = false;
     }
 
     void Die()

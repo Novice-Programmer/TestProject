@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EPassType
+public enum EPathType
 {
     Enemy,
 }
@@ -59,7 +59,7 @@ public class TestPoolManager : MonoBehaviour
         }
         foreach (string enemyFileName in enemyCreateName.Keys)
         {
-            CreatePoolObject(enemyFileName, enemyCreateName[enemyFileName], EPassType.Enemy);
+            CreatePoolObject(enemyFileName, enemyCreateName[enemyFileName], EPathType.Enemy);
         }
     }
 
@@ -69,7 +69,7 @@ public class TestPoolManager : MonoBehaviour
     /// <param name="objectName">파일명</param>
     /// <param name="number">만들 오브젝트의 숫자</param>
     /// <param name="path">위치</param>
-    void CreatePoolObject(string objectName, int number, EPassType path)
+    void CreatePoolObject(string objectName, int number, EPathType path)
     {
         List<GameObject> gameObjectList = new List<GameObject>();
         GameObject go = Resources.Load(path.ToString() + "/" + objectName) as GameObject;

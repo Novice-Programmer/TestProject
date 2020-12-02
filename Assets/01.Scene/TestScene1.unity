@@ -245,7 +245,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: ObstacleTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -794,7 +794,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile (6)
+      value: TowerTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -1337,7 +1337,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile (7)
+      value: TowerTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -1864,7 +1864,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile (3)
+      value: TowerTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -1954,7 +1954,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: ObstacleTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -2424,7 +2424,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: ObstacleTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -2653,7 +2653,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: ObstacleTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -3851,7 +3851,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile (2)
+      value: TowerTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -4367,7 +4367,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: ObstacleTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -4979,7 +4979,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile (4)
+      value: TowerTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -5341,7 +5341,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile (1)
+      value: TowerTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -7427,7 +7427,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile (5)
+      value: TowerTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -8658,7 +8658,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: ObstacleTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -9636,7 +9636,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: TowerTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}
@@ -9732,7 +9732,7 @@ PrefabInstance:
     - target: {fileID: 6758747863549913940, guid: db1b90dafd6147d4ab8bc4106f46c073,
         type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: ObstacleTile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db1b90dafd6147d4ab8bc4106f46c073, type: 3}

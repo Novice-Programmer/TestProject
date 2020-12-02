@@ -78,6 +78,7 @@ MonoBehaviour:
   _objectSelectActive: 0
   _objectSelect: 0
   _passData: {fileID: 2901981199550038441}
+  _passType: 1
 --- !u!1 &4859863399659813400
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,6 +638,7 @@ MonoBehaviour:
   _objectSelectActive: 0
   _objectSelect: 0
   _enemyData: {fileID: 11400000, guid: 120e5e0d9ea225c4baa9ddb76cf87fd1, type: 2}
+  _objectName: 0
   _rating: 1
   _state: 3
   _hp: 0
@@ -646,7 +648,6 @@ MonoBehaviour:
   _atkSpd: 0
   _movSpd: 0
   _moveCheckSize: 2
-  _statusUI: {fileID: 0}
   _enemyObstacle: {fileID: 3024669695990523249}
   _badBuffs: []
   _target: {fileID: 0}
