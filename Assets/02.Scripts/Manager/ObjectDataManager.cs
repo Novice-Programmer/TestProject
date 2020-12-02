@@ -17,7 +17,8 @@ public enum EObjectName
     KW9A,
     P013,
     NMDA,
-    FireWall
+    FireWall,
+    Commander
 }
 
 public enum EImageNumber
@@ -25,6 +26,7 @@ public enum EImageNumber
     KW9A,
     FireWall
 }
+
 
 public class ObjectDataManager : MonoBehaviour
 {
@@ -52,6 +54,16 @@ public class ObjectDataManager : MonoBehaviour
     [SerializeField] TestEnemyData[] _enemyAllDatas;
     [SerializeField] Sprite[] _enemyIconSprites = null;
     [SerializeField] Sprite[] _enemyRankSprites = null;
+
+    [Header("Mark")]
+    [SerializeField] Transform _markerContainer = null;
+    [SerializeField] Marker _prefabMarker = null;
+    [SerializeField] Sprite[] _markIconSprites = null;
+    [SerializeField] Sprite[] _markBackgroundSprites = null;
+
+    [Header("Status")]
+    [SerializeField] Transform _statusContainer = null;
+    [SerializeField] TestWorldStatusUI _prefabStatusUI = null;
 
     private void Awake()
     {
@@ -307,8 +319,6 @@ public class ObjectDataManager : MonoBehaviour
                 return EObjectName.KW9A;
             case ETowerType.P013:
                 return EObjectName.P013;
-            case ETowerType.None:
-                return EObjectName.None;
             default:
                 return EObjectName.None;
         }
@@ -320,10 +330,41 @@ public class ObjectDataManager : MonoBehaviour
         {
             case EObstacleType.FireWall:
                 return EObjectName.FireWall;
-            case EObstacleType.None:
-                return EObjectName.None;
             default:
                 return EObjectName.None;
         }
+    }
+
+    public void MarkerSetting(Transform target, EObjectName objectName)
+    {
+        Marker marker = Instantiate(_prefabMarker, _markerContainer);
+        Sprite icon = _markIconSprites[0];
+        Sprite background = _markBackgroundSprites[0];
+        switch (objectName)
+        {
+            case EObjectName.KW9A:
+                icon = _markIconSprites[0];
+                background = _markBackgroundSprites[0];
+                break;
+            case EObjectName.NMDA:
+                icon = _markIconSprites[1];
+                background = _markBackgroundSprites[1];
+                break;
+            case EObjectName.FireWall:
+                icon = _markIconSprites[2];
+                background = _markBackgroundSprites[2];
+                break;
+            case EObjectName.Commander:
+                icon = _markIconSprites[3];
+                background = _markBackgroundSprites[3];
+                break;
+        }
+
+        marker.MarkerSetting(target, icon, background);
+    }
+
+    public TestWorldStatusUI StatusInit()
+    {
+        return Instantiate(_prefabStatusUI, _statusContainer);
     }
 }

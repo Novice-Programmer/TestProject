@@ -21,7 +21,7 @@ MonoBehaviour:
   obstacleName: "\uD654\uC5FC\uBCBD"
   description: "\uD65C\uD65C \uD0C0\uC624\uB974\uB294 \uD654\uC5FC\uC744 \uB450\uB978
     \uBCBD\uC785\uB2C8\uB2E4."
-  durability: 100
+  durability: 200
   reduceValue: 0
   buildCost: 50
   values:

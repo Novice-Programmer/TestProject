@@ -21,6 +21,7 @@ public enum EWeakType
 [CreateAssetMenu(fileName = "TestData", menuName = "Test/EnemyData", order = 1)]
 public class TestEnemyData : ScriptableObject
 {
+    public EObjectName objectName;
     public EEnemyType enemyName; // 적 이름
     public string fileName; // 파일 이름
     public string enemyFullName; // 이름

@@ -10,9 +10,11 @@ public class TestWorldStatusUI : MonoBehaviour
     [SerializeField] Text _hpTxt = null;
     [SerializeField] Slider _mpBar = null;
     [SerializeField] Text _mpTxt = null;
-    [SerializeField] float _limitViewTime = 3.0f;
-
+    float _limitViewTime = 3.0f;
     float _timeCheck = 0;
+    float _yHeight = 3.0f;
+
+    [SerializeField] Transform _target;
 
     private void LateUpdate()
     {
@@ -28,14 +30,36 @@ public class TestWorldStatusUI : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_target == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        Vector3 pos = _target.position;
+        pos.y += _yHeight;
+        transform.position = pos;
         transform.LookAt(transform.position + Camera.main.transform.forward);
     }
-    
+
+    public void StatusSetting(Transform target, int maxHP, float limitViewTime, bool mpCheck = true)
+    {
+        gameObject.SetActive(true);
+        _target = target;
+        _hpBar.maxValue = maxHP;
+        _hpBar.value = maxHP;
+        _hpTxt.text = _hpBar.value + " / " + maxHP;
+        if (!mpCheck)
+        {
+            _mpBar.gameObject.SetActive(false);
+        }
+        _timeCheck = 0;
+        _limitViewTime = limitViewTime;
+    }
+
     public void StatusSetting(int maxHP)
     {
         _hpBar.maxValue = maxHP;
         _hpTxt.text = _hpBar.value + " / " + maxHP;
-        _timeCheck = 0;
     }
 
     public void HPChange(int hp)

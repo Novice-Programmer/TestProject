@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 862382320834373514}
   - component: {fileID: 990340665988582346}
   m_Layer: 5
-  m_Name: EPBar
+  m_Name: SPBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 5099067959381640973}
   - component: {fileID: 3205027860470862963}
   m_Layer: 5
-  m_Name: TowerStatusUI
+  m_Name: StatusUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

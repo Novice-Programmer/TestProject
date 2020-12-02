@@ -34,7 +34,7 @@ public abstract class TestTower : ObjectGame
     public int _levelSP;
     [SerializeField] protected float[] _spValue;
     [SerializeField] protected TestIntVector2 _dimensions;
-    [SerializeField] protected TestWorldStatusUI _statusUI;
+    protected TestWorldStatusUI _statusUI;
 
     [Header("Setup")]
     [SerializeField] Transform _partToRotate = null;
@@ -64,19 +64,21 @@ public abstract class TestTower : ObjectGame
     private void Start()
     {
         _rangeSize = _rangeObject.transform.localScale;
+        _statusUI = ObjectDataManager.Instance.StatusInit();
         DataSetting();
         StartCoroutine(BuildSuccess());
         InvokeRepeating("UpdateTarget", 0.0f, 0.5f);
         _materials = GetComponentsInChildren<MeshRenderer>();
-        for(int i = 0; i < _materials.Length; i++)
+        for (int i = 0; i < _materials.Length; i++)
         {
             _activeMaterials.Add(_materials[i].material);
         }
+        ObjectDataManager.Instance.MarkerSetting(transform, _objectName);
     }
 
     private void Update()
     {
-        if(_towerState == ETowerState.Breakdown)
+        if (_towerState == ETowerState.Breakdown)
         {
             return;
         }
@@ -95,11 +97,11 @@ public abstract class TestTower : ObjectGame
             if (_towerState == ETowerState.Attack)
             {
                 Vector3 dir = Vector3.zero;
-                for(int i = 0; i < _target.Length; i++)
+                for (int i = 0; i < _target.Length; i++)
                 {
                     dir = _target[i].position - transform.position;
                 }
-                Quaternion lookRotation = Quaternion.LookRotation(dir/_target.Length);
+                Quaternion lookRotation = Quaternion.LookRotation(dir / _target.Length);
                 Vector3 rotateValue = Quaternion.Lerp(_partToRotate.rotation, lookRotation, Time.deltaTime * _turnSpeed).eulerAngles;
                 _partToRotate.rotation = Quaternion.Euler(_partToRotate.rotation.x, rotateValue.y, _partToRotate.rotation.z);
 
@@ -159,7 +161,7 @@ public abstract class TestTower : ObjectGame
     void Braekdown()
     {
         _towerState = ETowerState.Breakdown;
-        for(int i = 0; i < _materials.Length; i++)
+        for (int i = 0; i < _materials.Length; i++)
         {
             _materials[i].material = _breakDownMaterial;
         }
@@ -185,7 +187,7 @@ public abstract class TestTower : ObjectGame
             if (enemiesRank.Count > 0)
             {
                 _target = new Transform[_targetNumber];
-                for (int i = 0; i < enemiesRank.Count-1; i++)
+                for (int i = 0; i < enemiesRank.Count - 1; i++)
                 {
                     for (int j = i + 1; j < enemiesRank.Count; j++)
                     {
@@ -219,15 +221,15 @@ public abstract class TestTower : ObjectGame
                 }
                 else
                 {
-                    for(int i = 0; i < _target.Length; i+=enemiesRank.Count)
+                    for (int i = 0; i < _target.Length; i += enemiesRank.Count)
                     {
-                        for(int j = 0; j < enemiesRank.Count; j++)
+                        for (int j = 0; j < enemiesRank.Count; j++)
                         {
-                            if(i+j >= _target.Length)
+                            if (i + j >= _target.Length)
                             {
                                 break;
                             }
-                            _target[i+j] = enemiesRank[j].transform;
+                            _target[i + j] = enemiesRank[j].transform;
                         }
                     }
                 }
@@ -249,7 +251,7 @@ public abstract class TestTower : ObjectGame
     public override void Select(bool selectOff = true)
     {
         _objectSelect = !_objectSelect;
-        if (!_objectSelectActive)
+        if (!_objectSelectActive || !selectOff)
         {
             _objectSelect = false;
         }
@@ -284,7 +286,7 @@ public abstract class TestTower : ObjectGame
         if (_towerState == ETowerState.Breakdown)
         {
             _towerState = ETowerState.Search;
-            for(int i = 0; i < _materials.Length; i++)
+            for (int i = 0; i < _materials.Length; i++)
             {
                 _materials[i].material = _activeMaterials[i];
             }
@@ -293,7 +295,8 @@ public abstract class TestTower : ObjectGame
 
     public void SellTower()
     {
-        _parentTile.Clear(_gridPosition, _dimensions,_fitType);
+        _parentTile.Clear(_gridPosition, _dimensions, _fitType);
+        Destroy(_statusUI.gameObject);
         Destroy(gameObject);
     }
 
@@ -312,8 +315,7 @@ public abstract class TestTower : ObjectGame
         StatusCheck();
 
         _hp = _maxHP;
-        _statusUI.StatusSetting(_maxHP);
-        _statusUI.HPChange(_hp);
+        _statusUI.StatusSetting(transform, _maxHP, 15);
         _totalCost = _gameTowerData.buildCost;
     }
 
@@ -423,7 +425,7 @@ public abstract class TestTower : ObjectGame
     public int TowerRepairCost()
     {
         int cost;
-        float hpRate =  1 - (float)_hp / _maxHP;
+        float hpRate = 1 - (float)_hp / _maxHP;
         cost = (int)(hpRate * _totalCost * 0.3f);
         return cost;
     }
@@ -438,7 +440,7 @@ public abstract class TestTower : ObjectGame
     {
         int maxHP = _maxHP;
         StatusCheck();
-        if(upgradeType == EUpgradeType.Defence)
+        if (upgradeType == EUpgradeType.Defence)
         {
             _statusUI.StatusSetting(_maxHP);
             int addHP = _maxHP - maxHP;

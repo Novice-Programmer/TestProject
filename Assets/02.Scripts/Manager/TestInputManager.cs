@@ -33,7 +33,7 @@ public class TestInputManager : MonoBehaviour
     Vector3 _touchPos = Vector3.zero;
     int _touchX = 0;
     int _touchY = 0;
-    bool _doubleTouchCheck = false;
+    [SerializeField] bool _doubleTouchCheck = false;
 
     float _timeCheck = 0;
 

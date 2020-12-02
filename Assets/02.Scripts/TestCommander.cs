@@ -5,7 +5,7 @@ using UnityEngine;
 public class TestCommander : ObjectGame
 {
     public static TestCommander Instance { set; get; }
-    [SerializeField] TestWorldStatusUI _statusUI = null;
+    TestWorldStatusUI _statusUI;
 
     [SerializeField] int _hp = 500;
 
@@ -17,15 +17,16 @@ public class TestCommander : ObjectGame
     // Start is called before the first frame update
     void Start()
     {
-        _statusUI.StatusSetting(_hp);
-        _statusUI.HPChange(_hp);
+        _statusUI = ObjectDataManager.Instance.StatusInit();
+        _statusUI.StatusSetting(transform, _hp, 9999, false);
         TestGameUI.Instance.CommanderSetting(_hp);
+        ObjectDataManager.Instance.MarkerSetting(transform, EObjectName.Commander);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public override void Hit(int damage, EWeakType weakType)

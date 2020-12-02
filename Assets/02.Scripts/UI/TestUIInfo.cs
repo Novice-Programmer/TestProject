@@ -57,6 +57,7 @@ public class TestUIInfo : MonoBehaviour
 
     public void ClickInstallViewBtn()
     {
+        TestInputManager.Instance.UITouch();
         if (TestInputManager.TouchMode != ETouchMode.Touch)
         {
             return;
@@ -72,7 +73,6 @@ public class TestUIInfo : MonoBehaviour
         {
             ViewOn();
         }
-        TestInputManager.Instance.UITouch();
     }
 
     public void ClickTower(TestTower tower)
@@ -181,7 +181,7 @@ public class TestUIInfo : MonoBehaviour
 
     void ObstacleUISetting(TestObstacle obstacle)
     {
-        _obstacleName.text = obstacle._obstacleGameData.obstacleNameString;
+        _obstacleName.text = obstacle._gameObstacleData.obstacleNameString;
         _obstacleIconImage.sprite = ObjectDataManager.Instance.GetImage(obstacle._objectName);
         _obstacleSellGetTxt.text = "Get " + obstacle._sellGetCost;
         _selectObstacle = obstacle;

@@ -21,13 +21,13 @@ public class TestObstacle : ObjectGame
     public EObjectName _objectName = EObjectName.None;
     public EObstacleType _obstacleType = EObstacleType.None;
     public EAttackAble _attackAble = EAttackAble.None;
-    public TestObstacleGameData _obstacleGameData;
+    public TestObstacleGameData _gameObstacleData;
     public int _sellGetCost;
     [SerializeField] HitPad _hitPad = null;
     [SerializeField] int _durability;
     [SerializeField] int _reduceValue;
     [SerializeField] float[] _values;
-    [SerializeField] TestWorldStatusUI _duraBar = null;
+    TestWorldStatusUI _statusUI = null;
     TestTile _parentTile;
     TestIntVector2 _gridPosition;
     TestIntVector2 _dimensions;
@@ -35,9 +35,10 @@ public class TestObstacle : ObjectGame
 
     private void Start()
     {
-        _hitPad.HitPadSetting("Enemy", _values);
-        _duraBar.StatusSetting(_durability);
-        _obstacleGameData = ObjectDataManager.Instance.GetObstacleGameData(_obstacleType);
+        _statusUI = ObjectDataManager.Instance.StatusInit();
+        _gameObstacleData = ObjectDataManager.Instance.GetObstacleGameData(_obstacleType);
+        DataSetting();
+        ObjectDataManager.Instance.MarkerSetting(transform, _objectName);
     }
 
     public override void Hit(int damage, EWeakType weakType)
@@ -53,7 +54,33 @@ public class TestObstacle : ObjectGame
             _durability = 0;
             DestroyObstacle();
         }
-        _duraBar.HPChange(_durability);
+        _statusUI.HPChange(_durability);
+    }
+
+    void DataSetting()
+    {
+        _values = new float[_gameObstacleData.values.Length];
+        for (int i = 0; i < _values.Length; i++)
+        {
+            _values[i] = _gameObstacleData.values[i] + _gameObstacleData.values[i] * _gameObstacleData.researchResult.valueIncreaseRate * 0.01f;
+        }
+        ResearchSetting();
+        _hitPad.HitPadSetting("Enemy", _values);
+        _durability = _gameObstacleData.durability + (int)(_gameObstacleData.durability * _gameObstacleData.researchResult.valueIncreaseRate * 0.01f);
+        _reduceValue = _gameObstacleData.reduceValue;
+        _statusUI.StatusSetting(transform, _durability, 5, false);
+        _sellGetCost = _gameObstacleData.buildCost / 5;
+    }
+
+    void ResearchSetting()
+    {
+        for (int i = 0; i < _gameObstacleData.researchs.Count; i++)
+        {
+            switch (_gameObstacleData.researchs[i])
+            {
+
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -68,7 +95,6 @@ public class TestObstacle : ObjectGame
         _gridPosition = ghost._gridPos;
         _dimensions = ghost._demision;
         _fitType = ghost._fitType;
-        _sellGetCost = ghost._installCost / 5;
         switch (ghost._rotateType)
         {
             case ERotateType.degree0:
@@ -96,6 +122,7 @@ public class TestObstacle : ObjectGame
     {
         _parentTile.Clear(_gridPosition, _dimensions, _fitType);
         StopCoroutine(BuildSuccess());
+        Destroy(_statusUI.gameObject);
         Destroy(gameObject);
     }
 

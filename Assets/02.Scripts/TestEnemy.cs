@@ -28,7 +28,7 @@ public enum ERatingType
 public abstract class TestEnemy : ObjectGame
 {
     public TestEnemyData _enemyData;
-
+    public EObjectName _objectName;
     public ERatingType _rating = ERatingType.Normal;
     public EStateEnemy _state = EStateEnemy.Idle;
     protected int _wavePointIndex = 0;
@@ -43,7 +43,7 @@ public abstract class TestEnemy : ObjectGame
     [SerializeField] protected float _atkSpd; // 공격 속도
     [SerializeField] protected float _movSpd; // 이동 속도
     [SerializeField] protected float _moveCheckSize; // 이동 확인 범위
-    [SerializeField] protected TestWorldStatusUI _statusUI = null;
+    protected TestWorldStatusUI _statusUI = null;
     [SerializeField] NavMeshObstacle _enemyObstacle = null;
 
     [SerializeField] List<TestBadBuff> _badBuffs;
@@ -52,6 +52,7 @@ public abstract class TestEnemy : ObjectGame
     Animator _enemyAnim;
     public Transform _target;
     EObjectType _prevTarget;
+    bool _searchFail = true;
 
     [SerializeField] float _obstacleCheckRange = 2.0f;
 
@@ -65,6 +66,7 @@ public abstract class TestEnemy : ObjectGame
     {
         _enemyAI = GetComponent<NavMeshAgent>();
         _enemyAnim = GetComponent<Animator>();
+        _statusUI = ObjectDataManager.Instance.StatusInit();
     }
 
     public void Active()
@@ -85,12 +87,13 @@ public abstract class TestEnemy : ObjectGame
         _attackTime = 0;
         _attackNumber = 0;
         _hp = _enemyData.hp;
-        _statusUI.StatusSetting(_enemyData.hp);
-        _statusUI.HPChange(_hp);
+        _statusUI.StatusSetting(transform, _enemyData.hp, 4f);
+        _objectName = _enemyData.objectName;
         _mp = 0;
         StatusCheck();
         StartCoroutine(ActiveSuccess());
         StartCoroutine(BadBuffCheck());
+        ObjectDataManager.Instance.MarkerSetting(transform, _objectName);
     }
     IEnumerator ActiveSuccess()
     {
@@ -214,6 +217,7 @@ public abstract class TestEnemy : ObjectGame
             float checkPer = Random.Range(0.0f, 100.0f);
             if (checkPer <= _enemyData.atkRate)
             {
+                _searchFail = true;
                 _state = EStateEnemy.AttackSearch;
                 return;
             }
@@ -256,7 +260,8 @@ public abstract class TestEnemy : ObjectGame
         if (_timeCheck >= _enemyData.atkTime)
         {
             _timeCheck = 0;
-            GetNextWayPoint(_wavePointIndex);
+            if (_searchFail)
+                GetNextWayPoint(_wavePointIndex);
             _state = EStateEnemy.Move;
             return;
         }
@@ -280,12 +285,13 @@ public abstract class TestEnemy : ObjectGame
         {
             _prevTarget = EObjectType.Tower;
             _state = EStateEnemy.Attack;
+            _searchFail = false;
             _attackTime = 0;
             _target = nearestTower.GetComponent<TestTower>().transform;
             _enemyAI.destination = nearestTower.transform.position;
         }
 
-        if(_target == null)
+        if (_target == null)
             ViewObstacle();
     }
 
@@ -452,6 +458,7 @@ public abstract class TestEnemy : ObjectGame
         _wavePointIndex = wayPointNumber;
         if (_wavePointIndex >= WayPointContainer._wayPoints.Length - 1)
         {
+            Debug.Log("발동");
             _state = EStateEnemy.AttackCommander;
             _target = GameObject.FindGameObjectWithTag("Commander").transform;
             _enemyAI.destination = _target.transform.position;
@@ -541,5 +548,11 @@ public abstract class TestEnemy : ObjectGame
         {
             TestGameUI.Instance.ViewUIOff();
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, _enemyData.sightRange);
     }
 }
