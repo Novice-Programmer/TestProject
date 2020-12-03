@@ -25,24 +25,16 @@ public enum EObjectName
     ALL,
 }
 
-public enum EImageNumber
-{
-    KW9A,
-    FireWall
-}
-
-
 public class ObjectDataManager : MonoBehaviour
 {
     public static ObjectDataManager Instance { set; get; }
-    [SerializeField] Sprite[] _objectImages = null;
-    [SerializeField] Sprite[] _objectBackgroundImage = null;
     [SerializeField] Ghost[] _prefabGhosts = null;
 
     [Header("Tower")]
     [SerializeField] TowerData[] _towerAllDatas = null;
     [SerializeField] TowerUpgradeData[] _upgradeAllData = null;
     [SerializeField] Tower[] _prefabTowers = null;
+    [SerializeField] Sprite[] _towerImages = null;
 
     Dictionary<EObjectName, Dictionary<EUpgradeType, Dictionary<int, TowerUpgradeData>>> _towerUpgradeDic
     = new Dictionary<EObjectName, Dictionary<EUpgradeType, Dictionary<int, TowerUpgradeData>>>();
@@ -52,6 +44,7 @@ public class ObjectDataManager : MonoBehaviour
     [Header("Obstacle")]
     [SerializeField] ObstacleData[] _obstacleAllDatas = null;
     [SerializeField] Obstacle[] _prefabObstacle = null;
+    [SerializeField] Sprite[] _obstacleImages = null;
 
     Dictionary<EObjectName, ObstacleGameData> _gameObstacleDatas = new Dictionary<EObjectName, ObstacleGameData>();
 
@@ -198,6 +191,7 @@ public class ObjectDataManager : MonoBehaviour
             TowerGameData towerGameData = _gameTowerDatas[objectName];
             InstallData installTowerData = new InstallData();
             installTowerData.objectType = EObjectType.Tower;
+            installTowerData.objectName = towerGameData.objectName;
             installTowerData.installCost = towerGameData.buildCost;
             installTowerData.objectImage = GetImage(objectName);
             installDatas.Add(installTowerData);
@@ -208,6 +202,7 @@ public class ObjectDataManager : MonoBehaviour
             ObstacleGameData obstacleGameData = _gameObstacleDatas[objectName];
             InstallData installObstacleData = new InstallData();
             installObstacleData.objectType = EObjectType.Obstacle;
+            installObstacleData.objectName = obstacleGameData.objectName;
             installObstacleData.installCost = obstacleGameData.buildCost;
             installObstacleData.objectImage = GetImage(objectName);
             installDatas.Add(installObstacleData);
@@ -225,6 +220,7 @@ public class ObjectDataManager : MonoBehaviour
                 return _prefabGhosts[i];
             }
         }
+
         return null;
     }
 
@@ -254,22 +250,24 @@ public class ObjectDataManager : MonoBehaviour
 
     public Sprite GetImage(EObjectName objectName, bool backgroundImage = false)
     {
-        int objectImageNumber = 0;
         switch (objectName)
         {
             case EObjectName.KW9A:
-                break;
-            case EObjectName.P013:
-                break;
+                return _towerImages[0];
+
             case EObjectName.NMDA:
-                break;
+                if (backgroundImage)
+                {
+                    return _enemyRankSprites[0];
+                }
+                else
+                {
+                    return _enemyIconSprites[0];
+                }
             case EObjectName.FireWall:
-                break;
+                return _obstacleImages[0];
         }
-        if (backgroundImage)
-            return _objectImages[objectImageNumber];
-        else
-            return _objectImages[objectImageNumber];
+        return null;
     }
 
     public void MarkerSetting(Transform target, EObjectName objectName)
@@ -293,7 +291,7 @@ public class ObjectDataManager : MonoBehaviour
                 break;
             case EObjectName.Commander:
                 icon = _markIconSprites[3];
-                background = _markBackgroundSprites[3];
+                background = null;
                 break;
         }
 

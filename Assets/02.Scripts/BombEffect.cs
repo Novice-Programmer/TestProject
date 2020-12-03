@@ -56,6 +56,10 @@ public class BombEffect : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (string.IsNullOrEmpty(_targetTag))
+        {
+            GetComponent<BoxCollider>().enabled = false;
+        }
         if (other.CompareTag(_targetTag))
         {
             if (_oneTarget)

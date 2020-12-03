@@ -10,12 +10,18 @@ public class UIWave : MonoBehaviour
     [SerializeField] Transform _waveEnemyContainer = null;
     [SerializeField] Text _waveLiveNumberTxt = null;
     [SerializeField] Text _waveWaitNumberTxt = null;
+    [SerializeField] Animator _waveWaitAnimator = null;
 
     int _enemyWaitNumber;
     int _enemyLiveNumber;
 
     Dictionary<int, List<EObjectName>> _waveEnemyList = new Dictionary<int, List<EObjectName>>();
     Dictionary<EObjectName, List<UIWaveEnemy>> _enemyTypeUIDic = new Dictionary<EObjectName, List<UIWaveEnemy>>();
+
+    private void Start()
+    {
+        _waveWaitAnimator.SetBool("View", true);
+    }
 
     public void ClickWaveStart()
     {
@@ -26,8 +32,8 @@ public class UIWave : MonoBehaviour
 
     public void NextWave(int wave)
     {
-        _waveLiveNumberTxt.text = "Wave" + (wave + 1).ToString();
         _waveStartBtn.gameObject.SetActive(true);
+        _waveWaitAnimator.SetBool("View", true);
         WaveEnemyUISetting(wave);
     }
 
@@ -130,6 +136,10 @@ public class UIWave : MonoBehaviour
                 _waveWaitNumberTxt.text = _enemyWaitNumber.ToString();
                 break;
             }
+        }
+        if (_enemyWaitNumber <= 0)
+        {
+            _waveWaitAnimator.SetBool("View", false);
         }
     }
 

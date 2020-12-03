@@ -11,7 +11,7 @@ public class NightMareDragonA : Enemy
     public override void TargetAttack()
     {
         base.TargetAttack();
-        if(_target == null)
+        if (_target == null)
         {
             return;
         }
@@ -34,7 +34,7 @@ public class NightMareDragonA : Enemy
         if (_target != null)
             attack.ProjectileSetting(_target.position, _target.tag, (int)(_atk * 2.5f));
         else
-            attack.ProjectileSetting(_target.position, "Tower", (int)(_atk * 2.5f));
+            attack.ProjectileSetting(transform.position + transform.forward, "Tower", (int)(_atk * 2.5f));
     }
 
     public override void SkillEnd()

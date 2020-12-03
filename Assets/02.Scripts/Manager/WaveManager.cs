@@ -48,6 +48,7 @@ public class WaveManager : MonoBehaviour
 
     public void WaveEnemyDie()
     {
+        GameUI.Instance.EnemyDie();
         _nowWaveEnemyNumber--;
         if (_nowWaveEnemyNumber == 0)
         {

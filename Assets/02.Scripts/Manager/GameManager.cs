@@ -5,10 +5,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { set; get; }
-
     int _wave = 0;
     float _timeCheck = 0;
     bool _waveStart = false;
+    bool _gameEnd = false;
 
     List<GameObject> _installObjects = new List<GameObject>();
 
@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (_gameEnd)
+            return;
+
         if (_waveStart)
         {
             _timeCheck += Time.deltaTime;
@@ -85,6 +88,7 @@ public class GameManager : MonoBehaviour
 
     public void GameEnd()
     {
+        _gameEnd = true;
         PoolManager.Instance.GameEnd();
         for(int i = 0; i < _installObjects.Count; i++)
         {

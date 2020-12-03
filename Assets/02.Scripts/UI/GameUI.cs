@@ -25,10 +25,11 @@ public class GameUI : MonoBehaviour
 
 	public EUIState UIState { get; private set; }
 
-	[SerializeField] UIInfo _uIInfo = null;
-	[SerializeField] UIWave _uiWave = null;
 	[SerializeField] UIResource _uiResource = null;
-	[SerializeField] PlayerUI _uiPlayer = null;
+	[SerializeField] UIInfo _uiInfo = null;
+	[SerializeField] UIMap _uiMap = null;
+	[SerializeField] UIWave _uiWave = null;
+	[SerializeField] UIPlayer _uiPlayer = null;
 
     private void Awake()
     {
@@ -37,35 +38,35 @@ public class GameUI : MonoBehaviour
 
 	public void GameUISetting()
 	{
-		_uIInfo.InstallButtonSetting();
+		_uiInfo.InstallButtonSetting();
 	}
 
     public void ViewUIOff()
     {
-        _uIInfo.ViewOff();
+        _uiInfo.ViewOff();
     }
 
 	public void ResourceValueChange()
     {
-		_uIInfo.UIValueChange();
+		_uiInfo.UIValueChange();
 		_uiResource.UIValueChange();
     }
 
 	public void TowerClick(Tower tower)
     {
-		_uIInfo.ClickTower(tower);
+		_uiInfo.ClickTower(tower);
 		InputManager.Instance.UITouch();
     }
 
 	public void ObstacleClick(Obstacle obstacle)
 	{
-		_uIInfo.ClickObstacle(obstacle);
+		_uiInfo.ClickObstacle(obstacle);
 		InputManager.Instance.UITouch();
 	}
 
 	public void EnemyClick(Enemy enemy)
 	{
-		_uIInfo.ClickEnemy(enemy);
+		_uiInfo.ClickEnemy(enemy);
 		InputManager.Instance.UITouch();
 	}
 
@@ -87,6 +88,7 @@ public class GameUI : MonoBehaviour
 	public void WaveClear(int wave)
     {
 		_uiWave.NextWave(wave);
+		_uiMap.WaveSetting(wave);
     }
 
 	public void StageClear()
@@ -106,6 +108,11 @@ public class GameUI : MonoBehaviour
 
 	public void InfoViewOff()
     {
-		_uIInfo.ViewOff();
+		_uiInfo.ViewOff();
+    }
+
+	public void EnemyDie()
+    {
+		_uiWave.WaveEnemyDie();
     }
 }

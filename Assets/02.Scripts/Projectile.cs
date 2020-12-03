@@ -81,6 +81,12 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (string.IsNullOrEmpty(_tagetTag))
+        {
+            BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);
+            bomb.BombSetting(_tagetTag, _values);
+            Destroy(gameObject);
+        }
         if (other.CompareTag("Field"))
         {
             BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);

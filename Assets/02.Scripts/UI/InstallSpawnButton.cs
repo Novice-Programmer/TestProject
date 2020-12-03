@@ -26,7 +26,7 @@ public class InstallSpawnButton : MonoBehaviour
     {
         if (ResourceManager.Instance.TowerPartValue > _installCost)
         {
-            _partCostTxt.color = Color.black;
+            _partCostTxt.color = Color.white;
             _lockBtn.SetActive(false);
         }
         else

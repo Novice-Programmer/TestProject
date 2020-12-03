@@ -13,7 +13,8 @@ public class Marker : MonoBehaviour
     {
         _target = target;
         _markIcon.sprite = iconSprite;
-        _markBackground.sprite = backgroundSprite;
+        if (backgroundSprite != null)
+            _markBackground.sprite = backgroundSprite;
     }
 
     // Start is called before the first frame update
@@ -25,7 +26,7 @@ public class Marker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_target == null)
+        if (_target == null || (_target != null && !_target.gameObject.activeSelf))
         {
             Destroy(gameObject);
             return;

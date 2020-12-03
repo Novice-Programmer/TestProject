@@ -289,8 +289,8 @@ MonoBehaviour:
   _objectName: 1
   _installCost: 0
   _demision:
-    x: 0
-    y: 0
+    x: 2
+    y: 2
   _gridPos:
     x: 0
     y: 0
@@ -298,7 +298,11 @@ MonoBehaviour:
   _fitPos: {x: 0, y: 0, z: 0}
   _parentTile: {fileID: 0}
   _rotateType: 0
-  _materialRenders: []
+  _materialRenders:
+  - {fileID: 5102347406014689038}
+  - {fileID: 5100519413983293512}
+  - {fileID: 5100363653179532362}
+  - {fileID: 5100779836275020718}
   _fitMaterial: {fileID: 2100000, guid: 6fe9580bd67b34580977e0aa4eab9755, type: 2}
   _outMaterial: {fileID: 2100000, guid: a33edf12f3c0044e8ba582a16ddaae3f, type: 2}
   _rangeObject: {fileID: 5167279179954527682}

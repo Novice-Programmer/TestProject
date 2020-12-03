@@ -60,7 +60,7 @@ public class PlayerDataManager : MonoBehaviour
         for (int i = 0; i < _playerAllResearch.Count; i++)
         {
             ResearchData researchData = ResearchManager.Instance.GetResearchData(_playerAllResearch[i]);
-            if (researchData.type == EResearchType.Resource)
+            if (researchData.type == EResearchType.Resource || researchData.type == EResearchType.ALL)
             {
                 researchDatas.Add(researchData);
             }

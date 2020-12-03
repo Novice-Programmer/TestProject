@@ -124,7 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8208e8ef0e64ae74b8b08776679b2fff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bombObject: {fileID: 2585901239602917730, guid: baf507bed5c41ca4396a7e78d479d5e2,
+  _maxTime: 30
+  _bombObject: {fileID: 4192147453455470200, guid: baf507bed5c41ca4396a7e78d479d5e2,
     type: 3}
   _values: []
   _speed: 10

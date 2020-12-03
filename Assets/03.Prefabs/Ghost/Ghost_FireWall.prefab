@@ -4818,7 +4818,8 @@ MonoBehaviour:
   _fitPos: {x: 0, y: 0, z: 0}
   _parentTile: {fileID: 0}
   _rotateType: 0
-  _materialRenders: []
+  _materialRenders:
+  - {fileID: 732593308906638362}
   _fitMaterial: {fileID: 2100000, guid: 6fe9580bd67b34580977e0aa4eab9755, type: 2}
   _outMaterial: {fileID: 2100000, guid: a33edf12f3c0044e8ba582a16ddaae3f, type: 2}
   _rangeObject: {fileID: 5117481617282906408}

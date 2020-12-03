@@ -80,7 +80,7 @@ MonoBehaviour:
     researchs: 
     specialResearch: 0
   _sellGetCost: 0
-  _hitPad: {fileID: 0}
+  _hitPad: {fileID: 1603322903210618882}
   _durability: 0
   _reduceValue: 0
   _values: []
@@ -4794,7 +4794,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a33edf12f3c0044e8ba582a16ddaae3f, type: 2}
+  - {fileID: 2100000, guid: 68e6d26512d5f634baa8173ae9fc0f15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
