@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7729101790502731556}
   - component: {fileID: 7729101790502731559}
-  m_Layer: 20
+  m_Layer: 12
   m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7729101790734015567}
   - component: {fileID: 7729101790734015566}
-  m_Layer: 20
+  m_Layer: 0
   m_Name: Mark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7729101790801860333}
   - component: {fileID: 7729101790801860332}
-  m_Layer: 20
+  m_Layer: 12
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}

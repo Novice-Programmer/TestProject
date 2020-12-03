@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class ObjectGame : MonoBehaviour
 {
     public EObjectType _objectType = EObjectType.None;
+    public EStateType _stateType = EStateType.None;
     public bool _objectSelectActive = false;
     public bool _objectSelect = false;
     public virtual void Hit(int damage, EWeakType weakType)

@@ -3,20 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ETowerState
-{
-    Search,
-    Attack,
-    Delay,
-    Stun,
-    Breakdown
-}
 
 public abstract class Tower : ObjectGame
 {
     [Header("TowerInfo")]
     public EObjectName _objectName = EObjectName.None;
-    public ETowerState _towerState = ETowerState.Search;
     public int _level;
     public int _hp;
     public int _maxHP;
@@ -59,6 +50,8 @@ public abstract class Tower : ObjectGame
     IntVector2 _gridPosition;
     EFitType _fitType;
 
+    [SerializeField] State _state = null;
+
     private void Start()
     {
         _rangeSize = _rangeObject.transform.localScale;
@@ -71,20 +64,23 @@ public abstract class Tower : ObjectGame
         {
             _activeMaterials.Add(_materials[i].material);
         }
+        StateChange(EStateType.AttackSearch);
         ObjectDataManager.Instance.MarkerSetting(transform, _objectName);
     }
 
     private void Update()
     {
-        if (_towerState == ETowerState.Breakdown)
+        if (_stateType == EStateType.Breakdown)
         {
             return;
         }
         if (_target == null)
         {
-            if (_towerState == ETowerState.Attack)
-                _towerState = ETowerState.Search;
-            else if (_towerState == ETowerState.Search)
+            if (_stateType == EStateType.Attack)
+            {
+                StateChange(EStateType.AttackSearch);
+            }
+            else if (_stateType == EStateType.AttackSearch)
             {
                 _partToRotate.Rotate(_partToRotate.rotation.x, _turnSpeed * Time.deltaTime, _partToRotate.rotation.z);
             }
@@ -92,7 +88,7 @@ public abstract class Tower : ObjectGame
 
         else
         {
-            if (_towerState == ETowerState.Attack)
+            if (_stateType == EStateType.Attack)
             {
                 Vector3 dir = Vector3.zero;
                 for (int i = 0; i < _target.Length; i++)
@@ -122,6 +118,12 @@ public abstract class Tower : ObjectGame
         {
             _attackCountdown = 0;
         }
+    }
+
+    void StateChange(EStateType stateType)
+    {
+        _stateType = stateType;
+        _state.StateUpdate(_stateType);
     }
 
     protected virtual void Attack()
@@ -158,7 +160,7 @@ public abstract class Tower : ObjectGame
 
     void Braekdown()
     {
-        _towerState = ETowerState.Breakdown;
+        StateChange(EStateType.Breakdown);
         for (int i = 0; i < _materials.Length; i++)
         {
             _materials[i].material = _breakDownMaterial;
@@ -167,9 +169,10 @@ public abstract class Tower : ObjectGame
 
     void UpdateTarget()
     {
-        if (_towerState == ETowerState.Search || _towerState == ETowerState.Attack)
+        if (_stateType == EStateType.AttackSearch || _stateType == EStateType.Attack)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(_enemyTag);
+            Debug.Log(enemies.Length);
             List<Enemy> enemiesRank = new List<Enemy>();
 
             for (int i = 0; i < enemies.Length; i++)
@@ -177,7 +180,7 @@ public abstract class Tower : ObjectGame
                 if (Vector3.Distance(transform.position, enemies[i].transform.position) < _atkRange)
                 {
                     Enemy enemy = enemies[i].GetComponent<Enemy>();
-                    if (enemy._state != EStateEnemy.Die)
+                    if (enemy._stateType != EStateType.Die)
                         enemiesRank.Add(enemy);
                 }
             }
@@ -209,7 +212,7 @@ public abstract class Tower : ObjectGame
                     }
                 }
 
-                _towerState = ETowerState.Attack;
+                StateChange(EStateType.Attack);
                 if (_target.Length <= enemiesRank.Count)
                 {
                     for (int i = 0; i < _target.Length; i++)
@@ -297,9 +300,9 @@ public abstract class Tower : ObjectGame
     {
         _hp = _maxHP;
         _statusUI.HPChange(_hp);
-        if (_towerState == ETowerState.Breakdown)
+        if (_stateType == EStateType.Breakdown)
         {
-            _towerState = ETowerState.Search;
+            StateChange(EStateType.AttackSearch);
             for (int i = 0; i < _materials.Length; i++)
             {
                 _materials[i].material = _activeMaterials[i];

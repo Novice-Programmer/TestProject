@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 2559596427660335098}
   - component: {fileID: 6729449153968158309}
   - component: {fileID: 2033461621299218828}
-  m_Layer: 19
+  m_Layer: 11
   m_Name: RocketTower
   m_TagString: Tower
   m_Icon: {fileID: 0}
@@ -577,6 +577,7 @@ Transform:
   - {fileID: 3585564841343447439}
   - {fileID: 2283280383959331869}
   - {fileID: 726563200808752417}
+  - {fileID: 4010764063686238801}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -606,11 +607,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectType: 2
+  _stateType: 9
   _objectSelectActive: 0
   _objectSelect: 0
   _objectName: 1
-  _towerType: 1
-  _towerState: 0
   _level: 0
   _hp: 0
   _maxHP: 0
@@ -629,17 +629,14 @@ MonoBehaviour:
   _dimensions:
     x: 2
     y: 2
-  _statusUI: {fileID: 0}
   _partToRotate: {fileID: 2283280383959331869}
   _turnSpeed: 10
-  _rotateCheck: 1
   _rangeObject: {fileID: 8732998734655778903}
   _materials: []
   _activeMaterials: []
   _breakDownMaterial: {fileID: 2100000, guid: da535f9b311e6b44ebac89bb8d57c1ee, type: 2}
   _gameTowerData:
     objectName: 0
-    towerType: 0
     towerName: 
     description: 
     hp: 0
@@ -673,6 +670,7 @@ MonoBehaviour:
   _upgradeATK: {fileID: 0}
   _upgradeDEF: {fileID: 0}
   _upgradeSP: {fileID: 0}
+  _state: {fileID: 4010764063686238803}
   _firePointParent: {fileID: 3585982065503301039}
   _nuclearPoint: {fileID: 1283479328791187751}
 --- !u!54 &2033461621299218828
@@ -1350,3 +1348,75 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1001 &5066881373470735991
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3592855254122144653}
+    m_Modifications:
+    - target: {fileID: 8212372649845693473, guid: 24b8473c9f5f9024895cdd5d4ef57922,
+        type: 3}
+      propertyPath: m_Name
+      value: State
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212372649845693478, guid: 24b8473c9f5f9024895cdd5d4ef57922,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212372649845693478, guid: 24b8473c9f5f9024895cdd5d4ef57922,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212372649845693478, guid: 24b8473c9f5f9024895cdd5d4ef57922,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212372649845693478, guid: 24b8473c9f5f9024895cdd5d4ef57922,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212372649845693478, guid: 24b8473c9f5f9024895cdd5d4ef57922,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212372649845693478, guid: 24b8473c9f5f9024895cdd5d4ef57922,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212372649845693478, guid: 24b8473c9f5f9024895cdd5d4ef57922,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8212372649845693478, guid: 24b8473c9f5f9024895cdd5d4ef57922,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 24b8473c9f5f9024895cdd5d4ef57922, type: 3}
+--- !u!4 &4010764063686238801 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8212372649845693478, guid: 24b8473c9f5f9024895cdd5d4ef57922,
+    type: 3}
+  m_PrefabInstance: {fileID: 5066881373470735991}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4010764063686238803 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8212372649845693476, guid: 24b8473c9f5f9024895cdd5d4ef57922,
+    type: 3}
+  m_PrefabInstance: {fileID: 5066881373470735991}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aaaac46c419fa340b987a93ff779fb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

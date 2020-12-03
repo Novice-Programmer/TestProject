@@ -75,7 +75,7 @@ public class PoolManager : MonoBehaviour
         GameObject go = Resources.Load(path.ToString() + "/" + objectName) as GameObject;
         for (int i = 0; i < number; i++)
         {
-            GameObject obj = Instantiate(go, WaveManager.Instance._startPoint.position, Quaternion.identity, transform);
+            GameObject obj = Instantiate(go, WaveManager.Instance._startPoint.position, WaveManager.Instance._startPoint.rotation, transform);
             obj.SetActive(false);
             gameObjectList.Add(obj);
         }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 45719710206331504}
   - component: {fileID: 45719710206331507}
   - component: {fileID: 4912116971551051791}
-  m_Layer: 21
+  m_Layer: 13
   m_Name: FireWall
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -4746,7 +4746,7 @@ GameObject:
   - component: {fileID: 3275782305830362976}
   - component: {fileID: 3275782305830362983}
   - component: {fileID: 3275782305830362981}
-  m_Layer: 21
+  m_Layer: 13
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

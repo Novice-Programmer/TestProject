@@ -3,19 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum EStateEnemy
-{
-    Idle,
-    AttackSearch,
-    Attack,
-    Move,
-    AttackCommander,
-    Stun,
-    Die,
-
-    None
-}
-
 public enum ERatingType
 {
     None,
@@ -30,7 +17,6 @@ public abstract class Enemy : ObjectGame
     public EnemyData _enemyData;
     public EObjectName _objectName;
     public ERatingType _rating = ERatingType.Normal;
-    public EStateEnemy _state = EStateEnemy.Idle;
     protected int _wavePointIndex = 0;
     protected bool _action = false;
     protected bool _isDead = false;
@@ -62,6 +48,7 @@ public abstract class Enemy : ObjectGame
     float _attackTime = 0;
     int _attackNumber = 0;
 
+    [SerializeField] State _state = null;
     private void Awake()
     {
         _enemyAI = GetComponent<NavMeshAgent>();
@@ -81,7 +68,7 @@ public abstract class Enemy : ObjectGame
             Destroy(_badBuffs[i].gameObject);
         }
         _badBuffs = new List<BadBuff>();
-        _state = EStateEnemy.Move;
+        StateChange(EStateType.Move);
         _action = false;
         _timeCheck = 0;
         _attackTime = 0;
@@ -118,26 +105,28 @@ public abstract class Enemy : ObjectGame
         else
         {
             _timeCheck += Time.deltaTime;
-            switch (_state)
+            switch (_stateType)
             {
-                case EStateEnemy.AttackSearch:
+                case EStateType.AttackSearch:
                     AttackSearch();
                     break;
-                case EStateEnemy.Attack:
+                case EStateType.Attack:
                     Attack();
                     break;
-                case EStateEnemy.Move:
+                case EStateType.Move:
                     Move();
                     break;
-                case EStateEnemy.AttackCommander:
+                case EStateType.AttackCommander:
                     AttackCommander();
-                    break;
-                case EStateEnemy.None:
-                    break;
-                case EStateEnemy.Stun:
                     break;
             }
         }
+    }
+
+    void StateChange(EStateType stateType)
+    {
+        _stateType = stateType;
+        _state.StateUpdate(_stateType);
     }
 
     IEnumerator BadBuffCheck()
@@ -218,7 +207,7 @@ public abstract class Enemy : ObjectGame
             if (checkPer <= _enemyData.atkRate)
             {
                 _searchFail = true;
-                _state = EStateEnemy.AttackSearch;
+                StateChange(EStateType.AttackSearch);
                 return;
             }
         }
@@ -245,7 +234,7 @@ public abstract class Enemy : ObjectGame
         if (nearestObstacle != null)
         {
             _prevTarget = EObjectType.Obstacle;
-            _state = EStateEnemy.Attack;
+            StateChange(EStateType.Attack);
             _attackTime = 0;
             _timeCheck = 0;
             _target = nearestObstacle.transform;
@@ -262,7 +251,7 @@ public abstract class Enemy : ObjectGame
             _timeCheck = 0;
             if (_searchFail)
                 GetNextWayPoint(_wavePointIndex);
-            _state = EStateEnemy.Move;
+            StateChange(EStateType.Move);
             return;
         }
 
@@ -271,7 +260,7 @@ public abstract class Enemy : ObjectGame
         GameObject nearestTower = null;
         foreach (GameObject tower in towers)
         {
-            if (tower.GetComponent<Tower>()._towerState == ETowerState.Breakdown)
+            if (tower.GetComponent<Tower>()._stateType == EStateType.Breakdown)
                 continue;
             float distanceToTower = Vector3.Distance(transform.position, tower.transform.position);
             if (distanceToTower < shortestDistance)
@@ -284,7 +273,7 @@ public abstract class Enemy : ObjectGame
         if (nearestTower != null)
         {
             _prevTarget = EObjectType.Tower;
-            _state = EStateEnemy.Attack;
+            StateChange(EStateType.Attack);
             _searchFail = false;
             _attackTime = 0;
             _target = nearestTower.GetComponent<Tower>().transform;
@@ -307,15 +296,15 @@ public abstract class Enemy : ObjectGame
                 {
                     _timeCheck = 0;
                     GetNextWayPoint(_wavePointIndex);
-                    _state = EStateEnemy.Move;
+                    StateChange(EStateType.Move);
                     return;
                 }
 
-                if (_target.GetComponent<Tower>()._towerState == ETowerState.Breakdown)
+                if (_target.GetComponent<Tower>()._stateType == EStateType.Breakdown)
                 {
                     _target = null;
                     GetNextWayPoint(_wavePointIndex);
-                    _state = EStateEnemy.AttackSearch;
+                    StateChange(EStateType.Attack);
                     return;
                 }
             }
@@ -326,14 +315,14 @@ public abstract class Enemy : ObjectGame
             if (_prevTarget != EObjectType.Obstacle)
             {
                 GetNextWayPoint(_wavePointIndex);
-                _state = EStateEnemy.AttackSearch;
+                StateChange(EStateType.AttackSearch);
                 return;
             }
             else
             {
                 _timeCheck = 0;
                 GetNextWayPoint(_wavePointIndex);
-                _state = EStateEnemy.Move;
+                StateChange(EStateType.Move);
                 return;
             }
         }
@@ -342,7 +331,7 @@ public abstract class Enemy : ObjectGame
         {
             _timeCheck = 0;
             GetNextWayPoint(_wavePointIndex);
-            _state = EStateEnemy.Move;
+            StateChange(EStateType.Move);
             return;
         }
 
@@ -440,7 +429,7 @@ public abstract class Enemy : ObjectGame
 
     void Die()
     {
-        _state = EStateEnemy.Die;
+        StateChange(EStateType.Die);
         _enemyAI.enabled = false;
         _enemyObstacle.enabled = false;
         if (gameObject.activeSelf)
@@ -464,7 +453,7 @@ public abstract class Enemy : ObjectGame
         _wavePointIndex++;
         if (_wavePointIndex >= WayPointContainer._wayPoints.Length)
         {
-            _state = EStateEnemy.AttackCommander;
+            StateChange(EStateType.AttackCommander);
             _target = GameObject.FindGameObjectWithTag("Commander").transform;
             _enemyAI.destination = _target.transform.position;
             return;
@@ -474,7 +463,7 @@ public abstract class Enemy : ObjectGame
 
     public override void Hit(int damage, EWeakType weakType)
     {
-        if (_state == EStateEnemy.Die)
+        if (_stateType == EStateType.Die)
             return;
         int resultDamage = damage - _def;
         if (resultDamage <= 0)
