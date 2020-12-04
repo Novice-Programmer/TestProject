@@ -172,7 +172,6 @@ public abstract class Tower : ObjectGame
         if (_stateType == EStateType.AttackSearch || _stateType == EStateType.Attack)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(_enemyTag);
-            Debug.Log(enemies.Length);
             List<Enemy> enemiesRank = new List<Enemy>();
 
             for (int i = 0; i < enemies.Length; i++)
