@@ -42,14 +42,12 @@ public struct ObstacleGameData
         {
             switch (obstacleResearchs[i].research)
             {
-                case EResearch.ReorganizatedOfDesign:
-                    researchResult.costReduceRate += -10;
-                    researchResult.valueIncreaseRate += 10;
+                default:
                     break;
             }
             researchs.Add(obstacleResearchs[i].research);
         }
-        
+
         int reduceCost = (int)(buildCost * researchResult.costReduceRate * 0.01f);
         if (buildCost + reduceCost > 0)
         {

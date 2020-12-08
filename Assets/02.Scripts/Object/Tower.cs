@@ -327,7 +327,6 @@ public abstract class Tower : ObjectGame
         _levelDEF = 0;
         _levelSP = 0;
         _level = 0;
-        ResearchCheck();
         StatusCheck();
 
         _hp = _maxHP;
@@ -340,31 +339,31 @@ public abstract class Tower : ObjectGame
 
         if (_upgradeATK != null)
         {
-            _atk = (int)(_gameTowerData.atk + _upgradeATK.addValue[0] + (_gameTowerData.atk + _upgradeATK.addValue[0]) * _gameTowerData.researchResult.atkAddRate * 0.01f);
-            _atkSpd = _gameTowerData.atkSpd + _upgradeATK.addValue[1] + (_gameTowerData.atkSpd + _upgradeATK.addValue[1]) * _gameTowerData.researchResult.atkSpdRate * 0.01f;
-            _atkRange = _gameTowerData.atkRange + _upgradeATK.addValue[2] + (_gameTowerData.atkRange + _upgradeATK.addValue[2]) * _gameTowerData.researchResult.atkRangeRate * 0.01f;
+            _atk = (int)(_gameTowerData.atk + _upgradeATK.addValue[0] + (_gameTowerData.atk + _upgradeATK.addValue[0]) * ResearchManager.Instance.GameResearchData.atkAddRate * 0.01f);
+            _atkSpd = _gameTowerData.atkSpd + _upgradeATK.addValue[1] + (_gameTowerData.atkSpd + _upgradeATK.addValue[1]) * ResearchManager.Instance.GameResearchData.atkSpdAddRate * 0.01f;
+            _atkRange = _gameTowerData.atkRange + _upgradeATK.addValue[2] + (_gameTowerData.atkRange + _upgradeATK.addValue[2]) * ResearchManager.Instance.GameResearchData.atkRangeAddRate * 0.01f;
             _atkNumber = _gameTowerData.atkNumber + (int)_upgradeATK.addValue[3];
             _targetNumber = _gameTowerData.atkNumber + (int)_upgradeATK.addValue[4];
         }
         else
         {
-            _atk = _gameTowerData.atk + (int)(_gameTowerData.atk * _gameTowerData.researchResult.atkAddRate * 0.01f);
-            _atkSpd = _gameTowerData.atkSpd + _gameTowerData.atkSpd * _gameTowerData.researchResult.atkSpdRate * 0.01f;
-            _atkRange = _gameTowerData.atkRange + _gameTowerData.atkRange * _gameTowerData.researchResult.atkRangeRate * 0.01f;
+            _atk = _gameTowerData.atk + (int)(_gameTowerData.atk * ResearchManager.Instance.GameResearchData.atkAddRate * 0.01f);
+            _atkSpd = _gameTowerData.atkSpd + _gameTowerData.atkSpd * ResearchManager.Instance.GameResearchData.atkSpdAddRate * 0.01f;
+            _atkRange = _gameTowerData.atkRange + _gameTowerData.atkRange * ResearchManager.Instance.GameResearchData.atkRangeAddRate * 0.01f;
             _atkNumber = _gameTowerData.atkNumber;
             _targetNumber = _gameTowerData.atkNumber;
         }
         if (_upgradeDEF != null)
         {
-            _maxHP = (int)(_gameTowerData.hp + _upgradeDEF.addValue[0] + (_gameTowerData.hp + _upgradeDEF.addValue[0]) * _gameTowerData.researchResult.hpAddRate * 0.01f);
-            _def = (int)(_gameTowerData.def + _upgradeDEF.addValue[1] + (_gameTowerData.def + _upgradeDEF.addValue[1]) * _gameTowerData.researchResult.defAddRate * 0.01f);
-            _chargeEP = (int)(_gameTowerData.ep + _upgradeDEF.addValue[2] + (_gameTowerData.ep + _upgradeDEF.addValue[2]) * _gameTowerData.researchResult.epAddRate * 0.01f);
+            _maxHP = (int)(_gameTowerData.hp + _upgradeDEF.addValue[0] + (_gameTowerData.hp + _upgradeDEF.addValue[0]) * ResearchManager.Instance.GameResearchData.hpAddRate * 0.01f);
+            _def = (int)(_gameTowerData.def + _upgradeDEF.addValue[1] + (_gameTowerData.def + _upgradeDEF.addValue[1]) * ResearchManager.Instance.GameResearchData.defAddRate * 0.01f);
+            _chargeEP = (int)(_gameTowerData.ep + _upgradeDEF.addValue[2] + (_gameTowerData.ep + _upgradeDEF.addValue[2]) * ResearchManager.Instance.GameResearchData.epAddRate * 0.01f);
         }
         else
         {
-            _maxHP = _gameTowerData.hp + (int)(_gameTowerData.hp * _gameTowerData.researchResult.hpAddRate * 0.01f);
-            _def = _gameTowerData.def + (int)(_gameTowerData.def * _gameTowerData.researchResult.defAddRate * 0.01f);
-            _chargeEP = _gameTowerData.ep + (int)(_gameTowerData.ep * _gameTowerData.researchResult.epAddRate * 0.01f);
+            _maxHP = _gameTowerData.hp + (int)(_gameTowerData.hp * ResearchManager.Instance.GameResearchData.hpAddRate * 0.01f);
+            _def = _gameTowerData.def + (int)(_gameTowerData.def * ResearchManager.Instance.GameResearchData.defAddRate * 0.01f);
+            _chargeEP = _gameTowerData.ep + (int)(_gameTowerData.ep * ResearchManager.Instance.GameResearchData.epAddRate * 0.01f);
         }
 
         _spValue = new float[_gameTowerData.spValue.Length];
@@ -381,20 +380,6 @@ public abstract class Tower : ObjectGame
         }
 
         _rangeObject.transform.localScale = _rangeSize * _atkRange;
-    }
-
-    void ResearchCheck()
-    {
-        for (int i = 0; i < _gameTowerData.researchs.Count; i++)
-        {
-            switch (_gameTowerData.researchs[i])
-            {
-                case EResearch.AdvancedAITechnology:
-                    _levelSP++;
-                    _upgradeSP = ObjectDataManager.Instance.GetUpgradeData(_objectName, EUpgradeType.Special, 1);
-                    break;
-            }
-        }
     }
 
     public int UpgradeCost(EUpgradeType upgradeType)

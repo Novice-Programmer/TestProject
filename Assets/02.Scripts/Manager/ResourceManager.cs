@@ -9,9 +9,8 @@ public enum EPaymentType
     Occasional
 }
 
-public class ResourceManager : MonoBehaviour
+public class ResourceManager : TSingleton<ResourceManager>
 {
-    public static ResourceManager Instance { set; get; }
     int ingameValue = 0;
     int mineralValue = 0;
     public int TowerPartValue { get { return ingameValue; } set { ingameValue += value; ValueChange(); } }
@@ -23,20 +22,19 @@ public class ResourceManager : MonoBehaviour
     ResourceResearchResult _researchResult = new ResourceResearchResult();
     private void Awake()
     {
+        Init();
         Instance = this;
     }
 
     public void GameResourceSetting(ResearchData[] researchDatas)
     {
-        _stageData = _stageResourceDatas[StageManager.Instance.nowStage - 1];
+        _stageData = _stageResourceDatas[StageManager.Instance.NowStage];
 
         for (int i = 0; i < researchDatas.Length; i++)
         {
             switch (researchDatas[i].research)
             {
-                case EResearch.ResourceRobotDevelopment:
-                    _researchResult.mineralAddRate += 10;
-                    _researchResult.towerPartAddRate += 10;
+                default:
                     break;
             }
         }

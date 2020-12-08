@@ -19,8 +19,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        ObjectDataManager.Instance.GameInstallSetting(PlayerDataManager.Instance.GetSelectObject());
-        ResourceManager.Instance.GameResourceSetting(PlayerDataManager.Instance.GetResourceResearchData());
+        // 플레이어가 선택한 오브젝트 가져오기
         GameUI.Instance.GameUISetting();
         ResourceManager.Instance.TowerPartPayment(EPaymentType.Initial, _wave);
     }

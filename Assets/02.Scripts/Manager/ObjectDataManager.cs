@@ -25,9 +25,8 @@ public enum EObjectName
     ALL,
 }
 
-public class ObjectDataManager : MonoBehaviour
+public class ObjectDataManager : TSingleton<ObjectDataManager>
 {
-    public static ObjectDataManager Instance { set; get; }
     [SerializeField] Ghost[] _prefabGhosts = null;
 
     [Header("Tower")]
@@ -65,6 +64,7 @@ public class ObjectDataManager : MonoBehaviour
 
     private void Awake()
     {
+        Init();
         Instance = this;
         TowerDictionarySetting();
     }
@@ -106,7 +106,7 @@ public class ObjectDataManager : MonoBehaviour
             if (selectDatas[i].objectType == EObjectType.Tower)
             {
                 TowerGameData towerGameData = new TowerGameData(GetTowerData(selectDatas[i].objectName));
-                towerGameData.ResearchAdd(selectDatas[i].researchDatas);
+                towerGameData.CostCheck();
                 _gameTowerDatas.Add(selectDatas[i].objectName, towerGameData);
             }
             else
@@ -142,17 +142,17 @@ public class ObjectDataManager : MonoBehaviour
         return null;
     }
 
-    public void ResearchCheck(EObjectName objectName, ResearchData researchData)
+    public void ResearchCheck(EObjectName objectName)
     {
         if (_gameTowerDatas.ContainsKey(objectName))
         {
-            ResearchUpdate(objectName, researchData);
+            ResearchUpdate(objectName);
         }
     }
 
-    void ResearchUpdate(EObjectName objectName, ResearchData researchData)
+    void ResearchUpdate(EObjectName objectName)
     {
-        _gameTowerDatas[objectName].ResearchAdd(researchData);
+        _gameTowerDatas[objectName].CostCheck();
     }
 
     public TowerUpgradeData GetUpgradeData(EObjectName objectName, EUpgradeType upgradeType, int level)

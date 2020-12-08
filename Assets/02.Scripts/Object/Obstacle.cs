@@ -71,11 +71,7 @@ public class Obstacle : ObjectGame
         {
             switch (_gameObstacleData.researchs[i])
             {
-                case EResearch.ReorganizatedOfDesign:
-                    break;
-                case EResearch.AdvancedAITechnology:
-                    break;
-                case EResearch.ResourceRobotDevelopment:
+                default:
                     break;
             }
         }

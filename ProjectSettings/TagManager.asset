@@ -11,6 +11,7 @@ TagManager:
   - Commander
   - Field
   - Obstacle
+  - SelectObject
   layers:
   - Default
   - TransparentFX

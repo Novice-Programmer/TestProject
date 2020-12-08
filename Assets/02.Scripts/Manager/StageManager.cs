@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageManager : MonoBehaviour
+public class StageManager : TSingleton<StageManager>
 {
-    public int nowStage = 1;
-
-    static StageManager _uniqueInstance;
-
-    public static StageManager Instance { get { return _uniqueInstance; } }
+    int _nowStage = 0;
+    int _clearStage = 0;
+    
+    public int NowStage { get { return _nowStage; } }
 
     private void Awake()
     {
-        _uniqueInstance = this;
+        Init();
+        Instance = this;
     }
 }

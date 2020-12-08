@@ -2,69 +2,124 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDataManager : MonoBehaviour
+public class PlayerDataManager : TSingleton<PlayerDataManager>
 {
-    public static PlayerDataManager Instance { set; get; }
+    Dictionary<EResearchType, Dictionary<int, EResearch>> _playerSelectResearch;
+    Dictionary<EObjectType, List<EObjectName>> _playerSelectObject;
+    Dictionary<EResearchType, int> _playerResearchCheck;
 
-    [SerializeField] List<EResearch> _playerAllResearch = new List<EResearch>();
-    [SerializeField] List<ObjectData> _selectObjects = new List<ObjectData>();
+    List<EResearch> SelectResearchList
+    {
+        get
+        {
+            List<EResearch> researches = new List<EResearch>();
+            foreach (Dictionary<int, EResearch> stepResearch in _playerSelectResearch.Values)
+            {
+                foreach (EResearch research in stepResearch.Values)
+                {
+                    researches.Add(research);
+                }
+            }
+            return researches;
+        }
+    }
 
     public int Stage = 0;
 
     private void Awake()
     {
+        Init();
         Instance = this;
     }
 
-    public SelectData[] GetSelectObject()
+    public void LoadData(Dictionary<EResearchType, Dictionary<int, EResearch>> selectResearch, Dictionary<EObjectType, List<EObjectName>> selectObject,
+        Dictionary<EResearchType, int> checkResearch)
     {
-        List<SelectData> selectDatas = new List<SelectData>();
-
-        for (int i = 0; i < _selectObjects.Count; i++)
+        if (selectResearch != null)
         {
-            List<ResearchData> researchDatas = new List<ResearchData>();
-            for (int j = 0; j < _playerAllResearch.Count; j++)
-            {
-                ResearchData researchData = ResearchManager.Instance.GetResearchData(_playerAllResearch[j]);
-                for (int k = 0; k < researchData.targetNames.Length; k++)
-                {
-                    if (researchData.targetNames[k] == _selectObjects[i].objectName)
-                    {
-                        researchDatas.Add(researchData);
-                    }
-
-                    else if (researchData.targetNames[k] == EObjectName.ALL)
-                    {
-                        researchDatas.Add(researchData);
-                    }
-
-                    if (_selectObjects[i].objectType == EObjectType.Tower && researchData.targetNames[k] == EObjectName.Tower)
-                    {
-                        researchDatas.Add(researchData);
-                    }
-                    else if (_selectObjects[i].objectType == EObjectType.Obstacle && researchData.targetNames[k] == EObjectName.Obstacle)
-                    {
-                        researchDatas.Add(researchData);
-                    }
-                }
-            }
-            selectDatas.Add(new SelectData(_selectObjects[i].objectType, _selectObjects[i].objectName, researchDatas.ToArray()));
+            _playerSelectResearch = selectResearch;
+            ResearchManager.Instance.ResearchUpdate(SelectResearchList);
+        }
+        else
+        {
+            _playerSelectResearch = new Dictionary<EResearchType, Dictionary<int, EResearch>>();
+        }
+        if (selectObject != null)
+        {
+            _playerSelectObject = selectObject;
+        }
+        else
+        {
+            _playerSelectObject = new Dictionary<EObjectType, List<EObjectName>>();
         }
 
-        return selectDatas.ToArray();
+        if (checkResearch != null)
+        {
+            _playerResearchCheck = checkResearch;
+        }
+        else
+        {
+            _playerResearchCheck = new Dictionary<EResearchType, int>();
+            _playerResearchCheck.Add(EResearchType.Tower, 3);
+            _playerResearchCheck.Add(EResearchType.Obstacle, 3);
+            _playerResearchCheck.Add(EResearchType.Resource, 3);
+            ResearchUpdate(EResearchType.Tower, 0, EResearch.TowerLv0);
+            ResearchUpdate(EResearchType.Obstacle, 0, EResearch.ObstacleLv0);
+            ResearchUpdate(EResearchType.Resource, 0, EResearch.ResourceLv0);
+            ResearchManager.Instance.ResearchUpdate(SelectResearchList);
+        }
     }
 
-    public ResearchData[] GetResourceResearchData()
+    public void ResearchUpdate(EResearchType researchType, int step, EResearch research)
     {
-        List<ResearchData> researchDatas = new List<ResearchData>();
-        for (int i = 0; i < _playerAllResearch.Count; i++)
+        Dictionary<int, EResearch> stepResearch;
+        if (_playerSelectResearch.ContainsKey(researchType))
         {
-            ResearchData researchData = ResearchManager.Instance.GetResearchData(_playerAllResearch[i]);
-            if (researchData.type == EResearchType.Resource || researchData.type == EResearchType.ALL)
+            stepResearch = _playerSelectResearch[researchType];
+        }
+        else
+        {
+            stepResearch = new Dictionary<int, EResearch>();
+            _playerSelectResearch.Add(researchType, stepResearch);
+        }
+        if (stepResearch.ContainsKey(step))
+        {
+            if (research == EResearch.None)
             {
-                researchDatas.Add(researchData);
+                stepResearch.Remove(step);
+            }
+            else
+            {
+                stepResearch[step] = research;
             }
         }
-        return researchDatas.ToArray();
+        else
+        {
+            stepResearch.Add(step, research);
+        }
+        ResearchManager.Instance.ResearchUpdate(SelectResearchList);
+    }
+
+    public EResearch GetSelectResearch(EResearchType researchType, int step)
+    {
+        if (_playerSelectResearch.ContainsKey(researchType))
+        {
+            Dictionary<int, EResearch> stepResearch = _playerSelectResearch[researchType];
+            if (stepResearch.ContainsKey(step))
+                return _playerSelectResearch[researchType][step];
+        }
+        return EResearch.None;
+    }
+
+    public bool GetResearchCheck(EResearchType researchType, int step)
+    {
+        if (_playerResearchCheck[researchType] >= step)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

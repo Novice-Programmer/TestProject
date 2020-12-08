@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveManager : MonoBehaviour
+public class WaveManager : TSingleton<WaveManager>
 {
-    public static WaveManager Instance { set; get; }
     [SerializeField] Wave[] _waves = null;
     public Transform _startPoint = null;
  
@@ -14,6 +13,8 @@ public class WaveManager : MonoBehaviour
 
     private void Awake()
     {
+        _dontDestroy = false;
+        Init();
         Instance = this;
     }
 

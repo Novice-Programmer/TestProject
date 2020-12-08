@@ -23,8 +23,6 @@ public struct TowerGameData
     public int atkUpgradeCost; // 공격 업그레이드 비용
     public int spUpgradeCost; // 특수 업그레이드 비용
     public int spMaxUpgrade; // 특수 최대 업그레이드
-    public TowerResearchResult researchResult;
-    public List<EResearch> researchs;
     public ESpecialResearch specialResearch; // 특수 업그레이드
 
     public TowerGameData(TowerData towerData)
@@ -51,44 +49,27 @@ public struct TowerGameData
         defUpgradeCost = towerData.defUpgradeCost;
         atkUpgradeCost = towerData.atkUpgradeCost;
         spUpgradeCost = towerData.spUpgradeCost;
-        researchs = new List<EResearch>();
         specialResearch = ESpecialResearch.None;
-        researchResult = new TowerResearchResult();
     }
 
-    public void ResearchAdd(params ResearchData[] towerResearchs)
+    public void CostCheck()
     {
-        for (int i = 0; i < towerResearchs.Length; i++)
-        {
-            switch (towerResearchs[i].research)
-            {
-                case EResearch.AdvancedAITechnology:
-                    researchResult.costReduceRate += -10;
-                    researchResult.maxUpgradeAdd++;
-                    break;
-                case EResearch.ReorganizatedOfDesign:
-                    researchResult.atkSpdRate += 20;
-                    break;
-            }
-            researchs.Add(towerResearchs[i].research);
-        }
-
-        int reduceCost = (int)(buildCost * researchResult.costReduceRate * 0.01f);
+        int reduceCost = (int)(buildCost * ResearchManager.Instance.GameResearchData.towerCostReduceRate * 0.01f);
         if (buildCost + reduceCost > 0)
         {
             buildCost += reduceCost;
         }
-        reduceCost = (int)(defUpgradeCost * researchResult.costReduceRate * 0.01f);
+        reduceCost = (int)(defUpgradeCost * ResearchManager.Instance.GameResearchData.towerCostReduceRate * 0.01f);
         if (defUpgradeCost + reduceCost > 0)
         {
             defUpgradeCost += reduceCost;
         }
-        reduceCost = (int)(atkUpgradeCost * researchResult.costReduceRate * 0.01f);
+        reduceCost = (int)(atkUpgradeCost * ResearchManager.Instance.GameResearchData.towerCostReduceRate * 0.01f);
         if (atkUpgradeCost + reduceCost > 0)
         {
             atkUpgradeCost += reduceCost;
         }
-        reduceCost = (int)(spUpgradeCost * researchResult.costReduceRate * 0.01f);
+        reduceCost = (int)(spUpgradeCost * ResearchManager.Instance.GameResearchData.towerCostReduceRate * 0.01f);
         if (spUpgradeCost + reduceCost > 0)
         {
             spUpgradeCost += reduceCost;
