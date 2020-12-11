@@ -27,9 +27,9 @@ TagManager:
   - Tower
   - MiniMapView
   - Obstacle
-  - 
-  - 
-  - 
+  - NoLight
+  - Planet
+  - Mineral
   - 
   - 
   - 

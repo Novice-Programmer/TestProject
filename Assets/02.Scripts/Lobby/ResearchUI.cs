@@ -25,11 +25,6 @@ public class ResearchUI : SelectUI
         {
             _boxUIs[i].ParentSetting(this);
         }
-        gameObject.SetActive(false);
-    }
-
-    private void Start()
-    {
         _selectBorders = new GameObject[_tabBtns.Length];
         for (int i = 0; i < _tabBtns.Length; i++)
         {
@@ -100,8 +95,6 @@ public class ResearchUI : SelectUI
     public override void Open(LobbyPlayer lobbyPlayer)
     {
         base.Open(lobbyPlayer);
-        if (!gameObject.activeSelf)
-            gameObject.SetActive(true);
         TabUpdate(EResearchType.Tower);
         ResearchViewUpdate(EResearchType.Tower);
     }

@@ -17,27 +17,27 @@ public class ResourceManager : TSingleton<ResourceManager>
     public int SpaceMineralValue { get { return mineralValue; } set { mineralValue += value; ValueChange(); } }
 
     [SerializeField] StageResourceData[] _stageResourceDatas = null;
-    StageResourceData _stageData;
+    [SerializeField] StageResourceData _stageData;
 
-    ResourceResearchResult _researchResult = new ResourceResearchResult();
     private void Awake()
     {
         Init();
         Instance = this;
     }
 
-    public void GameResourceSetting(ResearchData[] researchDatas)
+    public int MaxOccPlayment()
+    {
+        return _stageData.occasionalNumber + (int)(_stageData.occasionalNumber * ResearchManager.Instance.GameResearchData.occasionalAddRate * 0.01f);
+    }
+
+    public float ReduceOccTime()
+    {
+        return 10 * ResearchManager.Instance.GameResearchData.occasionalReduceTime * 0.01f;
+    }
+
+    public void GameResourceSetting()
     {
         _stageData = _stageResourceDatas[StageManager.Instance.NowStage];
-
-        for (int i = 0; i < researchDatas.Length; i++)
-        {
-            switch (researchDatas[i].research)
-            {
-                default:
-                    break;
-            }
-        }
     }
 
     public void TowerPartPayment(EPaymentType paymentType, int wave)
@@ -45,13 +45,13 @@ public class ResourceManager : TSingleton<ResourceManager>
         switch (paymentType)
         {
             case EPaymentType.Initial:
-                TowerPartValue = _stageData.initialTP + (int)(_stageData.initialTP * 0.01f * _researchResult.towerPartAddRate);
+                TowerPartValue = _stageData.initialTP + (int)(_stageData.initialTP * 0.01f * ResearchManager.Instance.GameResearchData.towerPartAddRate);
                 break;
             case EPaymentType.Regular:
-                TowerPartValue = _stageData.regularTP + (int)((_stageData.regularTP+wave * _stageData.waveAddTP) * 0.01f * _researchResult.towerPartAddRate);
+                TowerPartValue = _stageData.regularTP + (int)((_stageData.regularTP + wave * _stageData.waveAddTP) * 0.01f * ResearchManager.Instance.GameResearchData.towerPartAddRate);
                 break;
             case EPaymentType.Occasional:
-                TowerPartValue = _stageData.occasionalTP + (int)(_stageData.occasionalTP * 0.01f * _researchResult.towerPartAddRate);
+                TowerPartValue = _stageData.occasionalTP + (int)(_stageData.occasionalTP * 0.01f * ResearchManager.Instance.GameResearchData.towerPartAddRate);
                 break;
         }
     }
@@ -60,23 +60,30 @@ public class ResourceManager : TSingleton<ResourceManager>
     {
         if (wave == 0)
         {
-            SpaceMineralValue = _stageData.basicClearMineral + (int)(_stageData.basicClearMineral * 0.01f * _researchResult.mineralAddRate);
+            SpaceMineralValue = _stageData.basicClearMineral + (int)(_stageData.basicClearMineral * 0.01f * ResearchManager.Instance.GameResearchData.mineralAddRate);
         }
-        else if(wave == _stageData.maxWave - 1)
+        else if (wave == _stageData.maxWave - 1)
         {
             if (_stageData.stage > PlayerDataManager.Instance.Stage)
             {
                 PlayerDataManager.Instance.Stage = _stageData.stage;
                 SpaceMineralValue = _stageData.firstAllClearMineral;
             }
-            SpaceMineralValue = _stageData.stageClearMineral + (int)(_stageData.stageClearMineral * 0.01f * _researchResult.mineralAddRate);
+            SpaceMineralValue = _stageData.stageClearMineral + (int)(_stageData.stageClearMineral * 0.01f * ResearchManager.Instance.GameResearchData.mineralAddRate);
         }
-        SpaceMineralValue = _stageData.waveClearMineral + (int)(_stageData.waveClearMineral * 0.01f * _researchResult.mineralAddRate);
+        SpaceMineralValue = _stageData.waveClearMineral + (int)(_stageData.waveClearMineral * 0.01f * ResearchManager.Instance.GameResearchData.mineralAddRate);
+    }
+
+    public void GameEnd()
+    {
+        int addValue = (int)(ingameValue * 0.1f);
+        mineralValue += addValue + (int)(addValue * 0.01f * ResearchManager.Instance.GameResearchData.mineralAddRate);
+        ingameValue = 0;
     }
 
     void ValueChange()
     {
-        if (SceneControlManager.SceneType == ESceneType.Ingame)
+        if (SceneControlManager.Instance.SceneType == ESceneType.Ingame)
         {
             GameUI.Instance.ResourceValueChange();
         }

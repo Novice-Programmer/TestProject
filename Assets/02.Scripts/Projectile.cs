@@ -15,6 +15,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] bool _parabola = false;
     [SerializeField] float _upSpeed = 10f;
     [SerializeField] float _maxUp = 10.0f;
+    [SerializeField] float _minY = 0.2f;
 
     Transform _target;
     Vector3 _targetPos;
@@ -52,6 +53,10 @@ public class Projectile : MonoBehaviour
                     return;
                 }
                 dir = _target.position - transform.position;
+                if (dir.y > -_minY)
+                {
+                    dir.y = 0;
+                }
             }
             else
             {

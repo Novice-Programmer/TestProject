@@ -21,6 +21,16 @@ public class WaveManager : TSingleton<WaveManager>
     private void Start()
     {
         PoolManager.Instance.WaveEnemyInit(_waves);
+        int maxEnemyNumber = _waves[0]._spawnDatas.Length;
+        for(int i = 0; i < _waves.Length; i++)
+        {
+            if (maxEnemyNumber < _waves[i]._spawnDatas.Length)
+            {
+                maxEnemyNumber = _waves[i]._spawnDatas.Length;
+            }
+        }
+        PoolManager.Instance.MineralInit(maxEnemyNumber);
+        PoolManager.Instance.StatusUIInit(maxEnemyNumber);
         GameUI.Instance.StageUIInit(_waves);
     }
 

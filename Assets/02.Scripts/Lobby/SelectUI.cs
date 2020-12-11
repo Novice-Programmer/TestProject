@@ -6,7 +6,8 @@ public abstract class SelectUI : MonoBehaviour
     public virtual void Open(LobbyPlayer lobbyPlayer)
     {
         _lobbyPlayer = lobbyPlayer;
-        gameObject.SetActive(true);
+        if (!gameObject.activeSelf)
+            gameObject.SetActive(true);
     }
 
     public virtual void Close()

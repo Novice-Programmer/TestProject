@@ -6,9 +6,17 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { set; get; }
     int _wave = 0;
+    int _getPartNumber = 0;
+    int _maxOcc = 0;
     float _timeCheck = 0;
+    float _occTime = 10f;
+    float _startWaveTime = 15f;
+    float _reduceTime = 0;
     bool _waveStart = false;
     bool _gameEnd = false;
+
+    public int WaveNumber { get { return _wave; } }
+    public bool GameEndCheck { get { return _gameEnd; } }
 
     List<GameObject> _installObjects = new List<GameObject>();
 
@@ -19,43 +27,59 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // 플레이어가 선택한 오브젝트 가져오기
         GameUI.Instance.GameUISetting();
+        ResourceManager.Instance.GameResourceSetting();
         ResourceManager.Instance.TowerPartPayment(EPaymentType.Initial, _wave);
+        _maxOcc = ResourceManager.Instance.MaxOccPlayment();
+        _reduceTime = ResourceManager.Instance.ReduceOccTime();
     }
 
     private void Update()
     {
         if (_gameEnd)
             return;
-
-        if (_waveStart)
+        if (SceneControlManager.Instance.NowLoaddingState == ELoaddingState.None)
         {
             _timeCheck += Time.deltaTime;
-            if (_timeCheck >= 10.0f)
+            if (_waveStart)
             {
-                _timeCheck = 0;
-                ResourceManager.Instance.TowerPartPayment(EPaymentType.Occasional, _wave - 1);
+                if (_timeCheck >= _occTime + _reduceTime)
+                {
+                    _timeCheck = 0;
+                    _getPartNumber++;
+                    if (_getPartNumber <= _maxOcc)
+                        ResourceManager.Instance.TowerPartPayment(EPaymentType.Occasional, _wave - 1);
+                }
+            }
+            else
+            {
+                GameUI.Instance.TimeView((int)(_startWaveTime - _timeCheck));
+                if (_timeCheck >= 15.0f)
+                {
+                    _timeCheck = 0;
+                    WaveStart();
+                }
             }
         }
     }
 
-    public void WaveStart()
+    void WaveStart()
     {
         _waveStart = true;
         WaveManager.Instance.WaveStart(_wave);
+        GameUI.Instance.WaveStart(_wave);
     }
 
     public void WaveEnd(bool stageClear)
     {
         _timeCheck = 0;
         _waveStart = false;
+        _getPartNumber = 0;
         _wave++;
         ResourceManager.Instance.WaveClear(_wave);
         if (stageClear)
         {
-            Debug.Log("스테이지 클리어");
-            GameUI.Instance.StageClear();
+            GameEnd(true);
         }
         else
         {
@@ -85,16 +109,19 @@ public class GameManager : MonoBehaviour
         _installObjects.Add(obstacle.gameObject);
     }
 
-    public void GameEnd()
+    public void GameEnd(bool clear)
     {
         _gameEnd = true;
         PoolManager.Instance.GameEnd();
-        for(int i = 0; i < _installObjects.Count; i++)
+        GameUI.Instance.GameEnd(clear);
+        ResourceManager.Instance.GameEnd();
+        for (int i = 0; i < _installObjects.Count; i++)
         {
             if (_installObjects[i] != null)
             {
                 _installObjects[i].SetActive(false);
             }
         }
+        
     }
 }

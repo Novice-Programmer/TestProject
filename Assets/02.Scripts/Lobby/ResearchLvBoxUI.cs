@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ResearchLvBoxUI : MonoBehaviour
 {
-    [SerializeField] int step;
+    [SerializeField] int step = 0;
     ResearchUI _parent;
     [SerializeField] ResearchLvUI[] _lvUIs = null; 
 

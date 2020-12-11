@@ -27,8 +27,9 @@ MonoBehaviour:
   atkRange: 7
   atkNumber: 2
   targetNumber: 2
-  maxUpgrade: 1
-  maxSpUpgrade: 1
+  maxATKUpgrade: 1
+  maxDEFUpgrade: 1
+  maxSPUpgrade: 1
   spValue:
   - 40
   - 3

@@ -48,7 +48,6 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
     Dictionary<EObjectName, ObstacleGameData> _gameObstacleDatas = new Dictionary<EObjectName, ObstacleGameData>();
 
     [Header("Enemy")]
-    [SerializeField] EnemyData[] _enemyAllDatas = null;
     [SerializeField] Sprite[] _enemyIconSprites = null;
     [SerializeField] Sprite[] _enemyRankSprites = null;
 
@@ -67,6 +66,13 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
         Init();
         Instance = this;
         TowerDictionarySetting();
+    }
+
+    private void Start()
+    {
+        LoadManager.Instance.Load();
+        ResearchManager.Instance.ResearchDictionarySetting();
+        GameDataSetting();
     }
 
     void TowerDictionarySetting()
@@ -99,23 +105,40 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
         }
     }
 
-    public void GameInstallSetting(SelectData[] selectDatas)
+    public void GameDataSetting()
     {
-        for (int i = 0; i < selectDatas.Length; i++)
+        for (int i = 0; i < _towerAllDatas.Length; i++)
         {
-            if (selectDatas[i].objectType == EObjectType.Tower)
-            {
-                TowerGameData towerGameData = new TowerGameData(GetTowerData(selectDatas[i].objectName));
-                towerGameData.CostCheck();
-                _gameTowerDatas.Add(selectDatas[i].objectName, towerGameData);
-            }
-            else
-            {
-                ObstacleGameData obstacleGameData = new ObstacleGameData(GetObstacleData(selectDatas[i].objectName));
-                obstacleGameData.ResearchAdd(selectDatas[i].researchDatas);
-                _gameObstacleDatas.Add(selectDatas[i].objectName, obstacleGameData);
-            }
+            TowerGameData towerData = new TowerGameData(_towerAllDatas[i]);
+            towerData.CostCheck();
+            _gameTowerDatas.Add(towerData.objectName, towerData);
         }
+        for (int i = 0; i < _obstacleAllDatas.Length; i++)
+        {
+            ObstacleGameData obstacleGameData = new ObstacleGameData(_obstacleAllDatas[i]);
+            obstacleGameData.CostCheck();
+            _gameObstacleDatas.Add(obstacleGameData.objectName, obstacleGameData);
+        }
+    }
+
+    public void GameDataUpdate()
+    {
+        Dictionary<EObjectName, TowerGameData> updateTowerDatas = new Dictionary<EObjectName, TowerGameData>();
+        foreach (TowerGameData towerGameData in _gameTowerDatas.Values)
+        {
+            TowerGameData updateData = new TowerGameData(GetTowerData(towerGameData.objectName));
+            updateData.CostCheck();
+            updateTowerDatas.Add(updateData.objectName, updateData);
+        }
+        Dictionary<EObjectName, ObstacleGameData> updateObstacleDatas = new Dictionary<EObjectName, ObstacleGameData>();
+        foreach (ObstacleGameData obstacleGameData in _gameObstacleDatas.Values)
+        {
+            ObstacleGameData updateData = new ObstacleGameData(GetObstacleData(obstacleGameData.objectName));
+            updateData.CostCheck();
+            updateObstacleDatas.Add(updateData.objectName, updateData);
+        }
+        _gameTowerDatas = updateTowerDatas;
+        _gameObstacleDatas = updateObstacleDatas;
     }
 
     public TowerData GetTowerData(EObjectName towerName)
@@ -186,26 +209,26 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
     {
         List<InstallData> installDatas = new List<InstallData>();
 
-        foreach (EObjectName objectName in _gameTowerDatas.Keys)
-        {
-            TowerGameData towerGameData = _gameTowerDatas[objectName];
-            InstallData installTowerData = new InstallData();
-            installTowerData.objectType = EObjectType.Tower;
-            installTowerData.objectName = towerGameData.objectName;
-            installTowerData.installCost = towerGameData.buildCost;
-            installTowerData.objectImage = GetImage(objectName);
-            installDatas.Add(installTowerData);
-        }
+        List<ObjectData> selectDatas = PlayerDataManager.Instance.SelectList;
 
-        foreach (EObjectName objectName in _gameObstacleDatas.Keys)
+        for (int i = 0; i < selectDatas.Count; i++)
         {
-            ObstacleGameData obstacleGameData = _gameObstacleDatas[objectName];
-            InstallData installObstacleData = new InstallData();
-            installObstacleData.objectType = EObjectType.Obstacle;
-            installObstacleData.objectName = obstacleGameData.objectName;
-            installObstacleData.installCost = obstacleGameData.buildCost;
-            installObstacleData.objectImage = GetImage(objectName);
-            installDatas.Add(installObstacleData);
+            InstallData installData = new InstallData();
+            if (selectDatas[i].objectType == EObjectType.Tower)
+            {
+                TowerGameData towerGameData = _gameTowerDatas[selectDatas[i].objectName];
+                installData.objectType = EObjectType.Tower;
+                installData.installCost = towerGameData.buildCost;
+            }
+            else
+            {
+                ObstacleGameData obstacleGameData = _gameObstacleDatas[selectDatas[i].objectName];
+                installData.objectType = EObjectType.Obstacle;
+                installData.installCost = obstacleGameData.buildCost;
+            }
+            installData.objectName = selectDatas[i].objectName;
+            installData.objectImage = GetImage(selectDatas[i].objectName);
+            installDatas.Add(installData);
         }
 
         return installDatas.ToArray();
@@ -270,6 +293,18 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
         return null;
     }
 
+    public string GetName(EObjectType objectType, EObjectName objectName)
+    {
+        if (objectType == EObjectType.Tower)
+        {
+            return GetTowerData(objectName).towerName;
+        }
+        else
+        {
+            return GetObstacleData(objectName).obstacleName;
+        }
+    }
+
     public void MarkerSetting(Transform target, EObjectName objectName)
     {
         Marker marker = Instantiate(_prefabMarker, _markerContainer);
@@ -301,5 +336,27 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
     public WorldStatusUI StatusInit()
     {
         return Instantiate(_prefabStatusUI, _statusContainer);
+    }
+
+    public List<TowerGameData> GetAllToweGameData()
+    {
+        List<TowerGameData> towerGameDatas = new List<TowerGameData>();
+
+        foreach (TowerGameData towerGameData in _gameTowerDatas.Values)
+        {
+            towerGameDatas.Add(towerGameData);
+        }
+        return towerGameDatas;
+    }
+
+    public List<ObstacleGameData> GetAllObstacleGameData()
+    {
+        List<ObstacleGameData> obstacleGameDatas = new List<ObstacleGameData>();
+
+        foreach (ObstacleGameData obstacleGameData in _gameObstacleDatas.Values)
+        {
+            obstacleGameDatas.Add(obstacleGameData);
+        }
+        return obstacleGameDatas;
     }
 }

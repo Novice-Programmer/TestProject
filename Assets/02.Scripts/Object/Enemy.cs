@@ -29,13 +29,13 @@ public abstract class Enemy : ObjectGame
     [SerializeField] protected float _atkSpd; // 공격 속도
     [SerializeField] protected float _movSpd; // 이동 속도
     [SerializeField] protected float _moveCheckSize; // 이동 확인 범위
-    protected WorldStatusUI _statusUI = null;
     [SerializeField] NavMeshObstacle _enemyObstacle = null;
 
     [SerializeField] List<BadBuff> _badBuffs;
 
     NavMeshAgent _enemyAI;
     Animator _enemyAnim;
+    WorldStatusUI _statusUI = null;
     public Transform _target;
     EObjectType _prevTarget;
     bool _searchFail = true;
@@ -53,7 +53,6 @@ public abstract class Enemy : ObjectGame
     {
         _enemyAI = GetComponent<NavMeshAgent>();
         _enemyAnim = GetComponent<Animator>();
-        _statusUI = ObjectDataManager.Instance.StatusInit();
     }
 
     public void Active()
@@ -61,6 +60,7 @@ public abstract class Enemy : ObjectGame
         gameObject.SetActive(true);
         _enemyAI.enabled = true;
         _enemyObstacle.enabled = false;
+        _target = null;
         _wavePointIndex = 0;
         _enemyAI.destination = WayPointContainer._wayPoints[_wavePointIndex].position;
         for (int i = 0; i < _badBuffs.Count; i++)
@@ -74,6 +74,8 @@ public abstract class Enemy : ObjectGame
         _attackTime = 0;
         _attackNumber = 0;
         _hp = _enemyData.hp;
+        GameObject go = PoolManager.Instance.PoolGetAvailableObject("StatusUI");
+        _statusUI = go.GetComponent<WorldStatusUI>();
         _statusUI.StatusSetting(transform, _enemyData.hp, 4f);
         _objectName = _enemyData.objectName;
         _mp = 0;
@@ -442,6 +444,13 @@ public abstract class Enemy : ObjectGame
     public void DieEnd()
     {
         _action = true;
+        float rate = Random.Range(0.0f, 100.0f);
+        if (rate < _enemyData.mineralGetRate)
+        {
+            GameObject mineralObj = PoolManager.Instance.PoolGetObject("Mineral");
+            DropMineral mineral = mineralObj.GetComponent<DropMineral>();
+            mineral.MineralDrop(Random.Range(_enemyData.minMineral, _enemyData.maxMineral), transform.position, transform.right);
+        }
         Disactive();
     }
 

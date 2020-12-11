@@ -17,6 +17,7 @@ MonoBehaviour:
   initialTP: 200
   regularTP: 100
   occasionalTP: 10
+  occasionalNumber: 5
   waveAddTP: 1
   waveClearMineral: 1
   basicClearMineral: 1

@@ -5,6 +5,8 @@ using UnityEngine;
 public enum EPathType
 {
     Enemy,
+    Object,
+    UI
 }
 
 public class PoolManager : MonoBehaviour
@@ -13,6 +15,7 @@ public class PoolManager : MonoBehaviour
     public static PoolManager Instance { get { return _uniqueInstance; } }
 
     Dictionary<string, List<GameObject>> _poolObjects = new Dictionary<string, List<GameObject>>();
+    Dictionary<string, List<AvailablePool>> _availableObjects = new Dictionary<string, List<AvailablePool>>();
 
     private void Awake()
     {
@@ -42,7 +45,7 @@ public class PoolManager : MonoBehaviour
                     enemyNameCheck.Add(enemyFileName, 1);
                 }
             }
-            foreach(string enemyFileName in enemyNameCheck.Keys)
+            foreach (string enemyFileName in enemyNameCheck.Keys)
             {
                 if (enemyCreateName.ContainsKey(enemyFileName))
                 {
@@ -59,8 +62,18 @@ public class PoolManager : MonoBehaviour
         }
         foreach (string enemyFileName in enemyCreateName.Keys)
         {
-            CreatePoolObject(enemyFileName, enemyCreateName[enemyFileName], EPathType.Enemy);
+            CreatePoolObject(enemyFileName, enemyCreateName[enemyFileName], WaveManager.Instance._startPoint, EPathType.Enemy);
         }
+    }
+
+    public void MineralInit(int enemyMaxNumber)
+    {
+        CreatePoolObject("Mineral", (int)(enemyMaxNumber * 0.5f), GameManager.Instance.transform, EPathType.Object);
+    }
+
+    public void StatusUIInit(int enemyMaxNumber)
+    {
+        CreateAvailablePoolObject("StatusUI", enemyMaxNumber, GameManager.Instance.transform, EPathType.UI);
     }
 
     /// <summary>
@@ -69,17 +82,32 @@ public class PoolManager : MonoBehaviour
     /// <param name="objectName">파일명</param>
     /// <param name="number">만들 오브젝트의 숫자</param>
     /// <param name="path">위치</param>
-    void CreatePoolObject(string objectName, int number, EPathType path)
+    void CreatePoolObject(string objectName, int number, Transform targetTr, EPathType path)
     {
         List<GameObject> gameObjectList = new List<GameObject>();
         GameObject go = Resources.Load(path.ToString() + "/" + objectName) as GameObject;
         for (int i = 0; i < number; i++)
         {
-            GameObject obj = Instantiate(go, WaveManager.Instance._startPoint.position, WaveManager.Instance._startPoint.rotation, transform);
+            GameObject obj = Instantiate(go, targetTr.position, targetTr.rotation, transform);
             obj.SetActive(false);
             gameObjectList.Add(obj);
         }
         _poolObjects.Add(objectName, gameObjectList);
+    }
+
+    void CreateAvailablePoolObject(string objectName, int number, Transform targetTr, EPathType path)
+    {
+        List<AvailablePool> gameObjectList = new List<AvailablePool>();
+        GameObject go = Resources.Load(path.ToString() + "/" + objectName) as GameObject;
+        for (int i = 0; i < number; i++)
+        {
+            GameObject obj = Instantiate(go, targetTr.position, targetTr.rotation, transform);
+            obj.SetActive(false);
+            AvailablePool availablePool = obj.GetComponent<AvailablePool>();
+            availablePool._available = true;
+            gameObjectList.Add(availablePool);
+        }
+        _availableObjects.Add(objectName, gameObjectList);
     }
 
     /// <summary>
@@ -90,7 +118,7 @@ public class PoolManager : MonoBehaviour
     public GameObject PoolGetObject(string objectName)
     {
         GameObject go = _poolObjects[objectName][0];
-        for(int i = 0; i < _poolObjects[objectName].Count; i++)
+        for (int i = 0; i < _poolObjects[objectName].Count; i++)
         {
             if (!_poolObjects[objectName][i].activeSelf)
             {
@@ -101,11 +129,26 @@ public class PoolManager : MonoBehaviour
         return go;
     }
 
+    public GameObject PoolGetAvailableObject(string objectName)
+    {
+        AvailablePool go = _availableObjects[objectName][0];
+        for (int i = 0; i < _availableObjects[objectName].Count; i++)
+        {
+            if (_availableObjects[objectName][i]._available)
+            {
+                go = _availableObjects[objectName][i];
+                go._available = false;
+                break;
+            }
+        }
+        return go.gameObject;
+    }
+
     public void GameEnd()
     {
-        foreach(List<GameObject> gameObjects in _poolObjects.Values)
+        foreach (List<GameObject> gameObjects in _poolObjects.Values)
         {
-            for(int i = 0; i < gameObjects.Count; i++)
+            for (int i = 0; i < gameObjects.Count; i++)
             {
                 gameObjects[i].SetActive(false);
             }

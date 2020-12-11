@@ -50,9 +50,9 @@ public class UIInfo : MonoBehaviour
         InstallData[] installTowerDatas = ObjectDataManager.Instance.GetInstallData();
         for (int i = 0; i < installTowerDatas.Length; i++)
         {
-            InstallSpawnButton towerSpawnButton = Instantiate(_prefabInstallBtn, _insBtnContainer);
-            towerSpawnButton.ButtonDataSetting(installTowerDatas[i]);
-            _spawnButtons.Add(towerSpawnButton);
+            InstallSpawnButton spawnButton = Instantiate(_prefabInstallBtn, _insBtnContainer);
+            spawnButton.ButtonDataSetting(installTowerDatas[i]);
+            _spawnButtons.Add(spawnButton);
         }
     }
 
@@ -121,93 +121,104 @@ public class UIInfo : MonoBehaviour
 
     void TowerUISetting(Tower tower)
     {
+        _selectTower = tower;
         _towerName.text = tower._gameTowerData.towerName;
         _towerIconImage.sprite = ObjectDataManager.Instance.GetImage(tower._objectName);
-        bool towerRepairCheck;
-        _towerRepairCostTxt.text = tower.TowerRepairCost().ToString();
-        _towerRepairIcon.SetActive(true);
-        if (tower._hp > (tower._maxHP * 0.9f))
-        {
-            towerRepairCheck = false;
-            _towerRepairIcon.SetActive(false);
-            _towerRepairCostTxt.text = "내구도 충분";
-        }
-        else if (ResourceManager.Instance.TowerPartValue < tower.TowerRepairCost())
-            towerRepairCheck = false;
-        else
-            towerRepairCheck = true;
-        _towerRepairBtn.interactable = towerRepairCheck;
-        _towerSellGetTxt.text = tower.TowerGetSellNumber().ToString();
-        bool upgradeDEFCheck = ResourceManager.Instance.TowerPartValue >= tower.UpgradeCost(EUpgradeType.Defence);
+        TowerCostCheck();
+    }
+
+    void TowerCostCheck()
+    {
+        RepairCheck();
+        _towerSellGetTxt.text = _selectTower.TowerGetSellNumber().ToString();
+        bool upgradeDEFCheck = ResourceManager.Instance.TowerPartValue >= _selectTower.UpgradeCost(EUpgradeType.Defence);
         _towerDEFTxt.color = Color.white;
-        if (tower._upgradeDEF != null)
+        if (_selectTower._upgradeDEF != null)
         {
-            upgradeDEFCheck &= tower._gameTowerData.maxUpgrade >= tower._upgradeDEF.level;
-            if (tower._gameTowerData.maxUpgrade >= tower._upgradeDEF.level)
-                _towerDEFTxt.text = "DEF Up " + tower.UpgradeCost(EUpgradeType.Defence);
+            upgradeDEFCheck &= _selectTower._gameTowerData.maxDEFUpgrade > _selectTower._upgradeDEF.level;
+            if (_selectTower._gameTowerData.maxDEFUpgrade > _selectTower._upgradeDEF.level)
+                _towerDEFTxt.text = "DEF Up " + _selectTower.UpgradeCost(EUpgradeType.Defence);
             else
                 _towerDEFTxt.text = "Max DEF Upgrade";
         }
 
         else
         {
-            _towerDEFTxt.text = "DEF Up " + tower.UpgradeCost(EUpgradeType.Defence);
+            _towerDEFTxt.text = "DEF Up " + _selectTower.UpgradeCost(EUpgradeType.Defence);
         }
 
-        if(ResourceManager.Instance.TowerPartValue < tower.UpgradeCost(EUpgradeType.Defence))
+        if (ResourceManager.Instance.TowerPartValue < _selectTower.UpgradeCost(EUpgradeType.Defence))
         {
             _towerDEFTxt.color = Color.red;
         }
         _towerUpgradeDEFBtn.interactable = upgradeDEFCheck;
 
-        bool upgradeATKCheck = ResourceManager.Instance.TowerPartValue >= tower.UpgradeCost(EUpgradeType.Attack);
+        bool upgradeATKCheck = ResourceManager.Instance.TowerPartValue >= _selectTower.UpgradeCost(EUpgradeType.Attack);
         _towerATKTxt.color = Color.white;
-        if (tower._upgradeATK != null)
+        if (_selectTower._upgradeATK != null)
         {
-            upgradeATKCheck &= tower._gameTowerData.maxUpgrade >= tower._upgradeATK.level;
-            if (tower._gameTowerData.maxUpgrade >= tower._upgradeATK.level)
-                _towerATKTxt.text = "ATK Up " + tower.UpgradeCost(EUpgradeType.Attack);
+            upgradeATKCheck &= _selectTower._gameTowerData.maxATKUpgrade > _selectTower._upgradeATK.level;
+            if (_selectTower._gameTowerData.maxATKUpgrade > _selectTower._upgradeATK.level)
+                _towerATKTxt.text = "ATK Up " + _selectTower.UpgradeCost(EUpgradeType.Attack);
             else
                 _towerATKTxt.text = "Max ATK Upgrade";
         }
         else
         {
-            _towerATKTxt.text = "ATK Up " + tower.UpgradeCost(EUpgradeType.Attack);
+            _towerATKTxt.text = "ATK Up " + _selectTower.UpgradeCost(EUpgradeType.Attack);
         }
         _towerUpgradeATKBtn.interactable = upgradeATKCheck;
-        if (ResourceManager.Instance.TowerPartValue < tower.UpgradeCost(EUpgradeType.Attack))
+        if (ResourceManager.Instance.TowerPartValue < _selectTower.UpgradeCost(EUpgradeType.Attack))
         {
             _towerATKTxt.color = Color.red;
         }
 
 
-        bool upgradeSPCheck = ResourceManager.Instance.TowerPartValue >= tower.UpgradeCost(EUpgradeType.Special);
+        bool upgradeSPCheck = ResourceManager.Instance.TowerPartValue >= _selectTower.UpgradeCost(EUpgradeType.Special);
         _towerSPTxt.color = Color.white;
-        if (tower._upgradeSP != null)
+        if (_selectTower._upgradeSP != null)
         {
-            upgradeSPCheck &= tower._gameTowerData.spMaxUpgrade >= tower._upgradeSP.level;
-            if (tower._gameTowerData.spMaxUpgrade >= tower._upgradeSP.level)
-                _towerSPTxt.text = "SP Up " + tower.UpgradeCost(EUpgradeType.Special);
+            upgradeSPCheck &= _selectTower._gameTowerData.maxSPUpgrade > _selectTower._upgradeSP.level;
+            if (_selectTower._gameTowerData.maxSPUpgrade > _selectTower._upgradeSP.level)
+                _towerSPTxt.text = "SP Up " + _selectTower.UpgradeCost(EUpgradeType.Special);
             else
                 _towerSPTxt.text = "Max SP Upgrade";
         }
         else
         {
-            _towerSPTxt.text = "SP Up " + tower.UpgradeCost(EUpgradeType.Special);
+            _towerSPTxt.text = "SP Up " + _selectTower.UpgradeCost(EUpgradeType.Special);
         }
         _towerUpgradeSPBtn.interactable = upgradeSPCheck;
-        if (ResourceManager.Instance.TowerPartValue < tower.UpgradeCost(EUpgradeType.Special))
+        if (ResourceManager.Instance.TowerPartValue < _selectTower.UpgradeCost(EUpgradeType.Special))
         {
             _towerSPTxt.color = Color.red;
         }
+    }
 
-
-        _selectTower = tower;
+    public void RepairCheck()
+    {
+        if (_selectTower == null) {
+            return;
+        }
+        bool towerRepairCheck;
+        _towerRepairCostTxt.text = _selectTower.TowerRepairCost().ToString();
+        _towerRepairIcon.SetActive(true);
+        if (_selectTower._hp > (_selectTower._maxHP * 0.9f))
+        {
+            towerRepairCheck = false;
+            _towerRepairIcon.SetActive(false);
+            _towerRepairCostTxt.text = "내구도 충분";
+        }
+        else if (ResourceManager.Instance.TowerPartValue < _selectTower.TowerRepairCost())
+            towerRepairCheck = false;
+        else
+            towerRepairCheck = true;
+        _towerRepairBtn.interactable = towerRepairCheck;
     }
 
     void ObstacleUISetting(Obstacle obstacle)
     {
-        _obstacleName.text = obstacle._gameObstacleData.obstacleNameString;
+        _obstacleName.text = obstacle._gameObstacleData.obstacleName;
         _obstacleIconImage.sprite = ObjectDataManager.Instance.GetImage(obstacle._objectName);
         _obstacleSellGetTxt.text = obstacle._sellGetCost.ToString();
         _selectObstacle = obstacle;
@@ -221,6 +232,10 @@ public class UIInfo : MonoBehaviour
 
     public void UIValueChange()
     {
+        if(_selectTower != null)
+        {
+            TowerCostCheck();
+        }
         for (int i = 0; i < _spawnButtons.Count; i++)
         {
             _spawnButtons[i].InstallMoneyCheck();

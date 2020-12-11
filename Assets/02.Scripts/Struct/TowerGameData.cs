@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
 public struct TowerGameData
@@ -18,11 +19,12 @@ public struct TowerGameData
     public float[] spValue; // 특수 능력치
 
     public int buildCost; // 설치 비용
-    public int maxUpgrade; // 일반 최대 업그레이드 레벨
+    public int maxATKUpgrade; // 공격 최대 업그레이드 레벨
+    public int maxDEFUpgrade; // 방어 최대 업그레이드 레벨
+    public int maxSPUpgrade; // 특수 최대 업그레이드 레벨
     public int defUpgradeCost; // 방어 업그레이드 비용
     public int atkUpgradeCost; // 공격 업그레이드 비용
     public int spUpgradeCost; // 특수 업그레이드 비용
-    public int spMaxUpgrade; // 특수 최대 업그레이드
     public ESpecialResearch specialResearch; // 특수 업그레이드
 
     public TowerGameData(TowerData towerData)
@@ -44,8 +46,9 @@ public struct TowerGameData
             spValue[i] = towerData.spValue[i];
         }
         buildCost = towerData.buildCost;
-        maxUpgrade = towerData.maxUpgrade;
-        spMaxUpgrade = towerData.maxSpUpgrade;
+        maxATKUpgrade = towerData.maxATKUpgrade;
+        maxDEFUpgrade = towerData.maxDEFUpgrade;
+        maxSPUpgrade = towerData.maxSPUpgrade;
         defUpgradeCost = towerData.defUpgradeCost;
         atkUpgradeCost = towerData.atkUpgradeCost;
         spUpgradeCost = towerData.spUpgradeCost;
@@ -54,25 +57,30 @@ public struct TowerGameData
 
     public void CostCheck()
     {
-        int reduceCost = (int)(buildCost * ResearchManager.Instance.GameResearchData.towerCostReduceRate * 0.01f);
+        ResearchResult researchResult = ResearchManager.Instance.GameResearchData;
+        int reduceCost = (int)(buildCost * researchResult.towerCostReduceRate * 0.01f);
         if (buildCost + reduceCost > 0)
         {
             buildCost += reduceCost;
         }
-        reduceCost = (int)(defUpgradeCost * ResearchManager.Instance.GameResearchData.towerCostReduceRate * 0.01f);
+        reduceCost = (int)(defUpgradeCost * researchResult.towerCostReduceRate * 0.01f);
         if (defUpgradeCost + reduceCost > 0)
         {
             defUpgradeCost += reduceCost;
         }
-        reduceCost = (int)(atkUpgradeCost * ResearchManager.Instance.GameResearchData.towerCostReduceRate * 0.01f);
+        reduceCost = (int)(atkUpgradeCost * researchResult.towerCostReduceRate * 0.01f);
         if (atkUpgradeCost + reduceCost > 0)
         {
             atkUpgradeCost += reduceCost;
         }
-        reduceCost = (int)(spUpgradeCost * ResearchManager.Instance.GameResearchData.towerCostReduceRate * 0.01f);
+        reduceCost = (int)(spUpgradeCost * researchResult.towerCostReduceRate * 0.01f);
         if (spUpgradeCost + reduceCost > 0)
         {
             spUpgradeCost += reduceCost;
         }
+
+        maxATKUpgrade += researchResult.maxATKUpgradeAdd;
+        maxDEFUpgrade += researchResult.maxDEFUpgradeAdd;
+        maxSPUpgrade += researchResult.maxSPUpgradeAdd;
     }
 }

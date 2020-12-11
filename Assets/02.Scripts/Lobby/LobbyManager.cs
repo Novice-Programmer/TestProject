@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LobbyManager : TSingleton<LobbyManager>
 {
+    [SerializeField] GameObject _playerUI = null;
+
     bool _loadEndCheck = true;
     float _timeCheck;
 
@@ -15,7 +17,6 @@ public class LobbyManager : TSingleton<LobbyManager>
 
     private void Update()
     {
-        /*
         if (_loadEndCheck)
         {
             if(SceneControlManager.Instance.NowLoaddingState == ELoaddingState.None)
@@ -28,6 +29,10 @@ public class LobbyManager : TSingleton<LobbyManager>
         {
 
         }
-        */
+    }
+
+    public void PlanetSelect(bool open)
+    {
+        _playerUI.SetActive(!open);
     }
 }

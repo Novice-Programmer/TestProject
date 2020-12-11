@@ -31,13 +31,16 @@ public class Commander : ObjectGame
 
     public override void Hit(int damage, EWeakType weakType)
     {
-        _hp -= damage;
-        _statusUI.HPChange(_hp);
-        if (_hp <= 0)
+        if (!GameManager.Instance.GameEndCheck)
         {
-            _hp = 0;
-            GameManager.Instance.GameEnd();
+            _hp -= damage;
+            _statusUI.HPChange(_hp);
+            if (_hp <= 0)
+            {
+                _hp = 0;
+                GameManager.Instance.GameEnd(false);
+            }
+            GameUI.Instance.CommanderHit(_hp);
         }
-        GameUI.Instance.CommanderHit(_hp);
     }
 }

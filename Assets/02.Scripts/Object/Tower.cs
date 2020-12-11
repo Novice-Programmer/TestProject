@@ -156,6 +156,8 @@ public abstract class Tower : ObjectGame
             Braekdown();
         }
         _statusUI.HPChange(_hp);
+        if (_objectSelect)
+            GameUI.Instance.SelectHPValueChange();
     }
 
     void Braekdown()
@@ -299,6 +301,7 @@ public abstract class Tower : ObjectGame
     {
         _hp = _maxHP;
         _statusUI.HPChange(_hp);
+        _target = null;
         if (_stateType == EStateType.Breakdown)
         {
             StateChange(EStateType.AttackSearch);
@@ -336,34 +339,47 @@ public abstract class Tower : ObjectGame
 
     void StatusCheck()
     {
+        ResearchResult researchResult = ResearchManager.Instance.GameResearchData;
+        if (researchResult.startATKUpgrade != 0)
+        {
+            _upgradeATK = ObjectDataManager.Instance.GetUpgradeData(_objectName, EUpgradeType.Attack, researchResult.startATKUpgrade);
+        }
+        if (researchResult.startDEFUpgrade != 0)
+        {
+            _upgradeDEF = ObjectDataManager.Instance.GetUpgradeData(_objectName, EUpgradeType.Defence, researchResult.startDEFUpgrade);
+        }
+        if (researchResult.startSPUpgrade != 0)
+        {
+            _upgradeSP = ObjectDataManager.Instance.GetUpgradeData(_objectName, EUpgradeType.Special, researchResult.startSPUpgrade);
+        }
 
         if (_upgradeATK != null)
         {
-            _atk = (int)(_gameTowerData.atk + _upgradeATK.addValue[0] + (_gameTowerData.atk + _upgradeATK.addValue[0]) * ResearchManager.Instance.GameResearchData.atkAddRate * 0.01f);
-            _atkSpd = _gameTowerData.atkSpd + _upgradeATK.addValue[1] + (_gameTowerData.atkSpd + _upgradeATK.addValue[1]) * ResearchManager.Instance.GameResearchData.atkSpdAddRate * 0.01f;
-            _atkRange = _gameTowerData.atkRange + _upgradeATK.addValue[2] + (_gameTowerData.atkRange + _upgradeATK.addValue[2]) * ResearchManager.Instance.GameResearchData.atkRangeAddRate * 0.01f;
+            _atk = (int)(_gameTowerData.atk + _upgradeATK.addValue[0] + (_gameTowerData.atk + _upgradeATK.addValue[0]) * researchResult.atkAddRate * 0.01f);
+            _atkSpd = _gameTowerData.atkSpd + _upgradeATK.addValue[1] + (_gameTowerData.atkSpd + _upgradeATK.addValue[1]) * researchResult.atkSpdAddRate * 0.01f;
+            _atkRange = _gameTowerData.atkRange + _upgradeATK.addValue[2] + (_gameTowerData.atkRange + _upgradeATK.addValue[2]) * researchResult.atkRangeAddRate * 0.01f;
             _atkNumber = _gameTowerData.atkNumber + (int)_upgradeATK.addValue[3];
             _targetNumber = _gameTowerData.atkNumber + (int)_upgradeATK.addValue[4];
         }
         else
         {
-            _atk = _gameTowerData.atk + (int)(_gameTowerData.atk * ResearchManager.Instance.GameResearchData.atkAddRate * 0.01f);
-            _atkSpd = _gameTowerData.atkSpd + _gameTowerData.atkSpd * ResearchManager.Instance.GameResearchData.atkSpdAddRate * 0.01f;
-            _atkRange = _gameTowerData.atkRange + _gameTowerData.atkRange * ResearchManager.Instance.GameResearchData.atkRangeAddRate * 0.01f;
+            _atk = _gameTowerData.atk + (int)(_gameTowerData.atk * researchResult.atkAddRate * 0.01f);
+            _atkSpd = _gameTowerData.atkSpd + _gameTowerData.atkSpd * researchResult.atkSpdAddRate * 0.01f;
+            _atkRange = _gameTowerData.atkRange + _gameTowerData.atkRange * researchResult.atkRangeAddRate * 0.01f;
             _atkNumber = _gameTowerData.atkNumber;
             _targetNumber = _gameTowerData.atkNumber;
         }
         if (_upgradeDEF != null)
         {
-            _maxHP = (int)(_gameTowerData.hp + _upgradeDEF.addValue[0] + (_gameTowerData.hp + _upgradeDEF.addValue[0]) * ResearchManager.Instance.GameResearchData.hpAddRate * 0.01f);
-            _def = (int)(_gameTowerData.def + _upgradeDEF.addValue[1] + (_gameTowerData.def + _upgradeDEF.addValue[1]) * ResearchManager.Instance.GameResearchData.defAddRate * 0.01f);
-            _chargeEP = (int)(_gameTowerData.ep + _upgradeDEF.addValue[2] + (_gameTowerData.ep + _upgradeDEF.addValue[2]) * ResearchManager.Instance.GameResearchData.epAddRate * 0.01f);
+            _maxHP = (int)(_gameTowerData.hp + _upgradeDEF.addValue[0] + (_gameTowerData.hp + _upgradeDEF.addValue[0]) * researchResult.hpAddRate * 0.01f);
+            _def = (int)(_gameTowerData.def + _upgradeDEF.addValue[1] + (_gameTowerData.def + _upgradeDEF.addValue[1]) * researchResult.defAddRate * 0.01f);
+            _chargeEP = (int)(_gameTowerData.ep + _upgradeDEF.addValue[2] + (_gameTowerData.ep + _upgradeDEF.addValue[2]) * researchResult.epAddRate * 0.01f);
         }
         else
         {
-            _maxHP = _gameTowerData.hp + (int)(_gameTowerData.hp * ResearchManager.Instance.GameResearchData.hpAddRate * 0.01f);
-            _def = _gameTowerData.def + (int)(_gameTowerData.def * ResearchManager.Instance.GameResearchData.defAddRate * 0.01f);
-            _chargeEP = _gameTowerData.ep + (int)(_gameTowerData.ep * ResearchManager.Instance.GameResearchData.epAddRate * 0.01f);
+            _maxHP = _gameTowerData.hp + (int)(_gameTowerData.hp * researchResult.hpAddRate * 0.01f);
+            _def = _gameTowerData.def + (int)(_gameTowerData.def * researchResult.defAddRate * 0.01f);
+            _chargeEP = _gameTowerData.ep + (int)(_gameTowerData.ep * researchResult.epAddRate * 0.01f);
         }
 
         _spValue = new float[_gameTowerData.spValue.Length];
@@ -384,6 +400,7 @@ public abstract class Tower : ObjectGame
 
     public int UpgradeCost(EUpgradeType upgradeType)
     {
+        ResearchResult researchResult = ResearchManager.Instance.GameResearchData;
         int cost = 0;
 
         switch (upgradeType)
@@ -391,7 +408,7 @@ public abstract class Tower : ObjectGame
             case EUpgradeType.Attack:
                 if (_upgradeATK != null)
                 {
-                    cost = _upgradeATK.nextCost + _gameTowerData.atkUpgradeCost;
+                    cost = _upgradeATK.nextCost + (int)(_upgradeATK.nextCost * researchResult.towerCostReduceRate * 0.01f) + _gameTowerData.atkUpgradeCost;
                 }
                 else
                 {
@@ -401,7 +418,7 @@ public abstract class Tower : ObjectGame
             case EUpgradeType.Defence:
                 if (_upgradeDEF != null)
                 {
-                    cost = _upgradeDEF.nextCost + _gameTowerData.defUpgradeCost;
+                    cost = _upgradeDEF.nextCost + (int)(_upgradeDEF.nextCost * researchResult.towerCostReduceRate * 0.01f) + _gameTowerData.defUpgradeCost;
                 }
                 else
                 {
@@ -411,7 +428,7 @@ public abstract class Tower : ObjectGame
             case EUpgradeType.Special:
                 if (_upgradeSP != null)
                 {
-                    cost = _upgradeSP.nextCost + _gameTowerData.spUpgradeCost;
+                    cost = _upgradeSP.nextCost + (int)(_upgradeSP.nextCost * researchResult.towerCostReduceRate * 0.01f) + _gameTowerData.spUpgradeCost;
                 }
                 else
                 {
@@ -428,6 +445,7 @@ public abstract class Tower : ObjectGame
         int cost;
         float hpRate = 1 - (float)_hp / _maxHP;
         cost = (int)(hpRate * _totalCost * 0.3f);
+        cost += (int)(cost * ResearchManager.Instance.GameResearchData.towerCostReduceRate * 0.01f);
         return cost;
     }
 

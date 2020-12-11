@@ -24,7 +24,7 @@ public enum ELoaddingState
 
 public class SceneControlManager : TSingleton<SceneControlManager>
 {
-    public static ESceneType SceneType = ESceneType.Start;
+    public ESceneType SceneType { get { return _nowSceneType; } }
 
     GameObject _prefabLoading;
     Loading _wnd;

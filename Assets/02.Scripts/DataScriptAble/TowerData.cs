@@ -19,8 +19,9 @@ public class TowerData : ScriptableObject
     public float atkRange; // 공격 범위
     public int atkNumber; // 공격 횟수
     public int targetNumber; // 타겟 수
-    public int maxUpgrade; // 최대 업그레이드
-    public int maxSpUpgrade; // 최대 특수 업그레이드
+    public int maxATKUpgrade; // 최대 공격 업그레이드
+    public int maxDEFUpgrade; // 최대 방어 업그레이드
+    public int maxSPUpgrade; // 최대 특수 업그레이드
     public float[] spValue; // 특수 능력치
 
     public int buildCost; // 설치 비용

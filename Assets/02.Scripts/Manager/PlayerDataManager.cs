@@ -6,7 +6,28 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
 {
     Dictionary<EResearchType, Dictionary<int, EResearch>> _playerSelectResearch;
     Dictionary<EObjectType, List<EObjectName>> _playerSelectObject;
+    Dictionary<EObjectType, List<EObjectName>> _playerAvailableObject;
     Dictionary<EResearchType, int> _playerResearchCheck;
+    Dictionary<EPlanetType, bool> _playerAvailablePlanet;
+    Dictionary<EPlanetType, List<bool>> _playerAvailableStage;
+
+    int _maxSelectObject = 3;
+
+    public int MaxSelected { get { return _maxSelectObject; } }
+    public int SelectedNumber
+    {
+        get
+        {
+            int selectNumber = 0;
+            foreach (List<EObjectName> objectNames in _playerSelectObject.Values)
+            {
+                selectNumber += objectNames.Count;
+            }
+            return selectNumber;
+        }
+    }
+
+    public bool Selected { get { return SelectedNumber < _maxSelectObject; } }
 
     List<EResearch> SelectResearchList
     {
@@ -24,6 +45,42 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
         }
     }
 
+    public List<ObjectData> SelectList
+    {
+        get
+        {
+            List<ObjectData> selectObjects = new List<ObjectData>();
+            foreach (EObjectType objectType in _playerSelectObject.Keys)
+            {
+                List<EObjectName> objectNames = _playerSelectObject[objectType];
+                for (int i = 0; i < objectNames.Count; i++)
+                {
+                    selectObjects.Add(new ObjectData(objectType, objectNames[i]));
+                }
+            }
+            return selectObjects;
+        }
+    }
+
+    public List<ObjectData> AvailableList
+    {
+        get
+        {
+            List<ObjectData> availableObjects = new List<ObjectData>();
+            foreach (EObjectType objectType in _playerAvailableObject.Keys)
+            {
+                List<EObjectName> objectNames = _playerAvailableObject[objectType];
+                for (int i = 0; i < objectNames.Count; i++)
+                {
+                    availableObjects.Add(new ObjectData(objectType, objectNames[i]));
+                }
+            }
+            return availableObjects;
+        }
+    }
+
+    public Dictionary<EPlanetType, bool> AvailablePlanet { get { return _playerAvailablePlanet; } }
+
     public int Stage = 0;
 
     private void Awake()
@@ -33,7 +90,8 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
     }
 
     public void LoadData(Dictionary<EResearchType, Dictionary<int, EResearch>> selectResearch, Dictionary<EObjectType, List<EObjectName>> selectObject,
-        Dictionary<EResearchType, int> checkResearch)
+        Dictionary<EResearchType, int> checkResearch, Dictionary<EObjectType, List<EObjectName>> availableObject,
+            Dictionary<EPlanetType, bool> availablePlanet, Dictionary<EPlanetType, List<bool>> availableStage)
     {
         if (selectResearch != null)
         {
@@ -51,6 +109,12 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
         else
         {
             _playerSelectObject = new Dictionary<EObjectType, List<EObjectName>>();
+            List<EObjectName> objectNames = new List<EObjectName>();
+            objectNames.Add(EObjectName.KW9A);
+            _playerSelectObject.Add(EObjectType.Tower,objectNames);
+            objectNames = new List<EObjectName>();
+            objectNames.Add(EObjectName.FireWall);
+            _playerSelectObject.Add(EObjectType.Obstacle, objectNames);
         }
 
         if (checkResearch != null)
@@ -67,6 +131,34 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
             ResearchUpdate(EResearchType.Obstacle, 0, EResearch.ObstacleLv0);
             ResearchUpdate(EResearchType.Resource, 0, EResearch.ResourceLv0);
             ResearchManager.Instance.ResearchUpdate(SelectResearchList);
+        }
+        if (availableObject != null)
+        {
+            _playerAvailableObject = availableObject;
+        }
+        else
+        {
+            _playerAvailableObject = new Dictionary<EObjectType, List<EObjectName>>();
+            _playerAvailableObject.Add(EObjectType.Tower, new List<EObjectName>());
+            _playerAvailableObject[EObjectType.Tower].Add(EObjectName.KW9A);
+            _playerAvailableObject.Add(EObjectType.Obstacle, new List<EObjectName>());
+            _playerAvailableObject[EObjectType.Obstacle].Add(EObjectName.FireWall);
+        }
+        if (availablePlanet != null)
+        {
+            _playerAvailablePlanet = availablePlanet;
+        }
+        else
+        {
+            _playerAvailablePlanet = new Dictionary<EPlanetType, bool>();
+            _playerAvailablePlanet.Add(EPlanetType.Mars, true);
+        }
+        if(availableStage != null)
+        {
+            _playerAvailableStage = new Dictionary<EPlanetType, List<bool>>();
+            List<bool> _marsList = new List<bool>();
+            _marsList.Add(true);
+            _playerAvailableStage.Add(EPlanetType.Mars, _marsList);
         }
     }
 
@@ -121,5 +213,48 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
         {
             return false;
         }
+    }
+
+    public void SelectObjectUpdate(EObjectType objectType, EObjectName objectName)
+    {
+        List<EObjectName> objectNames;
+        if (_playerSelectObject.ContainsKey(objectType))
+        {
+            objectNames = _playerSelectObject[objectType];
+        }
+        else
+        {
+            objectNames = new List<EObjectName>();
+            _playerSelectObject.Add(objectType, objectNames);
+        }
+        objectNames.Add(objectName);
+    }
+
+    public void SelectedCancleUpdate(EObjectType objectType, EObjectName objectName)
+    {
+        List<EObjectName> objectNames = _playerSelectObject[objectType];
+        for(int i = 0; i < objectNames.Count; i++)
+        {
+            if(objectName == objectNames[i])
+            {
+                objectNames.RemoveAt(i);
+                break;
+            }
+        }
+    }
+
+    public void AvailableObjectUpdate(EObjectType objectType, EObjectName objectName)
+    {
+        List<EObjectName> objectNames;
+        if (_playerAvailableObject.ContainsKey(objectType))
+        {
+            objectNames = _playerAvailableObject[objectType];
+        }
+        else
+        {
+            objectNames = new List<EObjectName>();
+            _playerAvailableObject.Add(objectType, objectNames);
+        }
+        objectNames.Add(objectName);
     }
 }

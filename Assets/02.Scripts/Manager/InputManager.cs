@@ -182,8 +182,9 @@ public class InputManager : MonoBehaviour
         else
         {
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
             int selectLayerMask = 1 << LayerMask.NameToLayer("Tower") | 1 << LayerMask.NameToLayer("Enemy") | 1 << LayerMask.NameToLayer("Obstacle");
-
+            int mineralLayerMask = 1 << LayerMask.NameToLayer("Mineral");
             if (SelectObject != null)
             {
                 if (Input.GetMouseButtonUp(1))
@@ -193,7 +194,7 @@ public class InputManager : MonoBehaviour
                 }
             }
 
-            if (Physics.Raycast(ray, out RaycastHit hit, 50f, selectLayerMask))
+            if (Physics.Raycast(ray, out hit, 50f, selectLayerMask))
             {
                 if (Input.GetMouseButtonUp(0))
                 {
@@ -207,6 +208,15 @@ public class InputManager : MonoBehaviour
                         objectGame.Select();
                         SelectObject = objectGame;
                     }
+                }
+            }
+
+            else if (Physics.Raycast(ray, out hit, 50f, mineralLayerMask))
+            {
+                if (Input.GetMouseButtonUp(0))
+                {
+                    DropMineral mineral = hit.transform.GetComponent<DropMineral>();
+                    mineral.GetMineral();
                 }
             }
 

@@ -40,7 +40,7 @@ public class UIMap : MonoBehaviour
 
     public void WaveSetting(int waveNumber)
     {
-        _mapWaveTxt.text = "Wave " + waveNumber;
+        _mapWaveTxt.text = "Wave " + (waveNumber+1).ToString();
         _mapWaveTxtCG.alpha = 1;
         _waveUpdate = true;
     }

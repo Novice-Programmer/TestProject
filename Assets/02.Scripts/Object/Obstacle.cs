@@ -55,26 +55,13 @@ public class Obstacle : ObjectGame
         _values = new float[_gameObstacleData.values.Length];
         for (int i = 0; i < _values.Length; i++)
         {
-            _values[i] = _gameObstacleData.values[i] + _gameObstacleData.values[i] * _gameObstacleData.researchResult.valueIncreaseRate * 0.01f;
+            _values[i] = _gameObstacleData.values[i] + _gameObstacleData.values[i] * ResearchManager.Instance.GameResearchData.valueIncreaseRate * 0.01f;
         }
-        ResearchSetting();
         _hitPad.HitPadSetting("Enemy", _values);
-        _durability = _gameObstacleData.durability + (int)(_gameObstacleData.durability * _gameObstacleData.researchResult.valueIncreaseRate * 0.01f);
+        _durability = _gameObstacleData.durability + (int)(_gameObstacleData.durability * ResearchManager.Instance.GameResearchData.valueIncreaseRate * 0.01f);
         _reduceValue = _gameObstacleData.reduceValue;
         _statusUI.StatusSetting(transform, _durability, 5, false);
         _sellGetCost = _gameObstacleData.buildCost / 5;
-    }
-
-    void ResearchSetting()
-    {
-        for (int i = 0; i < _gameObstacleData.researchs.Count; i++)
-        {
-            switch (_gameObstacleData.researchs[i])
-            {
-                default:
-                    break;
-            }
-        }
     }
 
     private void OnTriggerEnter(Collider other)

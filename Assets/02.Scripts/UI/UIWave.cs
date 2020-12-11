@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class UIWave : MonoBehaviour
 {
-    [SerializeField] Button _waveStartBtn = null;
     [SerializeField] UIWaveEnemy _prefabWaveEnemy = null;
     [SerializeField] Transform _waveEnemyContainer = null;
     [SerializeField] Text _waveLiveNumberTxt = null;
@@ -23,16 +22,8 @@ public class UIWave : MonoBehaviour
         _waveWaitAnimator.SetBool("View", true);
     }
 
-    public void ClickWaveStart()
-    {
-        _waveStartBtn.gameObject.SetActive(false);
-        GameManager.Instance.WaveStart();
-        InputManager.Instance.UITouch();
-    }
-
     public void NextWave(int wave)
     {
-        _waveStartBtn.gameObject.SetActive(true);
         _waveWaitAnimator.SetBool("View", true);
         WaveEnemyUISetting(wave);
     }
@@ -105,6 +96,7 @@ public class UIWave : MonoBehaviour
         _enemyLiveNumber = _waveEnemyList[wave].Count;
         _waveWaitNumberTxt.text = _enemyWaitNumber.ToString();
         _waveLiveNumberTxt.text = _enemyLiveNumber.ToString();
+        _waveLiveNumberTxt.gameObject.SetActive(false);
         for (int i = 0; i < _waveEnemyList[wave].Count; i++)
         {
             WaveEnemyView(_waveEnemyList[wave][i]);
@@ -147,5 +139,10 @@ public class UIWave : MonoBehaviour
     {
         _enemyLiveNumber--;
         _waveLiveNumberTxt.text = _enemyLiveNumber.ToString();
+    }
+
+    public void WaveStart()
+    {
+        _waveLiveNumberTxt.gameObject.SetActive(true);
     }
 }

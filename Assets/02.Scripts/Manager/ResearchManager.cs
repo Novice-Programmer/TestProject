@@ -15,10 +15,9 @@ public class ResearchManager : TSingleton<ResearchManager>
     {
         Init();
         Instance = this;
-        ResearchDictionarySetting();
     }
 
-    void ResearchDictionarySetting()
+    public void ResearchDictionarySetting()
     {
         for (int i = 0; i < _researchAllDatas.Length; i++)
         {
@@ -71,6 +70,7 @@ public class ResearchManager : TSingleton<ResearchManager>
     {
         _researchResult = new ResearchResult();
         _researchResult = ResearchValueInit(selectResearch.ToArray());
+        ObjectDataManager.Instance.GameDataUpdate();
     }
 
     ResearchResult ResearchValueInit(params EResearch[] researches)

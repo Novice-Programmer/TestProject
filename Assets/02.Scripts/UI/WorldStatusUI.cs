@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class WorldStatusUI : MonoBehaviour
+public class WorldStatusUI : AvailablePool
 {
     [SerializeField] Slider _hpBar = null;
     [SerializeField] Text _hpTxt = null;
@@ -32,6 +32,7 @@ public class WorldStatusUI : MonoBehaviour
     {
         if (_target == null)
         {
+            _available = true;
             gameObject.SetActive(false);
             return;
         }
@@ -43,8 +44,11 @@ public class WorldStatusUI : MonoBehaviour
 
     public void StatusSetting(Transform target, int maxHP, float limitViewTime, bool mpCheck = true)
     {
-        gameObject.SetActive(true);
         _target = target;
+        Vector3 pos = _target.position;
+        pos.y += _yHeight;
+        transform.position = pos;
+        gameObject.SetActive(true);
         _hpBar.maxValue = maxHP;
         _hpBar.value = maxHP;
         _hpTxt.text = _hpBar.value + " / " + maxHP;

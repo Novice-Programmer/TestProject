@@ -5,7 +5,6 @@ using UnityEngine;
 public class StageManager : TSingleton<StageManager>
 {
     int _nowStage = 0;
-    int _clearStage = 0;
     
     public int NowStage { get { return _nowStage; } }
 

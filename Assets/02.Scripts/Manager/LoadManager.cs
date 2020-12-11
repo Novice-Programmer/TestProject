@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class LoadManager : TSingleton<LoadManager>
 {
-    public void Start()
+    private void Awake()
     {
-        Load();
     }
-
     public void Save()
     {
 
@@ -16,6 +14,6 @@ public class LoadManager : TSingleton<LoadManager>
 
     public void Load()
     {
-        PlayerDataManager.Instance.LoadData(null, null, null);
+        PlayerDataManager.Instance.LoadData(null, null, null, null, null, null);
     }
 }
