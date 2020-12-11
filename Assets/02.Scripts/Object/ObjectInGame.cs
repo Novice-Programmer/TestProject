@@ -34,6 +34,6 @@ public abstract class ObjectGame : MonoBehaviour
 
     public virtual void Select(bool selectOff = true)
     {
-
+        SoundManager.Instance.PlayEffectSound(ESoundName.SelectObject, null);
     }
 }

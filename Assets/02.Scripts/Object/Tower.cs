@@ -252,6 +252,7 @@ public abstract class Tower : ObjectGame
 
     public override void Select(bool selectOff = true)
     {
+        base.Select(selectOff);
         _objectSelect = !_objectSelect;
         if (!_objectSelectActive || !selectOff)
         {
@@ -299,6 +300,7 @@ public abstract class Tower : ObjectGame
 
     public void TowerRepair()
     {
+        SoundManager.Instance.PlayEffectSound(ESoundName.Repair, null);
         _hp = _maxHP;
         _statusUI.HPChange(_hp);
         _target = null;
@@ -314,6 +316,7 @@ public abstract class Tower : ObjectGame
 
     public void SellTower()
     {
+        SoundManager.Instance.PlayEffectSound(ESoundName.SellObject, null);
         _parentTile.Clear(_gridPosition, _dimensions, _fitType);
         Destroy(_statusUI.gameObject);
         Destroy(gameObject);
@@ -457,6 +460,7 @@ public abstract class Tower : ObjectGame
 
     public void TowerUpgrade(EUpgradeType upgradeType)
     {
+        SoundManager.Instance.PlayEffectSound(ESoundName.Upgrade, null);
         int maxHP = _maxHP;
         StatusCheck();
         if (upgradeType == EUpgradeType.Defence)

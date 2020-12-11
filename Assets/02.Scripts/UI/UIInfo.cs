@@ -58,6 +58,7 @@ public class UIInfo : MonoBehaviour
 
     public void ClickInstallViewBtn()
     {
+        SoundManager.Instance.PlayEffectSound(ESoundName.InfoView, null);
         InputManager.Instance.UITouch();
         if (InputManager.TouchMode != ETouchMode.Touch)
         {

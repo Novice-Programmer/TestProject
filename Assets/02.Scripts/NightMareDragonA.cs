@@ -24,6 +24,7 @@ public class NightMareDragonA : Enemy
     public override void AttackEnd()
     {
         base.AttackEnd();
+        SoundManager.Instance.PlayEffectSound(_attackSound, _target.transform);
         _attackZone.gameObject.SetActive(false);
     }
 

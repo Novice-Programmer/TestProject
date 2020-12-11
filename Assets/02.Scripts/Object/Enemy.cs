@@ -49,6 +49,8 @@ public abstract class Enemy : ObjectGame
     int _attackNumber = 0;
 
     [SerializeField] State _state = null;
+    [SerializeField] protected ESoundName _attackSound = ESoundName.TowerHit;
+    [SerializeField] ESoundName _dieSound = ESoundName.NMDADie;
     private void Awake()
     {
         _enemyAI = GetComponent<NavMeshAgent>();
@@ -93,8 +95,8 @@ public abstract class Enemy : ObjectGame
     public void Disactive()
     {
         WaveManager.Instance.WaveEnemyDie();
-        StopCoroutine("BuildSuccess");
-        StopCoroutine("BadBuffCheck");
+        StopAllCoroutines();
+        _statusUI._available = true;
         gameObject.SetActive(false);
     }
 
@@ -434,6 +436,7 @@ public abstract class Enemy : ObjectGame
         StateChange(EStateType.Die);
         _enemyAI.enabled = false;
         _enemyObstacle.enabled = false;
+        SoundManager.Instance.PlayEffectSound(_dieSound, transform);
         if (gameObject.activeSelf)
         {
             StopCoroutine(BadBuffCheck());
@@ -537,6 +540,7 @@ public abstract class Enemy : ObjectGame
 
     public override void Select(bool selectOff = true)
     {
+        base.Select(selectOff);
         _objectSelect = !_objectSelect;
         if (!_objectSelectActive)
         {

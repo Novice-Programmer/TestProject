@@ -127,12 +127,15 @@ MonoBehaviour:
   _maxTime: 2.5
   _bombObject: {fileID: 8270203369625135687, guid: 39a28a1ea94b92d4ea31215698d254c9,
     type: 3}
+  _launchSound: 10
+  _boomSound: 11
   _values: []
   _speed: 7
   _rotateSpeed: 30
   _parabola: 0
   _upSpeed: 10
   _maxUp: 10
+  _minY: 0.2
 --- !u!1 &7533662224859776304
 GameObject:
   m_ObjectHideFlags: 0

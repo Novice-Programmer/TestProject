@@ -93,7 +93,7 @@ public class SceneControlManager : TSingleton<SceneControlManager>
         */
 
         _currentStateLoad = ELoaddingState.LoadEnd;
-        SoundManager.Instance.PlayEffectSound(ESoundEffect.LoadEnd, null);
+        SoundManager.Instance.PlayEffectSound(ESoundName.LoadEnd, null);
         yield return new WaitForSeconds(3.0f);
 
         _currentStateLoad = ELoaddingState.None;

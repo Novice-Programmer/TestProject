@@ -84,6 +84,11 @@ public class LobbyPlayer : MonoBehaviour
         _actionBtn.gameObject.SetActive(true);
     }
 
+    public void WalkSound()
+    {
+        SoundManager.Instance.PlayEffectSound(ESoundName.PlayerMove, transform);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("SelectObject"))

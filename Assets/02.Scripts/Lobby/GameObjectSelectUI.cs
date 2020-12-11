@@ -19,8 +19,6 @@ public class GameObjectSelectUI : SelectUI
 
     List<TowerGameData> _towerGameDatas;
     List<ObstacleGameData> _obstacleGameDatas;
-
-    int _selectMax = 0;
     EObjectType _nowType = EObjectType.Tower;
 
     private void Awake()
@@ -45,7 +43,7 @@ public class GameObjectSelectUI : SelectUI
 
         int maxCount = _towerGameDatas.Count > _obstacleGameDatas.Count ? _towerGameDatas.Count : _obstacleGameDatas.Count;
 
-        for(int i = 0; i < maxCount; i++)
+        for (int i = 0; i < maxCount; i++)
         {
             _selectObjectUIs[i].gameObject.SetActive(true);
         }
@@ -56,7 +54,7 @@ public class GameObjectSelectUI : SelectUI
         _nowType = objectType;
         List<ObjectData> playerSelectObjects = PlayerDataManager.Instance.SelectList;
         List<ObjectData> playerAvailableObjects = PlayerDataManager.Instance.AvailableList;
-        
+
         if (objectType == EObjectType.Tower)
         {
             for (int i = 0; i < _towerGameDatas.Count; i++)
@@ -111,17 +109,19 @@ public class GameObjectSelectUI : SelectUI
         {
             _selectedObjectUIs[i].NoneSelectSetting();
         }
+        LobbyManager.Instance.SelectedMiniUpdate();
     }
 
     public void SelectedCancle(EObjectType objectType, EObjectName objectName)
     {
-        for(int i = 0; i < _selectedObjectUIs.Length; i++)
+        for (int i = 0; i < _selectedObjectUIs.Length; i++)
         {
             _selectedObjectUIs[i].SelectStop();
         }
         PlayerDataManager.Instance.SelectedCancleUpdate(objectType, objectName);
         SelectedUpdate();
         TabUpdate(_nowType);
+        SoundManager.Instance.PlayEffectSound(ESoundName.Installation, null);
     }
 
     public override void Open(LobbyPlayer lobbyPlayer)
@@ -129,7 +129,6 @@ public class GameObjectSelectUI : SelectUI
         base.Open(lobbyPlayer);
         _towerGameDatas = ObjectDataManager.Instance.GetAllToweGameData();
         _obstacleGameDatas = ObjectDataManager.Instance.GetAllObstacleGameData();
-        _selectMax = PlayerDataManager.Instance.MaxSelected;
         TabUpdate(EObjectType.Tower);
         SelectedUpdate();
     }
@@ -164,6 +163,7 @@ public class GameObjectSelectUI : SelectUI
         }
         TabUpdate((EObjectType)(tabNumber + 2));
         SelectedUpdate();
+        SoundManager.Instance.PlayEffectSound(ESoundName.ButtonClick, null);
     }
 
     void CleanSelectData()
@@ -182,7 +182,7 @@ public class GameObjectSelectUI : SelectUI
         }
 
         _objectNameTxt.text = ObjectDataManager.Instance.GetName(objectType, objectName);
-        if(objectType == EObjectType.Tower)
+        if (objectType == EObjectType.Tower)
         {
             TowerData towerData = ObjectDataManager.Instance.GetTowerData(objectName);
             _objectDesTxt.text = towerData.description;
@@ -192,5 +192,6 @@ public class GameObjectSelectUI : SelectUI
             ObstacleData obstacleData = ObjectDataManager.Instance.GetObstacleData(objectName);
             _objectDesTxt.text = obstacleData.description;
         }
+        SoundManager.Instance.PlayEffectSound(ESoundName.Installation, null);
     }
 }

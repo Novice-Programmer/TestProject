@@ -38,6 +38,7 @@ public class ResearchLvUI : MonoBehaviour
         {
             _parent.SelectChange(_researchData);
         }
+        SoundManager.Instance.PlayEffectSound(ESoundName.ButtonClick, null);
     }
 
     public void NoneSelectCheck(EResearch research)

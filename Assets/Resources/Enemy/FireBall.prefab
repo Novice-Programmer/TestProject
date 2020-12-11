@@ -110,12 +110,15 @@ MonoBehaviour:
   _maxTime: 3
   _bombObject: {fileID: 8113537333557110851, guid: 6b769d17a152d9349967f483a2262574,
     type: 3}
+  _launchSound: 22
+  _boomSound: 14
   _values: []
   _speed: 2
   _rotateSpeed: 30
   _parabola: 1
   _upSpeed: 1
   _maxUp: 3
+  _minY: 0.2
 --- !u!1 &8216775114188675361
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,7 +168,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1

@@ -59,6 +59,7 @@ public class PlanetSelectUI : SelectUI
                 planet.Select();
                 _selectPlanet = planet;
                 PlanetUISetting(planet._planetType);
+                SoundManager.Instance.PlayEffectSound(ESoundName.ButtonClick, null);
             }
         }
     }
@@ -80,19 +81,30 @@ public class PlanetSelectUI : SelectUI
 
     void PlanetUISetting(EPlanetType planetType)
     {
-        _explanTxt.text = "워프 준비중..";
+        if (PlayerDataManager.Instance.SelectedTowerNumber > 0)
+        {
+            _explanTxt.color = Color.blue;
+            _explanTxt.text = "워프 준비중..";
+            _warpBtn.interactable = true;
+        }
+        else
+        {
+            _explanTxt.color = Color.red;
+            _explanTxt.text = "타워를 한개 이상 선택해주세요.";
+            _warpBtn.interactable = false;
+        }
         if (planetType == EPlanetType.Mars)
         {
             _planetNameTxt.text = "화성";
             _planetDesTxt.text = "인류 최초의 거주 행성으로 \n개발된 행성이다.\n 다양한 생명체들이 생겨나면서 \n 그 중 인류에 적대적인 \n외계 생명체가 생겨났다.";
         }
         _selectCancleBtn.gameObject.SetActive(true);
-        _warpBtn.interactable = true;
     }
 
-    void CleanSetting() 
+    void CleanSetting()
     {
         _planetCamera.transform.position = _startPos;
+        _explanTxt.color = Color.white;
         _explanTxt.text = "행성을 선택하세요";
         _planetNameTxt.text = "";
         _planetDesTxt.text = "";
@@ -105,6 +117,7 @@ public class PlanetSelectUI : SelectUI
         _selectPlanet.NoneSelect();
         _selectPlanet = null;
         CleanSetting();
+        SoundManager.Instance.PlayEffectSound(ESoundName.ButtonClick, null);
     }
 
     public void ClickWarpButton()

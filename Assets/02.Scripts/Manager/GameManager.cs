@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
 
     public void TowerBuild(Ghost ghostData)
     {
+        SoundManager.Instance.PlayEffectSound(ESoundName.InstallObject, ghostData.transform);
         ResourceManager.Instance.TowerPartValue = -ghostData._installCost;
         Tower tower = Instantiate(ObjectDataManager.Instance.GetTower(ghostData._objectName), ghostData._fitPos, Quaternion.identity);
         tower.BuildingTower(ghostData);
@@ -103,6 +104,7 @@ public class GameManager : MonoBehaviour
 
     public void ObstacleBuild(Ghost ghostData)
     {
+        SoundManager.Instance.PlayEffectSound(ESoundName.InstallObject, ghostData.transform);
         ResourceManager.Instance.TowerPartValue = -ghostData._installCost;
         Obstacle obstacle = Instantiate(ObjectDataManager.Instance.GetObstacle(ghostData._objectName), ghostData._fitPos, Quaternion.identity);
         obstacle.BuildingObstacle(ghostData);

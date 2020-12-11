@@ -21,11 +21,13 @@ public class UIResultWindow : MonoBehaviour
         {
             _endAnim.SetTrigger("Clear");
             _clearObject.SetActive(true);
+            SoundManager.Instance.PlayEffectSound(ESoundName.ClearStage, null);
         }
         else
         {
             _endAnim.SetTrigger("GameOver");
             _overObject.SetActive(true);
+            SoundManager.Instance.PlayEffectSound(ESoundName.FailStage, null);
         }
         _waveTxt.text = "Clear Wave " + wave.ToString();
         _enemyTxt.text = "Enemy " + enemyDie.ToString();
@@ -33,11 +35,13 @@ public class UIResultWindow : MonoBehaviour
 
     public void ClickReGame()
     {
+        SoundManager.Instance.PlayEffectSound(ESoundName.ButtonClick, null);
         SceneControlManager.Instance.SceneChange(ESceneType.Ingame);
     }
 
     public void ClickLobby()
     {
+        SoundManager.Instance.PlayEffectSound(ESoundName.ButtonClick, null);
         SceneControlManager.Instance.SceneChange(ESceneType.Lobby);
     }
 }

@@ -11,9 +11,11 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
     Dictionary<EPlanetType, bool> _playerAvailablePlanet;
     Dictionary<EPlanetType, List<bool>> _playerAvailableStage;
 
+    int _clearStage = 0;
     int _maxSelectObject = 3;
 
     public int MaxSelected { get { return _maxSelectObject; } }
+    public int ClearStage { get { return _clearStage; } }
     public int SelectedNumber
     {
         get
@@ -24,6 +26,20 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
                 selectNumber += objectNames.Count;
             }
             return selectNumber;
+        }
+    }
+
+    public int SelectedTowerNumber
+    {
+        get
+        {
+            int selectedTowerNum = 0;
+            foreach (EObjectType objectType in _playerSelectObject.Keys)
+            {
+                if (objectType == EObjectType.Tower)
+                    selectedTowerNum = _playerSelectObject[EObjectType.Tower].Count;
+            }
+            return selectedTowerNum;
         }
     }
 
@@ -80,8 +96,6 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
     }
 
     public Dictionary<EPlanetType, bool> AvailablePlanet { get { return _playerAvailablePlanet; } }
-
-    public int Stage = 0;
 
     private void Awake()
     {
@@ -256,5 +270,13 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
             _playerAvailableObject.Add(objectType, objectNames);
         }
         objectNames.Add(objectName);
+    }
+
+    public void StageClear(int stage)
+    {
+        if (_clearStage < stage)
+        {
+            _clearStage = stage;
+        }
     }
 }

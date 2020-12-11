@@ -11,10 +11,10 @@ public enum EPaymentType
 
 public class ResourceManager : TSingleton<ResourceManager>
 {
-    int ingameValue = 0;
-    int mineralValue = 0;
-    public int TowerPartValue { get { return ingameValue; } set { ingameValue += value; ValueChange(); } }
-    public int SpaceMineralValue { get { return mineralValue; } set { mineralValue += value; ValueChange(); } }
+    int _ingameValue = 0;
+    int _mineralValue = 0;
+    public int TowerPartValue { get { return _ingameValue; } set { _ingameValue += value; ValueChange(true, value); } }
+    public int SpaceMineralValue { get { return _mineralValue; } set { _mineralValue += value; ValueChange(false, value); } }
 
     [SerializeField] StageResourceData[] _stageResourceDatas = null;
     [SerializeField] StageResourceData _stageData;
@@ -64,9 +64,9 @@ public class ResourceManager : TSingleton<ResourceManager>
         }
         else if (wave == _stageData.maxWave - 1)
         {
-            if (_stageData.stage > PlayerDataManager.Instance.Stage)
+            if (_stageData.stage > PlayerDataManager.Instance.ClearStage)
             {
-                PlayerDataManager.Instance.Stage = _stageData.stage;
+                PlayerDataManager.Instance.StageClear(_stageData.stage);
                 SpaceMineralValue = _stageData.firstAllClearMineral;
             }
             SpaceMineralValue = _stageData.stageClearMineral + (int)(_stageData.stageClearMineral * 0.01f * ResearchManager.Instance.GameResearchData.mineralAddRate);
@@ -76,16 +76,16 @@ public class ResourceManager : TSingleton<ResourceManager>
 
     public void GameEnd()
     {
-        int addValue = (int)(ingameValue * 0.1f);
-        mineralValue += addValue + (int)(addValue * 0.01f * ResearchManager.Instance.GameResearchData.mineralAddRate);
-        ingameValue = 0;
+        int addValue = (int)(_ingameValue * 0.1f);
+        _mineralValue += addValue + (int)(addValue * 0.01f * ResearchManager.Instance.GameResearchData.mineralAddRate);
+        _ingameValue = 0;
     }
 
-    void ValueChange()
+    void ValueChange(bool gameValueCheck, int value)
     {
         if (SceneControlManager.Instance.SceneType == ESceneType.Ingame)
         {
-            GameUI.Instance.ResourceValueChange();
+            GameUI.Instance.ResourceValueChange(gameValueCheck, value);
         }
         else
         {

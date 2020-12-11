@@ -7,6 +7,9 @@ public class Projectile : MonoBehaviour
     [SerializeField] float _maxTime = 30.0f;
     [Header("Status")]
     [SerializeField] BombEffect _bombObject = null;
+    [SerializeField] ESoundName _launchSound = ESoundName.Rocket;
+    [SerializeField] ESoundName _boomSound = ESoundName.RocketBomb;
+
     [SerializeField] float[] _values = null;
 
     [Header("TransValue")]
@@ -23,6 +26,11 @@ public class Projectile : MonoBehaviour
     bool _guidance;
 
     float _timeCheck = 0.0f;
+
+    private void Start()
+    {
+        SoundManager.Instance.PlayEffectSound(_launchSound, transform);
+    }
 
     private void Update()
     {
@@ -88,23 +96,25 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Field"))
         {
-            BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);
-            bomb.BombSetting(_tagetTag, _values);
-            Destroy(gameObject);
+            Bomb();
         }
 
         else if (string.IsNullOrEmpty(_tagetTag))
         {
-            BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);
-            bomb.BombSetting(_tagetTag, _values);
-            Destroy(gameObject);
+            Bomb();
         }
 
         else if (other.CompareTag(_tagetTag))
         {
-            BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);
-            bomb.BombSetting(_tagetTag, _values);
-            Destroy(gameObject);
+            Bomb();
         }
+    }
+
+    void Bomb()
+    {
+        SoundManager.Instance.PlayEffectSound(_boomSound, transform);
+        BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);
+        bomb.BombSetting(_tagetTag, _values);
+        Destroy(gameObject);
     }
 }

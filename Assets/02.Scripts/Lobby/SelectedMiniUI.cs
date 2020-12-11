@@ -11,17 +11,20 @@ public class SelectedMiniUI : MonoBehaviour
 
     public void SelectedSetting(Sprite icon)
     {
+        _icon.gameObject.SetActive(true);
         _icon.sprite = icon;
     }
 
     public void NoneSelectSetting()
     {
-        _background.color = Color.red;
+        _icon.gameObject.SetActive(false);
     }
 
     public void LockSelectSetting()
     {
+        _icon.gameObject.SetActive(true);
         _icon.sprite = _lockSprite;
         _icon.color = Color.red;
+        _background.color = Color.red;
     }
 }

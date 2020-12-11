@@ -103,6 +103,7 @@ public class Obstacle : ObjectGame
 
     public void DestroyObstacle()
     {
+        SoundManager.Instance.PlayEffectSound(ESoundName.SellObject, null);
         _parentTile.Clear(_gridPosition, _dimensions, _fitType);
         StopCoroutine(BuildSuccess());
         Destroy(_statusUI.gameObject);
@@ -111,6 +112,7 @@ public class Obstacle : ObjectGame
 
     public override void Select(bool selectOff = true)
     {
+        base.Select(selectOff);
         _objectSelect = !_objectSelect;
         if (!_objectSelectActive)
         {

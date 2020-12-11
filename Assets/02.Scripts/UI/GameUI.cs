@@ -62,10 +62,10 @@ public class GameUI : MonoBehaviour
         _uiInfo.ViewOff();
     }
 
-    public void ResourceValueChange()
+    public void ResourceValueChange(bool gameValue, int value)
     {
         _uiInfo.UIValueChange();
-        _uiResource.UIValueChange();
+        _uiResource.UIValueChange(gameValue,value);
     }
 
     public void SelectHPValueChange()

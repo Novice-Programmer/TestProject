@@ -49,21 +49,22 @@ public class ResearchUI : SelectUI
         }
         TabUpdate((EResearchType)tabNumber);
         ResearchViewUpdate((EResearchType)tabNumber);
+        SoundManager.Instance.PlayEffectSound(ESoundName.ButtonClick, null);
     }
 
     public void TabUpdate(EResearchType researchType)
     {
         Dictionary<int, List<ResearchData>> stepResearch = ResearchManager.Instance.GetStepResearch(researchType);
-        for(int i = 0; i < _boxUIs.Length; i++)
+        for (int i = 0; i < _boxUIs.Length; i++)
         {
             _boxUIs[i].gameObject.SetActive(false);
         }
-        foreach(int step in stepResearch.Keys)
+        foreach (int step in stepResearch.Keys)
         {
             if (step != 0)
             {
-                _boxUIs[step-1].gameObject.SetActive(true);
-                _boxUIs[step-1].ResearchChange(researchType);
+                _boxUIs[step - 1].gameObject.SetActive(true);
+                _boxUIs[step - 1].ResearchChange(researchType);
             }
         }
         _nowTabType = researchType;
@@ -82,6 +83,7 @@ public class ResearchUI : SelectUI
         ResearchViewUpdate(_nowTabType);
         _researchSelectNameTxt.text = researchData.researchName;
         _researchSelectTxt.text = ResearchManager.Instance.GetSelectResearchString(_nowTabType, researchData.research);
+        SoundManager.Instance.PlayEffectSound(ESoundName.ResearchChange, null);
     }
 
     public void ResearchCancle(ResearchData researchData)
@@ -90,6 +92,7 @@ public class ResearchUI : SelectUI
         ResearchViewUpdate(_nowTabType);
         _researchSelectNameTxt.text = "";
         _researchSelectTxt.text = "";
+        SoundManager.Instance.PlayEffectSound(ESoundName.ResearchChange, null);
     }
 
     public override void Open(LobbyPlayer lobbyPlayer)

@@ -333,6 +333,19 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
         marker.MarkerSetting(target, icon, background);
     }
 
+    public Sprite GetIcon(EObjectName objectName)
+    {
+        switch (objectName)
+        {
+            case EObjectName.KW9A:
+                return _markIconSprites[0];
+
+            case EObjectName.FireWall:
+                return _markIconSprites[2];
+        }
+        return null;
+    }
+
     public WorldStatusUI StatusInit()
     {
         return Instantiate(_prefabStatusUI, _statusContainer);

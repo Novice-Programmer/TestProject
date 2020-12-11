@@ -49,6 +49,7 @@ public class DropMineral : MonoBehaviour
 
     public void GetMineral()
     {
+        SoundManager.Instance.PlayEffectSound(ESoundName.GetMineral, transform);
         gameObject.SetActive(false);
         ResourceManager.Instance.SpaceMineralValue = _mineral;
     }
