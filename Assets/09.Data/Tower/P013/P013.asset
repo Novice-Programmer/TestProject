@@ -19,10 +19,10 @@ MonoBehaviour:
     x: 2
     y: 2
   hp: 160
-  ep: 3
-  atk: 7
+  ep: 2
+  atk: 4
   def: 2
-  atkSpd: 1.5
+  atkSpd: 1
   atkRange: 8
   atkNumber: 1
   targetNumber: 1
@@ -30,7 +30,7 @@ MonoBehaviour:
   maxDEFUpgrade: 1
   maxSPUpgrade: 1
   spValue:
-  - 100
+  - 60
   buildCost: 100
   defUpgradeCost: 30
   atkUpgradeCost: 50

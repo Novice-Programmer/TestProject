@@ -16,7 +16,7 @@ MonoBehaviour:
   upgradeType: 0
   level: 2
   addValue:
-  - 5
+  - 2
   - 0.35
   - 2
   - 0

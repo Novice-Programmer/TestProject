@@ -70,6 +70,8 @@ public class GameObjectSelectUI : SelectUI
                 {
                     if (playerAvailableObjects[j].objectName == _towerGameDatas[i].objectName)
                         available = true;
+                    if (!PlayerDataManager.Instance.Selected)
+                        available = false;
                 }
                 _selectObjectUIs[i].SelectObjectUISetting(_towerGameDatas[i], select, available);
             }
@@ -89,6 +91,8 @@ public class GameObjectSelectUI : SelectUI
                 {
                     if (playerAvailableObjects[j].objectName == _obstacleGameDatas[i].objectName)
                         available = true;
+                    if (!PlayerDataManager.Instance.Selected)
+                        available = false;
                 }
                 _selectedObjectUIs[i].gameObject.SetActive(true);
                 _selectObjectUIs[i].SelectObjectUISetting(_obstacleGameDatas[i], select, available);

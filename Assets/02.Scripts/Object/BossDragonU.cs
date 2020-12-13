@@ -12,6 +12,7 @@ public class BossDragonU : Enemy
     public override void TargetAttack()
     {
         base.TargetAttack();
+        _attackEffect.gameObject.SetActive(true);
         _attackEffect.Play();
         SoundManager.Instance.PlayEffectSound(_attackSound, transform);
         if (_target != null)
@@ -27,6 +28,7 @@ public class BossDragonU : Enemy
 
     public void EndAttack()
     {
+        _attackEffect.gameObject.SetActive(false);
         _attackZone.gameObject.SetActive(false);
     }
 
@@ -43,6 +45,7 @@ public class BossDragonU : Enemy
     public override void TargetSpecialAttack()
     {
         base.TargetSpecialAttack();
+        _skillEffect.gameObject.SetActive(true);
         _skillEffect.Play();
         SoundManager.Instance.PlayEffectSound(_attackSound, transform);
         if (_target != null)
@@ -58,6 +61,7 @@ public class BossDragonU : Enemy
 
     public void EndSkill()
     {
+        _skillEffect.gameObject.SetActive(false);
         _skillZone.gameObject.SetActive(false);
     }
 
