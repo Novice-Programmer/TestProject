@@ -14,7 +14,7 @@ public class LobbyHologram : MonoBehaviour
     private void Start()
     {
         _hologramObject = new GameObject[transform.childCount];
-        for(int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             _hologramObject[i] = transform.GetChild(i).gameObject;
             _hologramObject[i].SetActive(false);
@@ -35,11 +35,11 @@ public class LobbyHologram : MonoBehaviour
     void RotateObjectSetting()
     {
         _timeCheck = 0;
-        if(_nowObjectTransform!=null)
-        _nowObjectTransform.gameObject.SetActive(false);
+        if (_nowObjectTransform != null)
+            _nowObjectTransform.gameObject.SetActive(false);
         _hologramObject[_viewObjectNumber].SetActive(true);
         _nowObjectTransform = _hologramObject[_viewObjectNumber++].transform;
-        if(_viewObjectNumber >= _hologramObject.Length)
+        if (_viewObjectNumber >= _hologramObject.Length)
         {
             _viewObjectNumber = 0;
         }

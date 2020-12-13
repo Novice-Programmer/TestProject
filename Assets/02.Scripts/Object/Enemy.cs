@@ -36,6 +36,7 @@ public abstract class Enemy : ObjectGame
     NavMeshAgent _enemyAI;
     Animator _enemyAnim;
     WorldStatusUI _statusUI = null;
+    public Transform _attackPos;
     public Transform _target;
     EObjectType _prevTarget;
     bool _searchFail = true;
@@ -166,18 +167,18 @@ public abstract class Enemy : ObjectGame
                 atkSpdBadValue += _badBuffs[i].atkSpd;
                 movSpdBadValue += _badBuffs[i].movSpd;
             }
-            _atk = _enemyData.atk - atkBadValue;
+            _atk = _enemyData.atk - (int)(_enemyData.atk * atkBadValue * 0.01f);
             if (_atk <= 0)
             {
                 _atk = 1;
             }
-            _def = _enemyData.def - defBadValue;
-            _atkSpd = _enemyData.atk - atkSpdBadValue;
+            _def = _enemyData.def - (int)(_enemyData.def * defBadValue * 0.01f);
+            _atkSpd = _enemyData.atkSpd - _enemyData.atkSpd * atkSpdBadValue * 0.01f;
             if (_atkSpd < 0.01f)
             {
                 _atkSpd = 0.01f;
             }
-            _movSpd = _enemyData.movSpd - movSpdBadValue;
+            _movSpd = _enemyData.movSpd - _enemyData.movSpd * movSpdBadValue * 0.01f;
             if (_movSpd < 0.1f)
             {
                 _movSpd = 0.1f;
@@ -383,14 +384,13 @@ public abstract class Enemy : ObjectGame
                 {
                     _attackTime = 9999;
                     _attackNumber++;
+                    _action = true;
                     if (_mp < 100)
                     {
-                        _action = true;
                         _enemyAnim.SetTrigger("Attack");
                     }
                     else
                     {
-                        _action = true;
                         _enemyAnim.SetTrigger("Skill");
                     }
 

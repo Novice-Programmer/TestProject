@@ -30,7 +30,8 @@ public abstract class Tower : ObjectGame
     [SerializeField] Transform _partToRotate = null;
     [SerializeField] float _turnSpeed = 10.0f;
     [SerializeField] GameObject _rangeObject = null;
-    [SerializeField] MeshRenderer[] _materials = null;
+    MeshRenderer[] _materials = null;
+    SkinnedMeshRenderer[] _materials2 = null;
     [SerializeField] List<Material> _activeMaterials = null;
     [SerializeField] Material _breakDownMaterial = null;
     Vector3 _rangeSize;
@@ -42,11 +43,13 @@ public abstract class Tower : ObjectGame
 
     string _enemyTag = "Enemy";
     protected Transform[] _target;
+    protected Transform _nearestTarget;
 
     float _attackCountdown = 0;
     int _totalCost = 0;
 
-    Tile _parentTile;
+    [SerializeField] Tile _parentTile;
+    public Transform _attackPos;
     IntVector2 _gridPosition;
     EFitType _fitType;
 
@@ -59,65 +62,19 @@ public abstract class Tower : ObjectGame
         DataSetting();
         StartCoroutine(BuildSuccess());
         InvokeRepeating("UpdateTarget", 0.0f, 0.5f);
+        StartCoroutine(StateAction());
         _materials = GetComponentsInChildren<MeshRenderer>();
+        _materials2 = GetComponentsInChildren<SkinnedMeshRenderer>();
         for (int i = 0; i < _materials.Length; i++)
         {
             _activeMaterials.Add(_materials[i].material);
         }
+        for (int i = 0; i < _materials2.Length; i++)
+        {
+            _activeMaterials.Add(_materials2[i].material);
+        }
         StateChange(EStateType.AttackSearch);
         ObjectDataManager.Instance.MarkerSetting(transform, _objectName);
-    }
-
-    private void Update()
-    {
-        if (_stateType == EStateType.Breakdown)
-        {
-            return;
-        }
-        if (_target == null)
-        {
-            if (_stateType == EStateType.Attack)
-            {
-                StateChange(EStateType.AttackSearch);
-            }
-            else if (_stateType == EStateType.AttackSearch)
-            {
-                _partToRotate.Rotate(_partToRotate.rotation.x, _turnSpeed * Time.deltaTime, _partToRotate.rotation.z);
-            }
-        }
-
-        else
-        {
-            if (_stateType == EStateType.Attack)
-            {
-                Vector3 dir = Vector3.zero;
-                for (int i = 0; i < _target.Length; i++)
-                {
-                    dir = _target[i].position - transform.position;
-                }
-                Quaternion lookRotation = Quaternion.LookRotation(dir / _target.Length);
-                Vector3 rotateValue = Quaternion.Lerp(_partToRotate.rotation, lookRotation, Time.deltaTime * _turnSpeed).eulerAngles;
-                _partToRotate.rotation = Quaternion.Euler(_partToRotate.rotation.x, rotateValue.y, _partToRotate.rotation.z);
-
-                if (_attackCountdown <= 0)
-                {
-                    if (_ep == 100)
-                    {
-                        SpecialAttack();
-                    }
-                    else
-                    {
-                        Attack();
-                    }
-                    _attackCountdown = 1 / _atkSpd;
-                }
-            }
-        }
-        _attackCountdown -= Time.deltaTime;
-        if (_attackCountdown <= 0)
-        {
-            _attackCountdown = 0;
-        }
     }
 
     void StateChange(EStateType stateType)
@@ -126,7 +83,15 @@ public abstract class Tower : ObjectGame
         _state.StateUpdate(_stateType);
     }
 
+    #region Aciton
+
+
     protected virtual void Attack()
+    {
+        _attackCountdown = 9999;
+    }
+
+    protected void ChargingEP()
     {
         _ep += _chargeEP;
         if (_ep > 100)
@@ -136,10 +101,23 @@ public abstract class Tower : ObjectGame
         _statusUI.MPChange(_ep);
     }
 
+    protected virtual void AttackEnd()
+    { 
+        _attackCountdown = 1 / _atkSpd;
+    }
+
     protected virtual void SpecialAttack()
+    {
+        _attackCountdown = 9999;
+        _ep = 0;
+        _statusUI.MPChange(_ep);
+    }
+
+    protected virtual void SkillEnd()
     {
         _ep = 0;
         _statusUI.MPChange(_ep);
+        _attackCountdown = 1 / _atkSpd;
     }
 
     public override void Hit(int damage, EWeakType weakType)
@@ -167,6 +145,10 @@ public abstract class Tower : ObjectGame
         {
             _materials[i].material = _breakDownMaterial;
         }
+        for (int i = 0; i < _materials2.Length; i++)
+        {
+            _materials2[i].material = _breakDownMaterial;
+        }
     }
 
     void UpdateTarget()
@@ -175,14 +157,23 @@ public abstract class Tower : ObjectGame
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(_enemyTag);
             List<Enemy> enemiesRank = new List<Enemy>();
-
+            _nearestTarget = null;
+            float shortestDistance = _atkRange;
             for (int i = 0; i < enemies.Length; i++)
             {
                 if (Vector3.Distance(transform.position, enemies[i].transform.position) < _atkRange)
                 {
                     Enemy enemy = enemies[i].GetComponent<Enemy>();
                     if (enemy._stateType != EStateType.Die)
+                    {
                         enemiesRank.Add(enemy);
+                        float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+                        if (distanceToEnemy < shortestDistance)
+                        {
+                            shortestDistance = distanceToEnemy;
+                            _nearestTarget = enemy.transform;
+                        }
+                    }
                 }
             }
 
@@ -244,36 +235,69 @@ public abstract class Tower : ObjectGame
         }
     }
 
-    IEnumerator BuildSuccess()
+    IEnumerator StateAction()
     {
-        yield return new WaitForSeconds(0.5f);
-        _objectSelectActive = true;
+        while (true)
+        {
+            if (_stateType == EStateType.Breakdown)
+            {
+                yield return null;
+            }
+            else
+            {
+                if (_target == null)
+                {
+                    if (_stateType == EStateType.Attack)
+                    {
+                        StateChange(EStateType.AttackSearch);
+                    }
+                    else if (_stateType == EStateType.AttackSearch)
+                    {
+                        _partToRotate.Rotate(_partToRotate.rotation.x, _turnSpeed * Time.deltaTime, _partToRotate.rotation.z);
+                    }
+                }
+
+                else
+                {
+                    if (_stateType == EStateType.Attack)
+                    {
+                        Vector3 dir = Vector3.zero;
+                        for (int i = 0; i < _target.Length; i++)
+                        {
+                            dir = _target[i].position - transform.position;
+                        }
+                        Quaternion lookRotation = Quaternion.LookRotation(dir / _target.Length);
+                        Vector3 rotateValue = Quaternion.Lerp(_partToRotate.rotation, lookRotation, Time.deltaTime * _turnSpeed).eulerAngles;
+                        _partToRotate.rotation = Quaternion.Euler(_partToRotate.rotation.x, rotateValue.y, _partToRotate.rotation.z);
+
+                        if (_attackCountdown <= 0)
+                        {
+                            _attackCountdown = 9999;
+                            if (_ep == 100)
+                            {
+                                SpecialAttack();
+                            }
+                            else
+                            {
+                                Attack();
+                            }
+                            _attackCountdown = 1 / _atkSpd;
+                        }
+                    }
+                }
+                _attackCountdown -= Time.deltaTime;
+                if (_attackCountdown <= 0)
+                {
+                    _attackCountdown = 0;
+                }
+            }
+            yield return null;
+        }
     }
 
-    public override void Select(bool selectOff = true)
-    {
-        base.Select(selectOff);
-        _objectSelect = !_objectSelect;
-        if (!_objectSelectActive || !selectOff)
-        {
-            _objectSelect = false;
-        }
-        if (_objectSelect)
-        {
-            GameUI.Instance.TowerClick(this);
-        }
-        else
-        {
-            GameUI.Instance.ViewUIOff();
-        }
-        _rangeObject.SetActive(_objectSelect);
-    }
+    #endregion
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, _atkRange);
-    }
+    #region UIAction
 
     public void BuildingTower(Ghost ghostTower)
     {
@@ -298,6 +322,18 @@ public abstract class Tower : ObjectGame
         transform.rotation = Quaternion.Euler(rotateEulerV + _parentTile.transform.rotation.eulerAngles);
     }
 
+    IEnumerator BuildSuccess()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _objectSelectActive = true;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, _atkRange);
+    }
+
     public void TowerRepair()
     {
         SoundManager.Instance.PlayEffectSound(ESoundName.Repair, null);
@@ -311,6 +347,10 @@ public abstract class Tower : ObjectGame
             {
                 _materials[i].material = _activeMaterials[i];
             }
+            for (int i = 0; i < _materials2.Length; i++)
+            {
+                _materials2[i].material = _activeMaterials[i + _materials.Length];
+            }
         }
     }
 
@@ -322,7 +362,42 @@ public abstract class Tower : ObjectGame
         Destroy(gameObject);
     }
 
-    #region 데이터
+    public override void Select(bool selectOff = true)
+    {
+        base.Select(selectOff);
+        _objectSelect = !_objectSelect;
+        if (!_objectSelectActive || !selectOff)
+        {
+            _objectSelect = false;
+        }
+        if (_objectSelect)
+        {
+            GameUI.Instance.TowerClick(this);
+        }
+        else
+        {
+            GameUI.Instance.ViewUIOff();
+        }
+        _rangeObject.SetActive(_objectSelect);
+    }
+
+    public void TowerUpgrade(EUpgradeType upgradeType)
+    {
+        SoundManager.Instance.PlayEffectSound(ESoundName.Upgrade, null);
+        int maxHP = _maxHP;
+        StatusCheck();
+        if (upgradeType == EUpgradeType.Defence)
+        {
+            _statusUI.StatusSetting(_maxHP);
+            int addHP = _maxHP - maxHP;
+            _hp += addHP;
+            _statusUI.HPChange(_hp);
+        }
+    }
+
+    #endregion
+
+    #region Data
 
 
     void DataSetting()
@@ -362,7 +437,7 @@ public abstract class Tower : ObjectGame
             _atkSpd = _gameTowerData.atkSpd + _upgradeATK.addValue[1] + (_gameTowerData.atkSpd + _upgradeATK.addValue[1]) * researchResult.atkSpdAddRate * 0.01f;
             _atkRange = _gameTowerData.atkRange + _upgradeATK.addValue[2] + (_gameTowerData.atkRange + _upgradeATK.addValue[2]) * researchResult.atkRangeAddRate * 0.01f;
             _atkNumber = _gameTowerData.atkNumber + (int)_upgradeATK.addValue[3];
-            _targetNumber = _gameTowerData.atkNumber + (int)_upgradeATK.addValue[4];
+            _targetNumber = _gameTowerData.targetNumber + (int)_upgradeATK.addValue[4];
         }
         else
         {
@@ -370,7 +445,7 @@ public abstract class Tower : ObjectGame
             _atkSpd = _gameTowerData.atkSpd + _gameTowerData.atkSpd * researchResult.atkSpdAddRate * 0.01f;
             _atkRange = _gameTowerData.atkRange + _gameTowerData.atkRange * researchResult.atkRangeAddRate * 0.01f;
             _atkNumber = _gameTowerData.atkNumber;
-            _targetNumber = _gameTowerData.atkNumber;
+            _targetNumber = _gameTowerData.targetNumber;
         }
         if (_upgradeDEF != null)
         {
@@ -456,20 +531,6 @@ public abstract class Tower : ObjectGame
     {
         int sellNumber = (int)(_totalCost * 0.5f);
         return sellNumber;
-    }
-
-    public void TowerUpgrade(EUpgradeType upgradeType)
-    {
-        SoundManager.Instance.PlayEffectSound(ESoundName.Upgrade, null);
-        int maxHP = _maxHP;
-        StatusCheck();
-        if (upgradeType == EUpgradeType.Defence)
-        {
-            _statusUI.StatusSetting(_maxHP);
-            int addHP = _maxHP - maxHP;
-            _hp += addHP;
-            _statusUI.HPChange(_hp);
-        }
     }
 
     public void TotalCostAdd(int cost)

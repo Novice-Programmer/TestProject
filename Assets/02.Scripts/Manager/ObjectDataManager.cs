@@ -19,10 +19,8 @@ public enum EObjectName
     NMDA,
     FireWall,
     Commander,
-    Tower,
-    Obstacle,
-    Resource,
-    ALL,
+    Swamp,
+    BDU
 }
 
 public class ObjectDataManager : TSingleton<ObjectDataManager>
@@ -236,14 +234,17 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
 
     public Ghost GetBuildGhost(EObjectName objectName)
     {
-        for (int i = 0; i < _prefabGhosts.Length; i++)
+        switch (objectName)
         {
-            if (objectName == _prefabGhosts[i]._objectName)
-            {
-                return _prefabGhosts[i];
-            }
+            case EObjectName.KW9A:
+                return _prefabGhosts[0];
+            case EObjectName.FireWall:
+                return _prefabGhosts[1];
+            case EObjectName.P013:
+                return _prefabGhosts[2];
+            case EObjectName.Swamp:
+                return _prefabGhosts[3];
         }
-
         return null;
     }
 
@@ -289,6 +290,19 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
                 }
             case EObjectName.FireWall:
                 return _obstacleImages[0];
+            case EObjectName.P013:
+                return _towerImages[1];
+            case EObjectName.Swamp:
+                return _obstacleImages[1];
+            case EObjectName.BDU:
+                if (backgroundImage)
+                {
+                    return _enemyRankSprites[3];
+                }
+                else
+                {
+                    return _enemyIconSprites[1];
+                }
         }
         return null;
     }
@@ -328,6 +342,18 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
                 icon = _markIconSprites[3];
                 background = null;
                 break;
+            case EObjectName.P013:
+                icon = _markIconSprites[4];
+                background = _markBackgroundSprites[0];
+                break;
+            case EObjectName.Swamp:
+                icon = _markIconSprites[5];
+                background = _markBackgroundSprites[2];
+                break;
+            case EObjectName.BDU:
+                icon = _markIconSprites[6];
+                background = _markBackgroundSprites[1];
+                break;
         }
 
         marker.MarkerSetting(target, icon, background);
@@ -339,9 +365,12 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
         {
             case EObjectName.KW9A:
                 return _markIconSprites[0];
-
             case EObjectName.FireWall:
                 return _markIconSprites[2];
+            case EObjectName.P013:
+                return _markIconSprites[4];
+            case EObjectName.Swamp:
+                return _markIconSprites[5];
         }
         return null;
     }

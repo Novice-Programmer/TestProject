@@ -17,7 +17,8 @@ public class ResourceManager : TSingleton<ResourceManager>
     public int SpaceMineralValue { get { return _mineralValue; } set { _mineralValue += value; ValueChange(false, value); } }
 
     [SerializeField] StageResourceData[] _stageResourceDatas = null;
-    [SerializeField] StageResourceData _stageData;
+    
+    StageResourceData _stageData;
 
     private void Awake()
     {

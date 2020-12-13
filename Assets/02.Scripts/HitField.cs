@@ -42,6 +42,11 @@ public class HitField : MonoBehaviour
                 _badBuff.checkTime = _values[1];
                 _badBuff.dotTime = _values[2];
                 break;
+            case EBadBuff.Slow:
+                _badBuff.atkSpd = _values[0];
+                _badBuff.movSpd = _values[1];
+                _badBuff.checkTime = _values[2];
+                break;
         }
         _badBuff.type = _badBuffType;
     }

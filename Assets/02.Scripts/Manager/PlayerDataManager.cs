@@ -124,10 +124,8 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
         {
             _playerSelectObject = new Dictionary<EObjectType, List<EObjectName>>();
             List<EObjectName> objectNames = new List<EObjectName>();
-            objectNames.Add(EObjectName.KW9A);
-            _playerSelectObject.Add(EObjectType.Tower,objectNames);
+            _playerSelectObject.Add(EObjectType.Tower, objectNames);
             objectNames = new List<EObjectName>();
-            objectNames.Add(EObjectName.FireWall);
             _playerSelectObject.Add(EObjectType.Obstacle, objectNames);
         }
 
@@ -155,8 +153,10 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
             _playerAvailableObject = new Dictionary<EObjectType, List<EObjectName>>();
             _playerAvailableObject.Add(EObjectType.Tower, new List<EObjectName>());
             _playerAvailableObject[EObjectType.Tower].Add(EObjectName.KW9A);
+            _playerAvailableObject[EObjectType.Tower].Add(EObjectName.P013);
             _playerAvailableObject.Add(EObjectType.Obstacle, new List<EObjectName>());
             _playerAvailableObject[EObjectType.Obstacle].Add(EObjectName.FireWall);
+            _playerAvailableObject[EObjectType.Obstacle].Add(EObjectName.Swamp);
         }
         if (availablePlanet != null)
         {
@@ -167,7 +167,7 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
             _playerAvailablePlanet = new Dictionary<EPlanetType, bool>();
             _playerAvailablePlanet.Add(EPlanetType.Mars, true);
         }
-        if(availableStage != null)
+        if (availableStage != null)
         {
             _playerAvailableStage = new Dictionary<EPlanetType, List<bool>>();
             List<bool> _marsList = new List<bool>();
@@ -247,9 +247,9 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
     public void SelectedCancleUpdate(EObjectType objectType, EObjectName objectName)
     {
         List<EObjectName> objectNames = _playerSelectObject[objectType];
-        for(int i = 0; i < objectNames.Count; i++)
+        for (int i = 0; i < objectNames.Count; i++)
         {
-            if(objectName == objectNames[i])
+            if (objectName == objectNames[i])
             {
                 objectNames.RemoveAt(i);
                 break;

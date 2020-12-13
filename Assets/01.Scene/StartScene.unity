@@ -227,8 +227,11 @@ MonoBehaviour:
   _prefabGhosts:
   - {fileID: 4065057786071713463, guid: f0787805ef13d4548b5488f8d09bad75, type: 3}
   - {fileID: 7771969456342990922, guid: 458972fe5c028f34fad3f5a3102580f0, type: 3}
+  - {fileID: 3840931876853723593, guid: 1022db0961749904096819e066291cfe, type: 3}
+  - {fileID: 7293417091494447039, guid: ea364df0cb197494e9d90041faaad537, type: 3}
   _towerAllDatas:
   - {fileID: 11400000, guid: 70a0056df8e039542aaa089f71be39d8, type: 2}
+  - {fileID: 11400000, guid: ecf1b8fa07ec7064ab40feefa36a1aa9, type: 2}
   _upgradeAllData:
   - {fileID: 11400000, guid: 752eb15e62113cd45a6bfaabd8102d39, type: 2}
   - {fileID: 11400000, guid: f6d2a60e8c007fb4db8a8c868d3177c6, type: 2}
@@ -236,18 +239,30 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f56ffd62a66889e41a9b82642261684e, type: 2}
   - {fileID: 11400000, guid: e477bcbc7443ebd40868984f00f68a8d, type: 2}
   - {fileID: 11400000, guid: 3d324172413b2b54aa7aa823f133454c, type: 2}
+  - {fileID: 11400000, guid: 74453916ba5167343b96d4d51a5d783e, type: 2}
+  - {fileID: 11400000, guid: 00c8654d15f0f664e87bee1c2d7a52ae, type: 2}
+  - {fileID: 11400000, guid: c1688b2dd7b77bd4ab512180d529925c, type: 2}
+  - {fileID: 11400000, guid: 1b151c1ff6b070548b1e99c4efbd3469, type: 2}
+  - {fileID: 11400000, guid: b715e8828fba71f40ab461eeccf018cb, type: 2}
+  - {fileID: 11400000, guid: 356b8368d446d7543b29f5c75c6e14f2, type: 2}
   _prefabTowers:
-  - {fileID: 6729449153968158309, guid: 326d10382a0d7014e9fd1e3277099b14, type: 3}
+  - {fileID: 3082338197283334767, guid: 326d10382a0d7014e9fd1e3277099b14, type: 3}
+  - {fileID: 1795737239352947347, guid: ada531fd088663f4aa706bff366e6f7a, type: 3}
   _towerImages:
   - {fileID: 21300000, guid: 1cd16e8e06e89cd4f9ffd7fad2a9f4e7, type: 3}
+  - {fileID: 21300000, guid: a96c10031636b4b4cb3232b5a81ca19b, type: 3}
   _obstacleAllDatas:
   - {fileID: 11400000, guid: 07cf9fe418cedf54e82017df7c036a23, type: 2}
+  - {fileID: 11400000, guid: 36c244e9706c1e44d90485c294b449a1, type: 2}
   _prefabObstacle:
   - {fileID: 45719710206331507, guid: c04255bce2cd0944797ae70e0b833b1d, type: 3}
+  - {fileID: 4759948904416572134, guid: 4a469cb47e3f27742af5b5be08855587, type: 3}
   _obstacleImages:
   - {fileID: 21300000, guid: 38e99ed40487fee41b0b71c8d46c7104, type: 3}
+  - {fileID: 21300000, guid: fffa04748da33aa45affa3616ce2d687, type: 3}
   _enemyIconSprites:
   - {fileID: 21300000, guid: eaa13ac123e76dd4e9fe0091c01f5751, type: 3}
+  - {fileID: 21300000, guid: 1af2312369439e044b63744d09301cc5, type: 3}
   _enemyRankSprites:
   - {fileID: 21300000, guid: 628fd02aef5400f4c99b1fa0dfbcae90, type: 3}
   - {fileID: 21300000, guid: a6b3b92bf78d9b846905727c5b1d9eca, type: 3}
@@ -261,6 +276,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4f0767e2a84b9a04d928191b2781f2dd, type: 3}
   - {fileID: 21300000, guid: 875aabedf7abc2b4bb8fae20a3d07a78, type: 3}
   - {fileID: 21300000, guid: d74c8e2402f636444b9f3de105e5c8f9, type: 3}
+  - {fileID: 21300000, guid: a1ea39e18c3ee44419572315e5713179, type: 3}
+  - {fileID: 21300000, guid: b2f37e9cbe48f984aab2e3baca76961f, type: 3}
+  - {fileID: 21300000, guid: 5c313d200190fe345aa80b7037caaded, type: 3}
   _markBackgroundSprites:
   - {fileID: 21300000, guid: 2c6b1e29e7e322343929ae456a1bd744, type: 3}
   - {fileID: 21300000, guid: 9025cf716917ce04dbe706c8ba6ed007, type: 3}
@@ -345,6 +363,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ced6d7542a51b2d4f8ab8f60b756e3d2, type: 3}
   - {fileID: 8300000, guid: e612d9b404ff79a42933e15dac1f0165, type: 3}
   - {fileID: 8300000, guid: a421c88e31c06c24791fbcc9cd18a8db, type: 3}
+  - {fileID: 8300000, guid: 597b0f877b239c248a9d34aca2d5a1b7, type: 3}
+  - {fileID: 8300000, guid: d5c1279b0c6880348bdec94f9a16bda8, type: 3}
+  - {fileID: 8300000, guid: 73a2f8b00c2f1cf469b46c881bfbe7b3, type: 3}
+  - {fileID: 8300000, guid: 3f4dd30ba391aec4caf720a63acf26f0, type: 3}
+  - {fileID: 8300000, guid: 2b603dff6e69b2b47b97ec52356aae06, type: 3}
   _prefabSoundSource: {fileID: 4454502854093517595, guid: 83e00d3c1b693554ebc354b673e8a162,
     type: 3}
   _audioSourceInitNumber: 30
@@ -396,7 +419,6 @@ MonoBehaviour:
   _stageResourceDatas:
   - {fileID: 11400000, guid: 33470b907b905944ab58dbed4c16ae14, type: 2}
   - {fileID: 11400000, guid: 6602c587f24c9f04e90ad0378b5aa552, type: 2}
-  _stageData: {fileID: 0}
 --- !u!4 &691080874
 Transform:
   m_ObjectHideFlags: 0

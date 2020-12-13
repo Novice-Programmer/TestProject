@@ -21,9 +21,24 @@ public class State : MonoBehaviour
 {
     [SerializeField] Sprite[] _stateSprites = null;
     [SerializeField] SpriteRenderer _stateRenderer = null;
+    [SerializeField] float _viewTime = 5.0f;
+
+
+    float _timeCheck = 0f;
+    private void Update()
+    {
+        _timeCheck += Time.deltaTime;
+        if (_timeCheck >= _viewTime)
+        {
+            _timeCheck = 0;
+            gameObject.SetActive(false);
+        }
+    }
 
     public void StateUpdate(EStateType stateType)
     {
+        gameObject.SetActive(true);
+        _timeCheck = 0;
         _stateRenderer.sprite = _stateSprites[(int)stateType];
         switch (stateType)
         {

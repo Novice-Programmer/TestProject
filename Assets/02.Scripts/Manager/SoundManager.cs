@@ -36,7 +36,12 @@ public enum ESoundName
     ClearStage,
     FailStage,
     InfoView,
-    SelectObject
+    SelectObject,
+    FireBress,
+    Wing,
+    Laser,
+    ChargingLaser,
+    BDUDie
 }
 public class SoundManager : TSingleton<SoundManager>
 {
@@ -158,7 +163,7 @@ public class SoundManager : TSingleton<SoundManager>
         _playerBGM.Play();
     }
 
-    public void PlayEffectSound(ESoundName soundType, Transform owner, float soundDistance = 50.0f)
+    public SoundSource PlayEffectSound(ESoundName soundType, Transform owner, float soundDistance = 50.0f)
     {
         SoundSource soundSource = null;
         if (_soundActiveNumber.ContainsKey(soundType))
@@ -219,5 +224,6 @@ public class SoundManager : TSingleton<SoundManager>
         else
             soundSource.transform.position = Camera.main.transform.position;
         soundSource._audioSource.Play();
+        return soundSource;
     }
 }

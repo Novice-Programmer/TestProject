@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3024669695990523249}
   - component: {fileID: 8018076049777396885}
   - component: {fileID: 6546292443427199357}
-  m_Layer: 10
+  m_Layer: 17
   m_Name: NavObstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7035255886120962611}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!208 &3024669695990523249
 NavMeshObstacle:
@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c40727f8eb1244ca1989e2c913052a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _multiTarget: 0
 --- !u!1 &7035255886120584231
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +599,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
+  - {fileID: 5209040394592032227}
   - {fileID: 1173493810858163861}
   - {fileID: 7035255886120905331}
   - {fileID: 7035255886120940781}
@@ -652,9 +654,12 @@ MonoBehaviour:
   _moveCheckSize: 2
   _enemyObstacle: {fileID: 3024669695990523249}
   _badBuffs: []
+  _attackPos: {fileID: 5209040394592032227}
   _target: {fileID: 0}
   _obstacleCheckRange: 2
   _state: {fileID: 7137587121840765164}
+  _attackSound: 20
+  _dieSound: 17
   _specialAttackPos: {fileID: 4586127923416202416}
   _attackEffect: {fileID: 5902680246531206964, guid: 3ad7561d071abe341a85bcfb126a6bb3,
     type: 3}
@@ -2078,7 +2083,7 @@ Transform:
   - {fileID: 7035255886120889855}
   - {fileID: 7035255886120914427}
   m_Father: {fileID: 7035255886120962611}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: -45.910202}
 --- !u!1 &7035255886120661199
 GameObject:
@@ -2202,7 +2207,7 @@ Transform:
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 7035255886120962611}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &7035255886132164949
 SkinnedMeshRenderer:
@@ -2698,6 +2703,36 @@ Transform:
   m_Father: {fileID: 7035255886120890291}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -0.00000038595311, y: 180, z: 161.84557}
+--- !u!1 &9171289386009883116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5209040394592032227}
+  m_Layer: 10
+  m_Name: AttackPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5209040394592032227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9171289386009883116}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7035255886120962611}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1366271575352353992
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2708,17 +2743,17 @@ PrefabInstance:
     - target: {fileID: 8212372648503983648, guid: 24b8473c9f5f9024895cdd5d4ef57922,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8212372648503983648, guid: 24b8473c9f5f9024895cdd5d4ef57922,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8212372648503983648, guid: 24b8473c9f5f9024895cdd5d4ef57922,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8212372649845693473, guid: 24b8473c9f5f9024895cdd5d4ef57922,
         type: 3}
@@ -2763,7 +2798,7 @@ PrefabInstance:
     - target: {fileID: 8212372649845693478, guid: 24b8473c9f5f9024895cdd5d4ef57922,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24b8473c9f5f9024895cdd5d4ef57922, type: 3}

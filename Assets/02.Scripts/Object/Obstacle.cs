@@ -59,15 +59,9 @@ public class Obstacle : ObjectGame
         }
         _hitPad.HitPadSetting("Enemy", _values);
         _durability = _gameObstacleData.durability + (int)(_gameObstacleData.durability * ResearchManager.Instance.GameResearchData.valueIncreaseRate * 0.01f);
-        _reduceValue = _gameObstacleData.reduceValue;
+        _reduceValue = _gameObstacleData.reduceValue - (int)(_gameObstacleData.reduceValue * ResearchManager.Instance.GameResearchData.valueIncreaseRate * 0.01f);
         _statusUI.StatusSetting(transform, _durability, 5, false);
         _sellGetCost = _gameObstacleData.buildCost / 5;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        _durability -= _reduceValue;
-        DurabilityCheck();
     }
 
     public void BuildingObstacle(Ghost ghost)
@@ -125,6 +119,18 @@ public class Obstacle : ObjectGame
         else
         {
             GameUI.Instance.ViewUIOff();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(_attackAble == EAttackAble.AttackDisable)
+        {
+            if (other.CompareTag("Enemy"))
+            {
+                _durability -= _reduceValue;
+                DurabilityCheck();
+            }
         }
     }
 }

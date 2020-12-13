@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class HitZone : MonoBehaviour
 {
+    [SerializeField] bool _multiTarget = false;
     int _damage = 0;
     string _targetTag;
 
-    public void HitZoneSetting(int damage,string targetTag)
+    public void HitZoneSetting(int damage, string targetTag)
     {
         _damage = damage;
         _targetTag = targetTag;
@@ -18,8 +19,9 @@ public class HitZone : MonoBehaviour
         if (other.CompareTag(_targetTag))
         {
             ObjectGame objectHit = other.GetComponent<ObjectGame>();
-            objectHit.Hit(_damage,EWeakType.None);
-            gameObject.SetActive(false);
+            objectHit.Hit(_damage, EWeakType.None);
+            if (!_multiTarget)
+                gameObject.SetActive(false);
         }
     }
 }
