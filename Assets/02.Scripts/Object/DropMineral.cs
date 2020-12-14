@@ -14,11 +14,11 @@ public class DropMineral : MonoBehaviour
     {
         if (gameObject.activeSelf)
         {
-            if (transform.position.y<0)
+            if (transform.position.y < 0)
             {
                 GetComponent<Rigidbody>().AddExplosionForce(100.0f, Vector3.up, 10.0f, 100.0f);
             }
-                _timeCheck += Time.deltaTime;
+            _timeCheck += Time.deltaTime;
             if (_timeCheck >= _viewMaxTime)
             {
                 gameObject.SetActive(false);
@@ -31,25 +31,22 @@ public class DropMineral : MonoBehaviour
         gameObject.SetActive(true);
         _timeCheck = 0;
         _mineral = mineralValue;
+        pos.y += 2f;
         transform.position = pos;
         float rd = Random.Range(-1f, 1f);
         Vector3 dropPos;
         if (rd < 0)
-            dropPos = right * -3f;
+            dropPos = right * -1f;
         else
-            dropPos = right * 3f;
+            dropPos = right * 1f;
 
-        if (dropPos.y < 1)
-        {
-            dropPos.y = 1f;
-        }
-
-        GetComponent<Rigidbody>().AddExplosionForce(100.0f, dropPos, 10.0f, 100.0f);
+        GetComponent<Rigidbody>().AddForce(dropPos.normalized * 5f);
     }
 
-    public void GetMineral()
+    public void GetMineral(bool endGet = false)
     {
-        SoundManager.Instance.PlayEffectSound(ESoundName.GetMineral, transform);
+        if (!endGet)
+            SoundManager.Instance.PlayEffectSound(ESoundName.GetMineral, transform);
         gameObject.SetActive(false);
         ResourceManager.Instance.SpaceMineralValue = _mineral;
     }

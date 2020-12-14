@@ -19,16 +19,16 @@ MonoBehaviour:
     \uBCC0\uC774\uC885"
   ratingType: 4
   weakType: 0
-  hp: 500
+  hp: 1000
   mp: 55
   atk: 35
   def: 3
   checkTime: 2
-  atkSpd: 0.8
+  atkSpd: 1
   atkRange: 6
   sightRange: 10
   atkRate: 40
-  atkTime: 10
+  atkTime: 15
   movSpd: 2.5
   mineralGetRate: 100
   minMineral: 20

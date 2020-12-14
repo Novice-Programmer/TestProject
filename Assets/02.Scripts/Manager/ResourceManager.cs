@@ -63,7 +63,7 @@ public class ResourceManager : TSingleton<ResourceManager>
         {
             SpaceMineralValue = _stageData.basicClearMineral + (int)(_stageData.basicClearMineral * 0.01f * ResearchManager.Instance.GameResearchData.mineralAddRate);
         }
-        else if (wave == _stageData.maxWave - 1)
+        else if (wave == _stageData.maxWave)
         {
             if (_stageData.stage > PlayerDataManager.Instance.ClearStage)
             {

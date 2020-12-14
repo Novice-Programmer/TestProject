@@ -97,6 +97,7 @@ public abstract class Enemy : ObjectGame
     {
         WaveManager.Instance.WaveEnemyDie();
         StopAllCoroutines();
+        _objectSelectActive = false;
         _statusUI._available = true;
         gameObject.SetActive(false);
     }
@@ -244,6 +245,10 @@ public abstract class Enemy : ObjectGame
             _timeCheck = 0;
             _target = nearestObstacle.transform;
         }
+        else
+        {
+            _target = null;
+        }
     }
 
     void AttackSearch()
@@ -283,6 +288,10 @@ public abstract class Enemy : ObjectGame
             _attackTime = 0;
             _target = nearestTower.GetComponent<Tower>().transform;
             _enemyAI.destination = nearestTower.transform.position;
+        }
+        else
+        {
+            _target = null;
         }
 
         if (_target == null)

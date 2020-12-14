@@ -6,17 +6,17 @@ public class HitZone : MonoBehaviour
 {
     [SerializeField] bool _multiTarget = false;
     int _damage = 0;
-    string _targetTag;
+    ETargetType _targetType;
 
-    public void HitZoneSetting(int damage, string targetTag)
+    public void HitZoneSetting(int damage, ETargetType targetType)
     {
         _damage = damage;
-        _targetTag = targetTag;
+        _targetType = targetType;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(_targetTag))
+        if (CheckTarget.TargetTagCheck(_targetType, other.tag))
         {
             ObjectGame objectHit = other.GetComponent<ObjectGame>();
             objectHit.Hit(_damage, EWeakType.None);

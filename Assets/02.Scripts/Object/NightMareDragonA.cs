@@ -15,7 +15,7 @@ public class NightMareDragonA : Enemy
         {
             return;
         }
-        _attackZone.HitZoneSetting(_atk, _target.tag);
+        _attackZone.HitZoneSetting(_atk, ETargetType.Player);
         _attackZone.gameObject.SetActive(true);
         Vector3 effectPos = new Vector3(_target.position.x, _target.position.y + 1f, _target.position.z);
         Instantiate(_attackEffect, effectPos, Quaternion.identity);
@@ -33,9 +33,9 @@ public class NightMareDragonA : Enemy
         base.TargetSpecialAttack();
         Projectile attack = Instantiate(_specialAttack, _specialAttackPos.position, _specialAttackPos.rotation);
         if (_target != null)
-            attack.ProjectileSetting(_target.position, _target.tag, (int)(_atk * 2.5f));
+            attack.ProjectileSetting(_target.position, ETargetType.Player, (int)(_atk * 2.5f));
         else
-            attack.ProjectileSetting(transform.position + transform.forward, "Tower", (int)(_atk * 2.5f));
+            attack.ProjectileSetting(transform.position + transform.forward, ETargetType.Player, (int)(_atk * 2.5f));
     }
 
     public override void SkillEnd()

@@ -12,7 +12,7 @@ public class BombEffect : MonoBehaviour
     [SerializeField] bool _delayShot = false;
     [SerializeField] float _delayTime = 1;
 
-    string _targetTag;
+    ETargetType _targetType;
     float[] _valeus;
     float _timeCheck = 0.0f;
     bool _dealCheck = true;
@@ -22,7 +22,7 @@ public class BombEffect : MonoBehaviour
         if (_hitField != null)
         {
             HitField hitPad = Instantiate(_hitField, transform.position, Quaternion.identity);
-            hitPad.HitPadSetting(_targetTag, _valeus);
+            hitPad.HitPadSetting(_targetType, _valeus);
         }
     }
 
@@ -43,16 +43,28 @@ public class BombEffect : MonoBehaviour
         }
     }
 
-    public void BombSetting(string targetTag, params float[] values)
+    public void BombSetting(ETargetType targetType, params float[] values)
     {
-        _targetTag = targetTag;
+        _targetType = targetType;
         _valeus = values;
     }
 
     void Bomb()
     {
-        GameObject[] hitObjects = GameObject.FindGameObjectsWithTag(_targetTag);
-        foreach(GameObject hitObject in hitObjects)
+        List<GameObject> hitObjectList = new List<GameObject>();
+        string[] tags = CheckTarget.GetTargetTags(_targetType);
+        for (int i = 0; i < tags.Length; i++)
+        {
+            GameObject[] objects = GameObject.FindGameObjectsWithTag(tags[i]);
+            for (int j = 0; j < objects.Length; j++)
+            {
+                hitObjectList.Add(objects[j]);
+            }
+        }
+
+        GameObject[] hitObjects = hitObjectList.ToArray();
+
+        foreach (GameObject hitObject in hitObjects)
         {
             if (Vector3.Distance(transform.position, hitObject.transform.position) < _valeus[1])
             {
@@ -67,11 +79,7 @@ public class BombEffect : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (string.IsNullOrEmpty(_targetTag))
-        {
-            GetComponent<BoxCollider>().enabled = false;
-        }
-        if (other.CompareTag(_targetTag))
+        if (CheckTarget.TargetTagCheck(_targetType, other.tag))
         {
             if (_oneTarget)
             {

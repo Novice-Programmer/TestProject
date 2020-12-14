@@ -41,8 +41,6 @@ public class PlanetSelectUI : SelectUI
             }
         }
         _startPos = _planetCamera.transform.position;
-        _planetCamera.gameObject.SetActive(false);
-        gameObject.SetActive(false);
     }
 
     private void Update()
@@ -75,6 +73,10 @@ public class PlanetSelectUI : SelectUI
     public override void Close()
     {
         base.Close();
+        if (_selectPlanet != null)
+        {
+            _selectPlanet.NoneSelect();
+        }
         _planetCamera.gameObject.SetActive(false);
         LobbyManager.Instance.PlanetSelect(false);
     }

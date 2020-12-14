@@ -16,5 +16,5 @@ MonoBehaviour:
   step: 0
   researchName: "\uAE30\uBCF8 \uC5F0\uAD6C"
   description: 
-  icon: {fileID: 21300000, guid: 2d0997ac1b1fd664e98202450e7ea2d7, type: 3}
+  icon: {fileID: 0}
   type: 0

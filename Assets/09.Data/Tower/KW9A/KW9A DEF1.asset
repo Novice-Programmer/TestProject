@@ -16,7 +16,7 @@ MonoBehaviour:
   upgradeType: 1
   level: 1
   addValue:
-  - 10
-  - 1
-  - 3
+  - 20
+  - 0
+  - 2
   nextCost: 30

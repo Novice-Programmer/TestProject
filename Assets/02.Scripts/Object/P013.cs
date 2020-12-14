@@ -31,7 +31,7 @@ public class P013 : Tower
                 _laserRenderer.SetPosition(0, _firePoint.position);
                 _laserRenderer.SetPosition(1, _nearestTarget.GetComponent<Enemy>()._attackPos.position);
                 Vector3 dir = _firePoint.position - _nearestTarget.position;
-                _impactEffect.transform.position = _nearestTarget.position + dir.normalized * 0.5f;
+                _impactEffect.transform.position = _nearestTarget.GetComponent<Enemy>()._attackPos.position + dir.normalized * 0.5f;
                 if (_attackTime >= 1 / (_atkSpd * 3))
                 {
                     _attackTime = 0;
@@ -88,7 +88,7 @@ public class P013 : Tower
     IEnumerator LaserLaunch()
     {
         BombEffect laser = Instantiate(_skillLaser, _firePoint.position, _firePoint.rotation);
-        laser.BombSetting("Enemy", _spValue);
+        laser.BombSetting(ETargetType.Enemy, _spValue);
         SoundManager.Instance.PlayEffectSound(ESoundName.ChargingLaser, transform);
         yield return new WaitForSeconds(2.0f);
         SkillEnd();

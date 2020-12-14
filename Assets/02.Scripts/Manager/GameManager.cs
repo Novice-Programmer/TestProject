@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
 
     void WaveStart()
     {
+        _timeCheck = 0;
         _waveStart = true;
         WaveManager.Instance.WaveStart(_wave);
         GameUI.Instance.WaveStart(_wave);
@@ -114,6 +115,16 @@ public class GameManager : MonoBehaviour
     public void GameEnd(bool clear)
     {
         _gameEnd = true;
+        if (clear) {
+            GameObject[] minerals = GameObject.FindGameObjectsWithTag("Mineral");
+            for (int i = 0; i < minerals.Length; i++)
+            {
+                if (minerals[i].activeSelf)
+                {
+                    minerals[i].GetComponent<DropMineral>().GetMineral();
+                }
+            }
+                }
         PoolManager.Instance.GameEnd();
         GameUI.Instance.GameEnd(clear);
         ResourceManager.Instance.GameEnd();
@@ -124,6 +135,5 @@ public class GameManager : MonoBehaviour
                 _installObjects[i].SetActive(false);
             }
         }
-        
     }
 }

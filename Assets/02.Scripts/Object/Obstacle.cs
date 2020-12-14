@@ -57,7 +57,7 @@ public class Obstacle : ObjectGame
         {
             _values[i] = _gameObstacleData.values[i] + _gameObstacleData.values[i] * ResearchManager.Instance.GameResearchData.valueIncreaseRate * 0.01f;
         }
-        _hitPad.HitPadSetting("Enemy", _values);
+        _hitPad.HitPadSetting(ETargetType.Enemy, _values);
         _durability = _gameObstacleData.durability + (int)(_gameObstacleData.durability * ResearchManager.Instance.GameResearchData.valueIncreaseRate * 0.01f);
         _reduceValue = _gameObstacleData.reduceValue - (int)(_gameObstacleData.reduceValue * ResearchManager.Instance.GameResearchData.valueIncreaseRate * 0.01f);
         _statusUI.StatusSetting(transform, _durability, 5, false);

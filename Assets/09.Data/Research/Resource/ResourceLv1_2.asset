@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   research: 203
   step: 1
-  researchName: "\uBC29\uC5B42"
+  researchName: "\uBBF8\uB124\uB784 \uC99D\uAC00"
   description: 
-  icon: {fileID: 21300000, guid: d70dd1b9c6ae54448923db5c4924edd5, type: 3}
+  icon: {fileID: 21300000, guid: 6becf50c5d862904cacebdac87f15502, type: 3}
   type: 2

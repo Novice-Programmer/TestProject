@@ -123,10 +123,12 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
         else
         {
             _playerSelectObject = new Dictionary<EObjectType, List<EObjectName>>();
-            List<EObjectName> objectNames = new List<EObjectName>();
-            _playerSelectObject.Add(EObjectType.Tower, objectNames);
-            objectNames = new List<EObjectName>();
-            _playerSelectObject.Add(EObjectType.Obstacle, objectNames);
+            List<EObjectName> towerNames = new List<EObjectName>();
+            towerNames.Add(EObjectName.KW9A);
+            _playerSelectObject.Add(EObjectType.Tower, towerNames);
+            List<EObjectName> obstacleNames = new List<EObjectName>();
+            obstacleNames.Add(EObjectName.FireWall);
+            _playerSelectObject.Add(EObjectType.Obstacle, obstacleNames);
         }
 
         if (checkResearch != null)

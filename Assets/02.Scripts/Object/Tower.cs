@@ -41,7 +41,6 @@ public abstract class Tower : ObjectGame
     public TowerUpgradeData _upgradeDEF = null;
     public TowerUpgradeData _upgradeSP = null;
 
-    string _enemyTag = "Enemy";
     protected Transform[] _target;
     protected Transform _nearestTarget;
 
@@ -155,7 +154,7 @@ public abstract class Tower : ObjectGame
     {
         if (_stateType == EStateType.AttackSearch || _stateType == EStateType.Attack)
         {
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag(_enemyTag);
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             List<Enemy> enemiesRank = new List<Enemy>();
             _nearestTarget = null;
             float shortestDistance = _atkRange;

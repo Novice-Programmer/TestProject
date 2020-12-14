@@ -6,7 +6,7 @@ public class HitField : MonoBehaviour
 {
     [SerializeField] BadBuff _badBuff = null;
     [SerializeField] EBadBuff _badBuffType = EBadBuff.None;
-    [SerializeField] string _targetTag = "Enemy";
+    [SerializeField] ETargetType _targetType = ETargetType.Enemy;
     [SerializeField] bool _eternity = false;
     [SerializeField] float _continueTime;
     float[] _values;
@@ -25,9 +25,9 @@ public class HitField : MonoBehaviour
         }
     }
 
-    public void HitPadSetting(string targetTag, float[] values)
+    public void HitPadSetting(ETargetType targetType, float[] values)
     {
-        _targetTag = targetTag;
+        _targetType = targetType;
         _values = values;
         switch (_badBuffType)
         {
@@ -53,7 +53,7 @@ public class HitField : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag(_targetTag))
+        if (CheckTarget.TargetTagCheck(_targetType, other.tag))
         {
             ObjectGame objectHit = other.GetComponent<ObjectGame>();
             if (objectHit.BuffCheck(_badBuffType))

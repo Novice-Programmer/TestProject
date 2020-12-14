@@ -366,7 +366,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 597b0f877b239c248a9d34aca2d5a1b7, type: 3}
   - {fileID: 8300000, guid: d5c1279b0c6880348bdec94f9a16bda8, type: 3}
   - {fileID: 8300000, guid: 73a2f8b00c2f1cf469b46c881bfbe7b3, type: 3}
-  - {fileID: 8300000, guid: 3f4dd30ba391aec4caf720a63acf26f0, type: 3}
+  - {fileID: 8300000, guid: f75c3c28c585c0d4d9a197e202145cb1, type: 3}
   - {fileID: 8300000, guid: 2b603dff6e69b2b47b97ec52356aae06, type: 3}
   _prefabSoundSource: {fileID: 4454502854093517595, guid: 83e00d3c1b693554ebc354b673e8a162,
     type: 3}

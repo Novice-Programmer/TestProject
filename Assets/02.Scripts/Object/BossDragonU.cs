@@ -17,11 +17,11 @@ public class BossDragonU : Enemy
         SoundManager.Instance.PlayEffectSound(_attackSound, transform);
         if (_target != null)
         {
-            _attackZone.HitZoneSetting(_atk, _target.tag);
+            _attackZone.HitZoneSetting(_atk, ETargetType.Player);
         }
         else
         {
-            _attackZone.HitZoneSetting(_atk, "Tower");
+            _attackZone.HitZoneSetting(_atk, ETargetType.Player);
         }
         _attackZone.gameObject.SetActive(true);
     }
@@ -50,11 +50,11 @@ public class BossDragonU : Enemy
         SoundManager.Instance.PlayEffectSound(_attackSound, transform);
         if (_target != null)
         {
-            _skillZone.HitZoneSetting(_atk * 3, _target.tag);
+            _skillZone.HitZoneSetting(_atk * 3, ETargetType.Player);
         }
         else
         {
-            _skillZone.HitZoneSetting(_atk * 3, "Tower");
+            _skillZone.HitZoneSetting(_atk * 3, ETargetType.Player);
         }
         _skillZone.gameObject.SetActive(true);
     }

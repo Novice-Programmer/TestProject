@@ -64,8 +64,11 @@ public class GameUI : MonoBehaviour
 
     public void ResourceValueChange(bool gameValue, int value)
     {
-        _uiInfo.UIValueChange();
-        _uiResource.UIValueChange(gameValue,value);
+        if (!GameManager.Instance.GameEndCheck)
+        {
+            _uiInfo.UIValueChange();
+            _uiResource.UIValueChange(gameValue, value);
+        }
     }
 
     public void SelectHPValueChange()

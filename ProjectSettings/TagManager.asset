@@ -12,6 +12,7 @@ TagManager:
   - Field
   - Obstacle
   - SelectObject
+  - Mineral
   layers:
   - Default
   - TransparentFX
@@ -31,7 +32,7 @@ TagManager:
   - Planet
   - Mineral
   - PassInfo
-  - 
+  - CameraView
   - 
   - 
   - 

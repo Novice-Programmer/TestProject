@@ -22,7 +22,7 @@ public class Projectile : MonoBehaviour
 
     Transform _target;
     Vector3 _targetPos;
-    string _tagetTag;
+    ETargetType _targetType;
     bool _guidance;
 
     float _timeCheck = 0.0f;
@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
         if (_timeCheck >= _maxTime)
         {
             BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);
-            bomb.BombSetting(_tagetTag, _values);
+            bomb.BombSetting(_targetType, _values);
             Destroy(gameObject);
         }
         if (_parabola)
@@ -76,19 +76,19 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public void ProjectileSetting(Transform target, string targetTag, params float[] values)
+    public void ProjectileSetting(Transform target, ETargetType targetType, params float[] values)
     {
         _target = target;
         _guidance = true;
-        _tagetTag = targetTag;
+        _targetType = targetType;
         _values = values;
     }
 
-    public void ProjectileSetting(Vector3 targetPos, string targetTag, params float[] values)
+    public void ProjectileSetting(Vector3 targetPos, ETargetType targetType, params float[] values)
     {
         _targetPos = targetPos;
         _guidance = false;
-        _tagetTag = targetTag;
+        _targetType = targetType;
         _values = values;
     }
 
@@ -99,12 +99,7 @@ public class Projectile : MonoBehaviour
             Bomb();
         }
 
-        else if (string.IsNullOrEmpty(_tagetTag))
-        {
-            Bomb();
-        }
-
-        else if (other.CompareTag(_tagetTag))
+        else if (CheckTarget.TargetTagCheck(_targetType, other.tag))
         {
             Bomb();
         }
@@ -114,7 +109,7 @@ public class Projectile : MonoBehaviour
     {
         SoundManager.Instance.PlayEffectSound(_boomSound, transform);
         BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);
-        bomb.BombSetting(_tagetTag, _values);
+        bomb.BombSetting(_targetType, _values);
         Destroy(gameObject);
     }
 }
