@@ -24,8 +24,8 @@ MonoBehaviour:
   def: 1
   checkTime: 3
   atkSpd: 0.4
-  atkRange: 3
-  sightRange: 5
+  atkRange: 4.5
+  sightRange: 6
   atkRate: 20
   atkTime: 5
   movSpd: 2
