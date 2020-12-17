@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
         ResourceManager.Instance.TowerPartPayment(EPaymentType.Initial, _wave);
         _maxOcc = ResourceManager.Instance.MaxOccPlayment();
         _reduceTime = ResourceManager.Instance.ReduceOccTime();
+        SoundManager.Instance.PlayBGMSound(ESoundBGM.Mars);
     }
 
     private void Update()
@@ -48,7 +49,10 @@ public class GameManager : MonoBehaviour
                     _timeCheck = 0;
                     _getPartNumber++;
                     if (_getPartNumber <= _maxOcc)
-                        ResourceManager.Instance.TowerPartPayment(EPaymentType.Occasional, _wave - 1);
+                    {
+                        ResourceManager.Instance.TowerPartPayment(EPaymentType.Occasional, _wave);
+                        SoundManager.Instance.PlayEffectSound(ESoundName.MoneyAdd, null);
+                    }
                 }
             }
             else
@@ -67,6 +71,7 @@ public class GameManager : MonoBehaviour
     {
         _timeCheck = 0;
         _waveStart = true;
+        SoundManager.Instance.PlayEffectSound(ESoundName.WaveStart, null);
         WaveManager.Instance.WaveStart(_wave);
         GameUI.Instance.WaveStart(_wave);
     }
@@ -77,6 +82,7 @@ public class GameManager : MonoBehaviour
         _waveStart = false;
         _getPartNumber = 0;
         _wave++;
+        SoundManager.Instance.PlayEffectSound(ESoundName.WaveEnd, null);
         ResourceManager.Instance.WaveClear(_wave);
         if (stageClear)
         {
@@ -115,7 +121,8 @@ public class GameManager : MonoBehaviour
     public void GameEnd(bool clear)
     {
         _gameEnd = true;
-        if (clear) {
+        if (clear)
+        {
             GameObject[] minerals = GameObject.FindGameObjectsWithTag("Mineral");
             for (int i = 0; i < minerals.Length; i++)
             {
@@ -124,7 +131,7 @@ public class GameManager : MonoBehaviour
                     minerals[i].GetComponent<DropMineral>().GetMineral();
                 }
             }
-                }
+        }
         PoolManager.Instance.GameEnd();
         GameUI.Instance.GameEnd(clear);
         ResourceManager.Instance.GameEnd();

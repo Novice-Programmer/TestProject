@@ -14,6 +14,7 @@ public enum ERatingType
 
 public abstract class Enemy : ObjectGame
 {
+    [Header("Enemy")]
     public EnemyData _enemyData;
     public EObjectName _objectName;
     public ERatingType _rating = ERatingType.Normal;
@@ -36,12 +37,13 @@ public abstract class Enemy : ObjectGame
     NavMeshAgent _enemyAI;
     Animator _enemyAnim;
     WorldStatusUI _statusUI = null;
-    public Transform _attackPos;
+    BoxCollider _boxCollider;
     public Transform _target;
     EObjectType _prevTarget;
     bool _searchFail = true;
 
     [SerializeField] float _obstacleCheckRange = 2.0f;
+    [SerializeField] float _noAttackTime = 4.0f;
 
     string _towerTag = "Tower";
     string _obstacleTag = "Obstacle";
@@ -56,6 +58,7 @@ public abstract class Enemy : ObjectGame
     {
         _enemyAI = GetComponent<NavMeshAgent>();
         _enemyAnim = GetComponent<Animator>();
+        _boxCollider = GetComponent<BoxCollider>();
     }
 
     public void Active()
@@ -63,26 +66,31 @@ public abstract class Enemy : ObjectGame
         gameObject.SetActive(true);
         _enemyAI.enabled = true;
         _enemyObstacle.enabled = false;
+        _boxCollider.enabled = true;
         _target = null;
+        _isDead = false;
         _wavePointIndex = 0;
         _enemyAI.destination = WayPointContainer._wayPoints[_wavePointIndex].position;
-        for (int i = 0; i < _badBuffs.Count; i++)
-        {
-            Destroy(_badBuffs[i].gameObject);
-        }
         _badBuffs = new List<BadBuff>();
+        _atk = _enemyData.atk;
+        _def = _enemyData.def;
+        _atkSpd = _enemyData.atkSpd;
+        _movSpd = _enemyData.movSpd;
+        _enemyAI.speed = _movSpd;
+        _enemyAI.acceleration = _movSpd * 2.0f;
         StateChange(EStateType.Move);
         _action = false;
         _timeCheck = 0;
         _attackTime = 0;
         _attackNumber = 0;
+        _attackPos.gameObject.SetActive(true);
         _hp = _enemyData.hp;
+        _mp = 0;
         GameObject go = PoolManager.Instance.PoolGetAvailableObject("StatusUI");
         _statusUI = go.GetComponent<WorldStatusUI>();
         _statusUI.StatusSetting(transform, _enemyData.hp, 4f);
+        _statusUI.MPChange(_mp);
         _objectName = _enemyData.objectName;
-        _mp = 0;
-        StatusCheck();
         StartCoroutine(ActiveSuccess());
         StartCoroutine(BadBuffCheck());
         ObjectDataManager.Instance.MarkerSetting(transform, _objectName);
@@ -97,7 +105,6 @@ public abstract class Enemy : ObjectGame
     {
         WaveManager.Instance.WaveEnemyDie();
         StopAllCoroutines();
-        _objectSelectActive = false;
         _statusUI._available = true;
         gameObject.SetActive(false);
     }
@@ -306,7 +313,7 @@ public abstract class Enemy : ObjectGame
         {
             if (_target.GetComponent<ObjectGame>()._objectType == EObjectType.Tower)
             {
-                if (_timeCheck >= 2.5f && _attackNumber == 0)
+                if (_timeCheck >= _noAttackTime && _attackNumber == 0)
                 {
                     _timeCheck = 0;
                     GetNextWayPoint(_wavePointIndex);
@@ -369,27 +376,19 @@ public abstract class Enemy : ObjectGame
             addRange = 0.0f;
         }
 
-        bool towerCheck = objectType == EObjectType.Tower;
-
-        bool attack = true;
         if (Vector3.Distance(transform.position, _target.position) < _enemyData.atkRange + addRange)
         {
             _enemyAI.speed = 0;
             _enemyAnim.SetBool("Move", false);
             _enemyAI.enabled = false;
             _enemyObstacle.enabled = true;
-            Quaternion lookRotation = Quaternion.LookRotation(_target.position - transform.position);
-            Vector3 rotateValue = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * 10f).eulerAngles;
-            transform.rotation = Quaternion.Euler(transform.rotation.x, rotateValue.y, transform.rotation.z);
+            Vector3 yOutTargetPos = new Vector3(_target.position.x, 0, _target.position.z);
+            Vector3 yOutTransformPos = new Vector3(transform.position.x, 0, transform.position.z);
+            Quaternion lookRotation = Quaternion.LookRotation(yOutTargetPos - yOutTransformPos);
+            transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
             if (_attackTime <= 0.0f)
             {
-                if (towerCheck)
-                {
-                    if (Quaternion.Angle(transform.rotation, lookRotation) >= 10.0f)
-                        attack = false;
-                }
-
-                if (attack)
+                if (Quaternion.Angle(transform.rotation, lookRotation) <= 5.0f)
                 {
                     _attackTime = 9999;
                     _attackNumber++;
@@ -402,7 +401,6 @@ public abstract class Enemy : ObjectGame
                     {
                         _enemyAnim.SetTrigger("Skill");
                     }
-
                 }
             }
         }
@@ -443,8 +441,24 @@ public abstract class Enemy : ObjectGame
     void Die()
     {
         StateChange(EStateType.Die);
+        _action = true;
+        _isDead = true;
         _enemyAI.enabled = false;
         _enemyObstacle.enabled = false;
+        _boxCollider.enabled = false;
+        _attackPos.gameObject.SetActive(false);
+        _objectSelectActive = false;
+        if (_objectSelect)
+        {
+            InputManager.Instance.ObjectSelectClose();
+        }
+        for (int i = 0; i < _badBuffs.Count; i++)
+        {
+            if (_badBuffs[i] != null)
+            {
+                _badBuffs[i].TargetDisable();
+            }
+        }
         SoundManager.Instance.PlayEffectSound(_dieSound, transform);
         if (gameObject.activeSelf)
         {
@@ -455,7 +469,6 @@ public abstract class Enemy : ObjectGame
 
     public void DieEnd()
     {
-        _action = true;
         float rate = Random.Range(0.0f, 100.0f);
         if (rate < _enemyData.mineralGetRate)
         {
@@ -486,6 +499,10 @@ public abstract class Enemy : ObjectGame
     {
         if (_stateType == EStateType.Die)
             return;
+        if (weakType == _weakType)
+        {
+            damage += (int)(damage * 0.2f);
+        }
         int resultDamage = damage - _def;
         if (resultDamage <= 0)
         {
@@ -555,6 +572,7 @@ public abstract class Enemy : ObjectGame
         {
             _objectSelect = false;
         }
+        _statusUI.SelectViewStatus(_objectSelect);
         if (_objectSelect)
         {
             GameUI.Instance.EnemyClick(this);

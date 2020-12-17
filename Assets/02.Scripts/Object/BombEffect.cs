@@ -12,6 +12,7 @@ public class BombEffect : MonoBehaviour
     [SerializeField] bool _delayShot = false;
     [SerializeField] float _delayTime = 1;
 
+    ObjectGame _target;
     ETargetType _targetType;
     float[] _valeus;
     float _timeCheck = 0.0f;
@@ -49,6 +50,23 @@ public class BombEffect : MonoBehaviour
         _valeus = values;
     }
 
+    public void BombSetting(ObjectGame target, ETargetType targetType, params float[] values)
+    {
+        _target = target;
+        _targetType = targetType;
+        _valeus = values;
+        if (_oneTarget)
+        {
+            TargetBoom();
+        }
+    }
+
+    void TargetBoom()
+    { 
+        _target.Hit((int)_valeus[0], _weakType);
+        GetComponent<BoxCollider>().enabled = false;
+    }
+
     void Bomb()
     {
         List<GameObject> hitObjectList = new List<GameObject>();
@@ -63,10 +81,19 @@ public class BombEffect : MonoBehaviour
         }
 
         GameObject[] hitObjects = hitObjectList.ToArray();
+        float range;
+        if (_valeus.Length < 2)
+        {
+            range = 0.5f;
+        }
+        else
+        {
+            range = _valeus[1];
+        }
 
         foreach (GameObject hitObject in hitObjects)
         {
-            if (Vector3.Distance(transform.position, hitObject.transform.position) < _valeus[1])
+            if (Vector3.Distance(transform.position, hitObject.transform.position) < range)
             {
                 if (_dealCheck)
                 {
@@ -81,24 +108,15 @@ public class BombEffect : MonoBehaviour
     {
         if (CheckTarget.TargetTagCheck(_targetType, other.tag))
         {
-            if (_oneTarget)
+            if (_oneShot)
             {
                 ObjectGame objectHit = other.GetComponent<ObjectGame>();
                 objectHit.Hit((int)_valeus[0], _weakType);
-                GetComponent<BoxCollider>().enabled = false;
             }
             else
             {
-                if (_oneShot)
-                {
-                    ObjectGame objectHit = other.GetComponent<ObjectGame>();
-                    objectHit.Hit((int)_valeus[0], _weakType);
-                }
-                else
-                {
-                    GetComponent<BoxCollider>().enabled = false;
-                    Bomb();
-                }
+                GetComponent<BoxCollider>().enabled = false;
+                Bomb();
             }
         }
     }

@@ -24,7 +24,7 @@ public class InstallSpawnButton : MonoBehaviour
 
     public void InstallMoneyCheck()
     {
-        if (ResourceManager.Instance.TowerPartValue > _installCost)
+        if (ResourceManager.Instance.TowerPartValue >= _installCost)
         {
             _partCostTxt.color = Color.white;
             _lockBtn.SetActive(false);

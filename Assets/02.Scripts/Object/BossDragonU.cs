@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BossDragonU : Enemy
 {
+    [Header("BDU")]
     [SerializeField] HitZone _attackZone = null;
     [SerializeField] ParticleSystem _attackEffect = null;
     [SerializeField] HitZone _skillZone = null;
@@ -50,11 +51,11 @@ public class BossDragonU : Enemy
         SoundManager.Instance.PlayEffectSound(_attackSound, transform);
         if (_target != null)
         {
-            _skillZone.HitZoneSetting(_atk * 3, ETargetType.Player);
+            _skillZone.HitZoneSetting((int)(_atk * 1.5f), ETargetType.Player);
         }
         else
         {
-            _skillZone.HitZoneSetting(_atk * 3, ETargetType.Player);
+            _skillZone.HitZoneSetting((int)(_atk * 1.5f), ETargetType.Player);
         }
         _skillZone.gameObject.SetActive(true);
     }

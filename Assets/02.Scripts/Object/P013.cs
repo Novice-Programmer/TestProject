@@ -29,9 +29,9 @@ public class P013 : Tower
             if (_nearestTarget != null)
             {
                 _laserRenderer.SetPosition(0, _firePoint.position);
-                _laserRenderer.SetPosition(1, _nearestTarget.GetComponent<Enemy>()._attackPos.position);
+                _laserRenderer.SetPosition(1, _nearestTarget.GetComponent<ObjectGame>()._attackPos.position);
                 Vector3 dir = _firePoint.position - _nearestTarget.position;
-                _impactEffect.transform.position = _nearestTarget.GetComponent<Enemy>()._attackPos.position + dir.normalized * 0.5f;
+                _impactEffect.transform.position = _nearestTarget.GetComponent<ObjectGame>()._attackPos.position + dir.normalized * 0.2f;
                 if (_attackTime >= 1 / (_atkSpd * 3))
                 {
                     _attackTime = 0;

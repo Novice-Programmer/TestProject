@@ -88,7 +88,7 @@ public class ResearchManager : TSingleton<ResearchManager>
                     researchResult.startATKUpgrade++;
                     researchResult.startDEFUpgrade++;
                     researchResult.startSPUpgrade++;
-                    researchResult.towerCostReduceRate += 30;
+                    researchResult.towerCostReduceRate += 40;
                     break;
                 case EResearch.TowerLv1_2: // 안정성 증가
                     researchResult.defAddRate += 10;
@@ -146,19 +146,18 @@ public class ResearchManager : TSingleton<ResearchManager>
                     break;
                 case EResearch.ObstacleLv2_1: // 구조 개편
                     researchResult.valueIncreaseRate += 5;
-                    researchResult.obstacleCostReduceRate += -20;
+                    researchResult.obstacleCostReduceRate += -5;
                     break;
                 case EResearch.ObstacleLv2_2: // 환경 적응
-                    researchResult.valueIncreaseRate += 15;
-                    researchResult.obstacleCostReduceRate += -10;
+                    researchResult.valueIncreaseRate += 10;
                     break;
                 case EResearch.ObstacleLv3_1: // 유니크 객체
-                    researchResult.valueIncreaseRate += 30;
-                    researchResult.obstacleCostReduceRate += 50;
+                    researchResult.valueIncreaseRate += 15;
+                    researchResult.obstacleCostReduceRate += 30;
                     break;
                 case EResearch.ObstacleLv3_2: // 물량 승부
-                    researchResult.valueIncreaseRate += -20;
-                    researchResult.obstacleCostReduceRate += -50;
+                    researchResult.valueIncreaseRate += -10;
+                    researchResult.obstacleCostReduceRate += -30;
                     break;
 
 
@@ -174,7 +173,7 @@ public class ResearchManager : TSingleton<ResearchManager>
                     break;
                 case EResearch.ResourceLv2_1: // 장기전
                     researchResult.occasionalAddRate += 30;
-                    researchResult.occasionalReduceTime += 30;
+                    researchResult.occasionalReduceTime += 20;
                     break;
                 case EResearch.ResourceLv2_2: // 빠른 지원
                     researchResult.occasionalAddRate += 5;
@@ -182,7 +181,7 @@ public class ResearchManager : TSingleton<ResearchManager>
                     break;
                 case EResearch.ResourceLv3_1: // 초기 승부
                     researchResult.towerPartAddRate += 30;
-                    researchResult.occasionalAddRate += -30;
+                    researchResult.occasionalAddRate += -20;
                     researchResult.occasionalReduceTime += 15;
                     break;
                 case EResearch.ResourceLv3_2: // 미래 지향적
@@ -253,7 +252,8 @@ public class ResearchManager : TSingleton<ResearchManager>
                     resultTxt += "수시 지급 시간 " + researchResult.occasionalReduceTime + "% 증가\n";
                 break;
         }
-        resultTxt= resultTxt.Remove(resultTxt.Length - 1);
+        if (!string.IsNullOrEmpty(resultTxt))
+            resultTxt = resultTxt.Remove(resultTxt.Length - 1);
         return resultTxt;
     }
 

@@ -9519,8 +9519,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectType: 3
   _stateType: 9
-  _objectSelectActive: 0
+  _objectSelectActive: 1
   _objectSelect: 0
+  _attackPos: {fileID: 0}
   _passData: {fileID: 4759948904416572134}
   _passType: 1
 --- !u!1 &5329292749105665052
@@ -9575,6 +9576,7 @@ MonoBehaviour:
   _stateType: 9
   _objectSelectActive: 0
   _objectSelect: 0
+  _attackPos: {fileID: 0}
   _objectName: 6
   _attackAble: 2
   _gameObstacleData:
@@ -9620,7 +9622,7 @@ MonoBehaviour:
   _badBuff: {fileID: 5498701335548009728, guid: 3a410a8830cd76f41991e1f1834ad1ef,
     type: 3}
   _badBuffType: 3
-  _targetTag: Enemy
+  _targetType: 0
   _eternity: 1
   _continueTime: 0
 --- !u!1 &7382514071360004833

@@ -16,14 +16,21 @@ public class WorldStatusUI : AvailablePool
 
     [SerializeField] Transform _target;
 
+    bool _selected = false;
+
+
     private void LateUpdate()
     {
         if (gameObject.activeSelf)
         {
-            _timeCheck += Time.deltaTime;
-            if (_timeCheck >= _limitViewTime)
+            if (!_selected)
             {
-                gameObject.SetActive(false);
+                _timeCheck += Time.deltaTime;
+                if (_timeCheck >= _limitViewTime)
+                {
+                    _timeCheck = 0;
+                    gameObject.SetActive(false);
+                }
             }
         }
     }
@@ -82,5 +89,11 @@ public class WorldStatusUI : AvailablePool
         gameObject.SetActive(true);
         _mpTxt.text = mp + " / 100";
         _timeCheck = 0;
+    }
+
+    public void SelectViewStatus(bool select)
+    {
+        _selected = select;
+        gameObject.SetActive(select);
     }
 }

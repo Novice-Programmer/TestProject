@@ -11,6 +11,8 @@ public class WaveManager : TSingleton<WaveManager>
     int _nowWaveEnemyNumber = 0;
     bool _stageClearCheck = false;
 
+    public int StageMaxWave { get { return _waves.Length; } }
+
     private void Awake()
     {
         _dontDestroy = false;

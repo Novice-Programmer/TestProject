@@ -22,12 +22,14 @@ public class UIResultWindow : MonoBehaviour
             _endAnim.SetTrigger("Clear");
             _clearObject.SetActive(true);
             SoundManager.Instance.PlayEffectSound(ESoundName.ClearStage, null);
+            SoundManager.Instance.PlayBGMSound(ESoundBGM.MissionComplete);
         }
         else
         {
             _endAnim.SetTrigger("GameOver");
             _overObject.SetActive(true);
             SoundManager.Instance.PlayEffectSound(ESoundName.FailStage, null);
+            SoundManager.Instance.PlayBGMSound(ESoundBGM.MissionFail);
         }
         _waveTxt.text = "Clear Wave " + wave.ToString();
         _enemyTxt.text = "Enemy " + enemyDie.ToString();

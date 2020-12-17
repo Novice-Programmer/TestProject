@@ -25,7 +25,18 @@ public class ResearchLvUI : MonoBehaviour
         _researchIcon.gameObject.SetActive(!lockObject);
         _researchIcon.sprite = researchData.icon;
         _researchData = researchData;
-        _nameTxt.text = researchData.researchName;
+        if (lockObject)
+        {
+            _nameTxt.color = Color.red;
+            _nameTxt.fontSize = 24;
+            _nameTxt.text = "시설 연구 필요";
+        }
+        else
+        {
+            _nameTxt.color = Color.white;
+            _nameTxt.fontSize = 28;
+            _nameTxt.text = researchData.researchName;
+        }
     }
 
     public void ResearchClick()

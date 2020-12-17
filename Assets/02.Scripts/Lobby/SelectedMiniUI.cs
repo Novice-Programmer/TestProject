@@ -18,6 +18,8 @@ public class SelectedMiniUI : MonoBehaviour
     public void NoneSelectSetting()
     {
         _icon.gameObject.SetActive(false);
+        _icon.color = Color.white;
+        _background.color = Color.white;
     }
 
     public void LockSelectSetting()

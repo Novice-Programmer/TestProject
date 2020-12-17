@@ -17,8 +17,8 @@ MonoBehaviour:
   level: 1
   addValue:
   - 1
-  - 0.15
+  - 0.1
   - 1
   - 0
   - 0
-  nextCost: 50
+  nextCost: 120

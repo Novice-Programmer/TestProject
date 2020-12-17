@@ -40,7 +40,15 @@ public class UIMap : MonoBehaviour
 
     public void WaveSetting(int waveNumber)
     {
-        _mapWaveTxt.text = "Wave " + (waveNumber+1).ToString();
+        int wave = waveNumber + 1;
+        if(wave == WaveManager.Instance.StageMaxWave)
+        {
+            _mapWaveTxt.text = "Final Wave";
+        }
+        else
+        {
+            _mapWaveTxt.text = "Wave " + wave.ToString();
+        }
         _mapWaveTxtCG.alpha = 1;
         _waveUpdate = true;
     }

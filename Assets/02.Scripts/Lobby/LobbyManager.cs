@@ -9,6 +9,7 @@ public class LobbyManager : TSingleton<LobbyManager>
     [SerializeField] Text _mineralValueTxt = null;
     [SerializeField] SelectedMiniUI[] _selectedMiniUIs = null;
     [SerializeField] Transform _container = null;
+    [SerializeField] Laboratory _laboratory = null;
 
     bool _loadEndCheck = true;
 
@@ -25,7 +26,7 @@ public class LobbyManager : TSingleton<LobbyManager>
 
     private void Start()
     {
-        _mineralValueTxt.text = ResourceManager.Instance.SpaceMineralValue.ToString();
+        MineralUpdate();
         SelectedMiniUpdate();
     }
 
@@ -39,10 +40,11 @@ public class LobbyManager : TSingleton<LobbyManager>
                 SoundManager.Instance.PlayBGMSound(ESoundBGM.Lobby);
             }
         }
-        else
-        {
+    }
 
-        }
+    public void MineralUpdate()
+    {
+        _mineralValueTxt.text = ResourceManager.Instance.SpaceMineralValue.ToString();
     }
 
     public void PlanetSelect(bool open)
@@ -66,5 +68,10 @@ public class LobbyManager : TSingleton<LobbyManager>
         {
             _selectedMiniUIs[i].LockSelectSetting();
         }
+    }
+
+    public void FacilityUpdate()
+    {
+        _laboratory.FacilityUpdate();
     }
 }

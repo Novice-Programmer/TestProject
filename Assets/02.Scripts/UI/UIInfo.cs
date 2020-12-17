@@ -36,6 +36,10 @@ public class UIInfo : MonoBehaviour
     [SerializeField] GameObject _enemyInfoContainer = null;
     [SerializeField] Text _enemyName = null;
     [SerializeField] Image _enemyIconImage = null;
+    [SerializeField] Text _enemyDEC = null;
+    [SerializeField] Text _enemyATK = null;
+    [SerializeField] Text _enemyDEF = null;
+    [SerializeField] Text _enemyHP = null;
 
     bool _view = false;
     Tower _selectTower;
@@ -198,7 +202,8 @@ public class UIInfo : MonoBehaviour
 
     public void RepairCheck()
     {
-        if (_selectTower == null) {
+        if (_selectTower == null)
+        {
             return;
         }
         bool towerRepairCheck;
@@ -229,11 +234,15 @@ public class UIInfo : MonoBehaviour
     {
         _enemyName.text = enemy._enemyData.enemyFullName;
         _enemyIconImage.sprite = ObjectDataManager.Instance.GetImage(enemy._objectName);
+        _enemyDEC.text = enemy._enemyData.description;
+        _enemyATK.text = "ATK " + enemy._enemyData.atk.ToString();
+        _enemyDEF.text = "DEF " + enemy._enemyData.def.ToString();
+        _enemyHP.text = "Max HP " + enemy._enemyData.hp.ToString();
     }
 
     public void UIValueChange()
     {
-        if(_selectTower != null)
+        if (_selectTower != null)
         {
             TowerCostCheck();
         }

@@ -106,6 +106,12 @@ public class GameUI : MonoBehaviour
 
     public void AppearanceEnemy(EObjectName objectName)
     {
+        if (ObjectDataManager.Instance.EnemyRating(objectName) == ERatingType.Boss)
+        {
+            _hideCanvas.alpha = 1f;
+            SoundManager.Instance.PlayEffectSound(ESoundName.BossAper, null);
+            _startTimeTxt.text = "보스 몬스터 [" + ObjectDataManager.Instance.EnemyName(objectName) + "]가 등장했습니다!!!";
+        }
         _uiWave.WaveEnemyAppearance(objectName);
     }
 
@@ -129,11 +135,6 @@ public class GameUI : MonoBehaviour
     public void CommanderHit(int hp)
     {
         _uiPlayer.ChangeHP(hp);
-    }
-
-    public void InfoViewOff()
-    {
-        _uiInfo.ViewOff();
     }
 
     public void EnemyDie()

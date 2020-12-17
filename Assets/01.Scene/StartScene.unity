@@ -260,6 +260,9 @@ MonoBehaviour:
   _obstacleImages:
   - {fileID: 21300000, guid: 38e99ed40487fee41b0b71c8d46c7104, type: 3}
   - {fileID: 21300000, guid: fffa04748da33aa45affa3616ce2d687, type: 3}
+  _enemyAllDatas:
+  - {fileID: 11400000, guid: 120e5e0d9ea225c4baa9ddb76cf87fd1, type: 2}
+  - {fileID: 11400000, guid: 1c31f1136a1570742990a4fe0a903944, type: 2}
   _enemyIconSprites:
   - {fileID: 21300000, guid: eaa13ac123e76dd4e9fe0091c01f5751, type: 3}
   - {fileID: 21300000, guid: 1af2312369439e044b63744d09301cc5, type: 3}
@@ -335,6 +338,8 @@ MonoBehaviour:
   _bgmClips:
   - {fileID: 8300000, guid: 40b85fe8da718b145a91f16804105ac2, type: 3}
   - {fileID: 8300000, guid: 76632bc76ccf89a499f1f50b0543f7f3, type: 3}
+  - {fileID: 8300000, guid: 2e285de4065edee4589a2f9f1a312e3f, type: 3}
+  - {fileID: 8300000, guid: c68403026d884774d85edda580b3f64f, type: 3}
   _soundClips:
   - {fileID: 8300000, guid: f1d769ac914e7430f8f940d3ca32a438, type: 3}
   - {fileID: 8300000, guid: 4ac142698bea55a4f8859c2717de11c0, type: 3}
@@ -368,6 +373,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 73a2f8b00c2f1cf469b46c881bfbe7b3, type: 3}
   - {fileID: 8300000, guid: f75c3c28c585c0d4d9a197e202145cb1, type: 3}
   - {fileID: 8300000, guid: 2b603dff6e69b2b47b97ec52356aae06, type: 3}
+  - {fileID: 8300000, guid: d8f524a468d2f43eeb30bf19d8a8337f, type: 3}
+  - {fileID: 8300000, guid: 5e3d30b7fb0e22b40a80461fa7dcf20d, type: 3}
+  - {fileID: 8300000, guid: aa348f776c7354f36917fef10c6b48d1, type: 3}
+  - {fileID: 8300000, guid: 01e0e2d3367124c909e8666c4241940c, type: 3}
+  - {fileID: 8300000, guid: 3fcb7fef61bc54750bd9dde9a1280199, type: 3}
   _prefabSoundSource: {fileID: 4454502854093517595, guid: 83e00d3c1b693554ebc354b673e8a162,
     type: 3}
   _audioSourceInitNumber: 30

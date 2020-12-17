@@ -6,7 +6,8 @@ public enum EResearchType
 {
     Tower,
     Obstacle,
-    Resource
+    Resource,
+    Facility
 }
 
 public enum EResearch

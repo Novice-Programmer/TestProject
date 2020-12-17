@@ -30,11 +30,6 @@ public class BadBuff : MonoBehaviour
 
     private void Update()
     {
-        if (target == null)
-        {
-            Destroy(gameObject);
-            return;
-        }
         _timeCheck += Time.deltaTime;
         checkTime -= Time.deltaTime;
         if (checkTime <= 0)
@@ -48,7 +43,7 @@ public class BadBuff : MonoBehaviour
             {
                 target.Hit(hp, weakType);
             }
-            if(mp > 0)
+            if (mp > 0)
             {
                 target.ReduceMP(mp);
             }
@@ -58,5 +53,12 @@ public class BadBuff : MonoBehaviour
     public void TargetSetting(ObjectGame target)
     {
         this.target = target;
+    }
+
+    public void TargetDisable()
+    {
+        target = null;
+        Destroy(gameObject);
+
     }
 }

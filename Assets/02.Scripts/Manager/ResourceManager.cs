@@ -17,13 +17,18 @@ public class ResourceManager : TSingleton<ResourceManager>
     public int SpaceMineralValue { get { return _mineralValue; } set { _mineralValue += value; ValueChange(false, value); } }
 
     [SerializeField] StageResourceData[] _stageResourceDatas = null;
-    
+
     StageResourceData _stageData;
 
     private void Awake()
     {
         Init();
         Instance = this;
+    }
+
+    private void Start()
+    {
+        _mineralValue = 5000;
     }
 
     public int MaxOccPlayment()
@@ -52,7 +57,10 @@ public class ResourceManager : TSingleton<ResourceManager>
                 TowerPartValue = _stageData.regularTP + (int)((_stageData.regularTP + wave * _stageData.waveAddTP) * 0.01f * ResearchManager.Instance.GameResearchData.towerPartAddRate);
                 break;
             case EPaymentType.Occasional:
-                TowerPartValue = _stageData.occasionalTP + (int)(_stageData.occasionalTP * 0.01f * ResearchManager.Instance.GameResearchData.towerPartAddRate);
+                int addValue = _stageData.occasionalTP + (int)(_stageData.occasionalTP * 0.01f * ResearchManager.Instance.GameResearchData.towerPartAddRate);
+                addValue += (int)(wave * _stageData.occasionalTP * 0.15f);
+                addValue += (int)(wave * _stageData.occasionalTP * 0.005f * ResearchManager.Instance.GameResearchData.towerPartAddRate);
+                TowerPartValue = addValue;
                 break;
         }
     }
@@ -90,7 +98,7 @@ public class ResourceManager : TSingleton<ResourceManager>
         }
         else
         {
-
+            LobbyManager.Instance.MineralUpdate();
         }
     }
 }

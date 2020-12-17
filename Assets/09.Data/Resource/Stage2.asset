@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Stage2
   m_EditorClassIdentifier: 
   stage: 2
-  maxWave: 3
+  maxWave: 10
   initialTP: 220
   regularTP: 150
   occasionalTP: 12
   occasionalNumber: 14
-  waveAddTP: 2
+  waveAddTP: 25
   waveClearMineral: 2
   basicClearMineral: 5
   stageClearMineral: 10
-  firstAllClearMineral: 100
+  firstAllClearMineral: 500

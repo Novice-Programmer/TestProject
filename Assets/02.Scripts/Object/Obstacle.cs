@@ -99,6 +99,10 @@ public class Obstacle : ObjectGame
     {
         SoundManager.Instance.PlayEffectSound(ESoundName.SellObject, null);
         _parentTile.Clear(_gridPosition, _dimensions, _fitType);
+        if (_objectSelect)
+        {
+            Select(false);
+        }
         StopCoroutine(BuildSuccess());
         Destroy(_statusUI.gameObject);
         Destroy(gameObject);
@@ -112,6 +116,7 @@ public class Obstacle : ObjectGame
         {
             _objectSelect = false;
         }
+        _statusUI.SelectViewStatus(_objectSelect);
         if (_objectSelect)
         {
             GameUI.Instance.ObstacleClick(this);

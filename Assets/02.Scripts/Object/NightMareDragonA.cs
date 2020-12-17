@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NightMareDragonA : Enemy
 {
+    [Header("NMDA")]
     [SerializeField] Transform _specialAttackPos = null;
     [SerializeField] GameObject _attackEffect = null;
     [SerializeField] Projectile _specialAttack = null;
@@ -17,8 +18,8 @@ public class NightMareDragonA : Enemy
         }
         _attackZone.HitZoneSetting(_atk, ETargetType.Player);
         _attackZone.gameObject.SetActive(true);
-        Vector3 effectPos = new Vector3(_target.position.x, _target.position.y + 1f, _target.position.z);
-        Instantiate(_attackEffect, effectPos, Quaternion.identity);
+        Vector3 dir = _attackZone.transform.position - _target.position;
+        Instantiate(_attackEffect, _target.GetComponent<ObjectGame>()._attackPos.position + dir.normalized * 0.5f, Quaternion.identity);
     }
 
     public override void AttackEnd()
@@ -33,7 +34,7 @@ public class NightMareDragonA : Enemy
         base.TargetSpecialAttack();
         Projectile attack = Instantiate(_specialAttack, _specialAttackPos.position, _specialAttackPos.rotation);
         if (_target != null)
-            attack.ProjectileSetting(_target.position, ETargetType.Player, (int)(_atk * 2.5f));
+            attack.ProjectileSetting(_target.GetComponent<ObjectGame>(), ETargetType.Player, (int)(_atk * 2.5f));
         else
             attack.ProjectileSetting(transform.position + transform.forward, ETargetType.Player, (int)(_atk * 2.5f));
     }

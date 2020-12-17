@@ -46,6 +46,7 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
     Dictionary<EObjectName, ObstacleGameData> _gameObstacleDatas = new Dictionary<EObjectName, ObstacleGameData>();
 
     [Header("Enemy")]
+    [SerializeField] EnemyData[] _enemyAllDatas = null;
     [SerializeField] Sprite[] _enemyIconSprites = null;
     [SerializeField] Sprite[] _enemyRankSprites = null;
 
@@ -400,5 +401,25 @@ public class ObjectDataManager : TSingleton<ObjectDataManager>
             obstacleGameDatas.Add(obstacleGameData);
         }
         return obstacleGameDatas;
+    }
+
+    public string EnemyName(EObjectName objectName)
+    {
+        for(int i = 0; i < _enemyAllDatas.Length; i++)
+        {
+            if (_enemyAllDatas[i].objectName == objectName)
+                return _enemyAllDatas[i].enemyFullName;
+        }
+        return null;
+    }
+
+    public ERatingType EnemyRating(EObjectName objectName)
+    {
+        for (int i = 0; i < _enemyAllDatas.Length; i++)
+        {
+            if (_enemyAllDatas[i].objectName == objectName)
+                return _enemyAllDatas[i].ratingType;
+        }
+        return ERatingType.None;
     }
 }

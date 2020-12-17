@@ -36,7 +36,7 @@ public class KW9A : Tower
             {
                 int _randInt = Random.Range(0, _firePoints.Length);
                 Projectile missile = Instantiate(_rocketMissile, _firePoints[_randInt].position, _firePoints[_randInt].rotation);
-                missile.ProjectileSetting(_target[j].GetComponent<Enemy>()._attackPos, ETargetType.Enemy, _atk);
+                missile.ProjectileSetting(_target[j].GetComponent<ObjectGame>(), ETargetType.Enemy, _atk);
                 yield return new WaitForSeconds(Random.Range(_atkSpd * 0.1f, _atkSpd * 0.2f));
                 if (_target == null)
                 {

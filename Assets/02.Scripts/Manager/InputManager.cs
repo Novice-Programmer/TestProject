@@ -41,13 +41,7 @@ public class InputManager : MonoBehaviour
         Instance = this;
         _mainCamera = GetComponent<Camera>();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
     void Update()
     {
         _timeCheck += Time.deltaTime;
@@ -183,7 +177,7 @@ public class InputManager : MonoBehaviour
         {
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            int selectLayerMask = 1 << LayerMask.NameToLayer("Tower") | 1 << LayerMask.NameToLayer("Enemy") | 1 << LayerMask.NameToLayer("Obstacle") | 1 << LayerMask.NameToLayer("PassInfo");
+            int selectLayerMask = 1 << LayerMask.NameToLayer("Tower") | 1 << LayerMask.NameToLayer("Obstacle") | 1 << LayerMask.NameToLayer("PassInfo");
             int mineralLayerMask = 1 << LayerMask.NameToLayer("Mineral");
             if (SelectObject != null)
             {
@@ -282,6 +276,10 @@ public class InputManager : MonoBehaviour
                 {
                     SelectObject.Select(false);
                     SelectObject = null;
+                }
+                else
+                {
+                    GameUI.Instance.ViewUIOff();
                 }
             }
 

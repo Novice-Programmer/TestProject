@@ -48,7 +48,6 @@ public abstract class Tower : ObjectGame
     int _totalCost = 0;
 
     [SerializeField] Tile _parentTile;
-    public Transform _attackPos;
     IntVector2 _gridPosition;
     EFitType _fitType;
 
@@ -101,7 +100,7 @@ public abstract class Tower : ObjectGame
     }
 
     protected virtual void AttackEnd()
-    { 
+    {
         _attackCountdown = 1 / _atkSpd;
     }
 
@@ -369,6 +368,7 @@ public abstract class Tower : ObjectGame
         {
             _objectSelect = false;
         }
+        _statusUI.SelectViewStatus(_objectSelect);
         if (_objectSelect)
         {
             GameUI.Instance.TowerClick(this);
@@ -407,15 +407,6 @@ public abstract class Tower : ObjectGame
         _levelDEF = 0;
         _levelSP = 0;
         _level = 0;
-        StatusCheck();
-
-        _hp = _maxHP;
-        _statusUI.StatusSetting(transform, _maxHP, 15);
-        _totalCost = _gameTowerData.buildCost;
-    }
-
-    void StatusCheck()
-    {
         ResearchResult researchResult = ResearchManager.Instance.GameResearchData;
         if (researchResult.startATKUpgrade != 0)
         {
@@ -429,6 +420,16 @@ public abstract class Tower : ObjectGame
         {
             _upgradeSP = ObjectDataManager.Instance.GetUpgradeData(_objectName, EUpgradeType.Special, researchResult.startSPUpgrade);
         }
+        StatusCheck();
+
+        _hp = _maxHP;
+        _statusUI.StatusSetting(transform, _maxHP, 15);
+        _totalCost = _gameTowerData.buildCost;
+    }
+
+    void StatusCheck()
+    {
+        ResearchResult researchResult = ResearchManager.Instance.GameResearchData;
 
         if (_upgradeATK != null)
         {
@@ -485,7 +486,7 @@ public abstract class Tower : ObjectGame
             case EUpgradeType.Attack:
                 if (_upgradeATK != null)
                 {
-                    cost = _upgradeATK.nextCost + (int)(_upgradeATK.nextCost * researchResult.towerCostReduceRate * 0.01f) + _gameTowerData.atkUpgradeCost;
+                    cost = _upgradeATK.nextCost + (int)(_upgradeATK.nextCost * researchResult.towerCostReduceRate * 0.01f);
                 }
                 else
                 {
@@ -495,7 +496,7 @@ public abstract class Tower : ObjectGame
             case EUpgradeType.Defence:
                 if (_upgradeDEF != null)
                 {
-                    cost = _upgradeDEF.nextCost + (int)(_upgradeDEF.nextCost * researchResult.towerCostReduceRate * 0.01f) + _gameTowerData.defUpgradeCost;
+                    cost = _upgradeDEF.nextCost + (int)(_upgradeDEF.nextCost * researchResult.towerCostReduceRate * 0.01f);
                 }
                 else
                 {
@@ -505,7 +506,7 @@ public abstract class Tower : ObjectGame
             case EUpgradeType.Special:
                 if (_upgradeSP != null)
                 {
-                    cost = _upgradeSP.nextCost + (int)(_upgradeSP.nextCost * researchResult.towerCostReduceRate * 0.01f) + _gameTowerData.spUpgradeCost;
+                    cost = _upgradeSP.nextCost + (int)(_upgradeSP.nextCost * researchResult.towerCostReduceRate * 0.01f);
                 }
                 else
                 {

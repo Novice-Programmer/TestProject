@@ -18,5 +18,5 @@ MonoBehaviour:
   addValue:
   - 10
   - 1
-  - 0
-  nextCost: 30
+  - 1
+  nextCost: 110

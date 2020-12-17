@@ -7,14 +7,15 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
     Dictionary<EResearchType, Dictionary<int, EResearch>> _playerSelectResearch;
     Dictionary<EObjectType, List<EObjectName>> _playerSelectObject;
     Dictionary<EObjectType, List<EObjectName>> _playerAvailableObject;
-    Dictionary<EResearchType, int> _playerResearchCheck;
+    Dictionary<EResearchType, int> _playerResearchFacility;
     Dictionary<EPlanetType, bool> _playerAvailablePlanet;
     Dictionary<EPlanetType, List<bool>> _playerAvailableStage;
 
     int _clearStage = 0;
-    int _maxSelectObject = 3;
+    int _maxSelectObject = 2;
+    int _addSelectObject = 0;
 
-    public int MaxSelected { get { return _maxSelectObject; } }
+    public int MaxSelected { get { return _maxSelectObject + _addSelectObject; } }
     public int ClearStage { get { return _clearStage; } }
     public int SelectedNumber
     {
@@ -43,7 +44,7 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
         }
     }
 
-    public bool Selected { get { return SelectedNumber < _maxSelectObject; } }
+    public bool Selected { get { return SelectedNumber < _maxSelectObject + _addSelectObject; } }
 
     List<EResearch> SelectResearchList
     {
@@ -133,17 +134,15 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
 
         if (checkResearch != null)
         {
-            _playerResearchCheck = checkResearch;
+            _playerResearchFacility = checkResearch;
         }
         else
         {
-            _playerResearchCheck = new Dictionary<EResearchType, int>();
-            _playerResearchCheck.Add(EResearchType.Tower, 3);
-            _playerResearchCheck.Add(EResearchType.Obstacle, 3);
-            _playerResearchCheck.Add(EResearchType.Resource, 3);
-            ResearchUpdate(EResearchType.Tower, 0, EResearch.TowerLv0);
-            ResearchUpdate(EResearchType.Obstacle, 0, EResearch.ObstacleLv0);
-            ResearchUpdate(EResearchType.Resource, 0, EResearch.ResourceLv0);
+            _playerResearchFacility = new Dictionary<EResearchType, int>();
+            _playerResearchFacility.Add(EResearchType.Facility, -1);
+            _playerResearchFacility.Add(EResearchType.Tower, -1);
+            _playerResearchFacility.Add(EResearchType.Obstacle, -1);
+            _playerResearchFacility.Add(EResearchType.Resource, -1);
             ResearchManager.Instance.ResearchUpdate(SelectResearchList);
         }
         if (availableObject != null)
@@ -155,10 +154,8 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
             _playerAvailableObject = new Dictionary<EObjectType, List<EObjectName>>();
             _playerAvailableObject.Add(EObjectType.Tower, new List<EObjectName>());
             _playerAvailableObject[EObjectType.Tower].Add(EObjectName.KW9A);
-            _playerAvailableObject[EObjectType.Tower].Add(EObjectName.P013);
             _playerAvailableObject.Add(EObjectType.Obstacle, new List<EObjectName>());
             _playerAvailableObject[EObjectType.Obstacle].Add(EObjectName.FireWall);
-            _playerAvailableObject[EObjectType.Obstacle].Add(EObjectName.Swamp);
         }
         if (availablePlanet != null)
         {
@@ -221,7 +218,7 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
 
     public bool GetResearchCheck(EResearchType researchType, int step)
     {
-        if (_playerResearchCheck[researchType] >= step)
+        if (_playerResearchFacility[researchType] >= step)
         {
             return true;
         }
@@ -280,5 +277,38 @@ public class PlayerDataManager : TSingleton<PlayerDataManager>
         {
             _clearStage = stage;
         }
+    }
+
+    public void FacilityUpdate(EResearchType researchType, int level)
+    {
+        if (researchType == EResearchType.Facility)
+        {
+            _addSelectObject = level;
+        }
+        else if (researchType == EResearchType.Tower)
+        {
+            if (level == 1)
+            {
+                _playerAvailableObject[EObjectType.Tower].Add(EObjectName.P013);
+            }
+        }
+        else if (researchType == EResearchType.Obstacle)
+        {
+            if (level == 1)
+            {
+                _playerAvailableObject[EObjectType.Obstacle].Add(EObjectName.Swamp);
+            }
+        }
+        _playerResearchFacility[researchType] = level;
+    }
+
+    public int GetFacilityLevel(EResearchType researchType)
+    {
+        return _playerResearchFacility[researchType];
+    }
+
+    public Dictionary<EResearchType, int> GetFacilityData()
+    {
+        return _playerResearchFacility;
     }
 }

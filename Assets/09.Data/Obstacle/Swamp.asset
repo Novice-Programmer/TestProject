@@ -19,10 +19,10 @@ MonoBehaviour:
     y: 1
   obstacleName: "\uB2AA\uC9C0\uB300"
   description: "\uC778\uACF5\uC801\uC73C\uB85C \uB9CC\uB4E0 \uB2AA\uC9C0\uB300\uC785\uB2C8\uB2E4."
-  durability: 150
+  durability: 80
   reduceValue: 5
-  buildCost: 35
+  buildCost: 30
   values:
   - 30
-  - 60
+  - 35
   - 3

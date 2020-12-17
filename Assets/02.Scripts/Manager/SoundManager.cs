@@ -5,7 +5,9 @@ using UnityEngine;
 public enum ESoundBGM
 {
     Lobby,
-    Mars
+    Mars,
+    MissionFail,
+    MissionComplete
 }
 
 public enum ESoundName
@@ -41,7 +43,12 @@ public enum ESoundName
     Wing,
     Laser,
     ChargingLaser,
-    BDUDie
+    BDUDie,
+    FacilityUpdate,
+    WaveStart,
+    WaveEnd,
+    BossAper,
+    MoneyAdd
 }
 public class SoundManager : TSingleton<SoundManager>
 {

@@ -20,7 +20,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] float _maxUp = 10.0f;
     [SerializeField] float _minY = 0.2f;
 
-    Transform _target;
+    ObjectGame _target;
     Vector3 _targetPos;
     ETargetType _targetType;
     bool _guidance;
@@ -53,32 +53,46 @@ public class Projectile : MonoBehaviour
         else
         {
             Vector3 dir;
+            Vector3 pos;
             if (_guidance)
             {
                 if (_target == null)
                 {
-                    Bomb();
+                    _guidance = false;
                     return;
                 }
-                dir = _target.position - transform.position;
+                else if (!_target._objectSelectActive)
+                {
+                    _guidance = false;
+                    return;
+                }
+                dir = _target._attackPos.position - transform.position;
                 if (dir.y > -_minY)
                 {
                     dir.y = 0;
                 }
+                pos = _target._attackPos.position;
             }
             else
             {
                 dir = _targetPos - transform.position;
+                pos = _targetPos;
             }
 
             transform.Translate(dir.normalized * _speed * Time.deltaTime, Space.World);
             transform.forward = Vector3.Lerp(transform.forward, dir.normalized, _rotateSpeed * Time.deltaTime);
+            if (Vector3.Distance(transform.position, pos) < 0.05f)
+            {
+                Bomb();
+                return;
+            }
         }
     }
 
-    public void ProjectileSetting(Transform target, ETargetType targetType, params float[] values)
+    public void ProjectileSetting(ObjectGame target, ETargetType targetType, params float[] values)
     {
         _target = target;
+        _targetPos = _target._attackPos.position;
         _guidance = true;
         _targetType = targetType;
         _values = values;
@@ -101,15 +115,23 @@ public class Projectile : MonoBehaviour
 
         else if (CheckTarget.TargetTagCheck(_targetType, other.tag))
         {
-            Bomb();
+            ObjectGame objectGame = other.GetComponent<ObjectGame>();
+            Bomb(objectGame);
         }
     }
 
-    void Bomb()
+    void Bomb(ObjectGame objectGame = null)
     {
         SoundManager.Instance.PlayEffectSound(_boomSound, transform);
         BombEffect bomb = Instantiate(_bombObject, transform.position, transform.rotation);
-        bomb.BombSetting(_targetType, _values);
+        if (objectGame != null)
+        {
+            bomb.BombSetting(objectGame, _targetType, _values);
+        }
+        else
+        {
+            bomb.BombSetting(_targetType, _values);
+        }
         Destroy(gameObject);
     }
 }

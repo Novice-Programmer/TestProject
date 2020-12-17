@@ -78,6 +78,7 @@ MonoBehaviour:
   _stateType: 9
   _objectSelectActive: 0
   _objectSelect: 0
+  _attackPos: {fileID: 0}
   _passData: {fileID: 2901981199550038441}
   _passType: 1
 --- !u!1 &4859863399659813400
@@ -127,7 +128,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1289776626938798327
 Transform:
   m_ObjectHideFlags: 0
@@ -623,6 +624,7 @@ MonoBehaviour:
   _stateType: 9
   _objectSelectActive: 0
   _objectSelect: 0
+  _attackPos: {fileID: 5209040394592032227}
   _enemyData: {fileID: 11400000, guid: 120e5e0d9ea225c4baa9ddb76cf87fd1, type: 2}
   _objectName: 3
   _rating: 1
@@ -635,9 +637,9 @@ MonoBehaviour:
   _moveCheckSize: 2
   _enemyObstacle: {fileID: 3024669695990523249}
   _badBuffs: []
-  _attackPos: {fileID: 5209040394592032227}
   _target: {fileID: 0}
   _obstacleCheckRange: 2
+  _noAttackTime: 4
   _state: {fileID: 7137587121840765164}
   _attackSound: 20
   _dieSound: 17
@@ -2712,7 +2714,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5209040394592032227}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: AttackPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
