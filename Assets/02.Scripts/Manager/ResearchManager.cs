@@ -88,7 +88,7 @@ public class ResearchManager : TSingleton<ResearchManager>
                     researchResult.startATKUpgrade++;
                     researchResult.startDEFUpgrade++;
                     researchResult.startSPUpgrade++;
-                    researchResult.towerCostReduceRate += 40;
+                    researchResult.towerCostReduceRate += 70;
                     break;
                 case EResearch.TowerLv1_2: // 안정성 증가
                     researchResult.defAddRate += 10;
@@ -103,39 +103,38 @@ public class ResearchManager : TSingleton<ResearchManager>
                     researchResult.towerCostReduceRate += 10;
                     break;
                 case EResearch.TowerLv2_1: // 묵직한 한방
-                    researchResult.atkAddRate += 20;
-                    researchResult.atkRangeAddRate += 20;
-                    researchResult.atkSpdAddRate += -10;
+                    researchResult.atkAddRate += 10;
+                    researchResult.atkRangeAddRate += 10;
+                    researchResult.atkSpdAddRate += -5;
+                    researchResult.spAddRate -= 5;
                     break;
                 case EResearch.TowerLv2_2: // 특수기 위주
-                    researchResult.epAddRate += 30;
+                    researchResult.epAddRate += 20;
                     researchResult.atkSpdAddRate += 10;
                     researchResult.spAddRate += 10;
-                    researchResult.hpAddRate += -15;
-                    researchResult.defAddRate += -15;
+                    researchResult.hpAddRate += -10;
+                    researchResult.defAddRate += -10;
                     break;
                 case EResearch.TowerLv2_3: // 설계도 개편
-                    researchResult.atkAddRate += 5;
                     researchResult.atkRangeAddRate += 5;
                     researchResult.atkSpdAddRate += 5;
                     researchResult.hpAddRate += 5;
                     researchResult.epAddRate += 5;
-                    researchResult.defAddRate += 5;
+                    researchResult.towerCostReduceRate += -5;
                     break;
                 case EResearch.TowerLv3_1: // AI 극대화
-                    researchResult.atkAddRate += 20;
-                    researchResult.atkRangeAddRate += 20;
+                    researchResult.atkAddRate += 15;
+                    researchResult.atkRangeAddRate += 15;
                     researchResult.atkSpdAddRate += 10;
                     break;
                 case EResearch.TowerLv3_2: // 방어 극대화
-                    researchResult.epAddRate += 20;
+                    researchResult.epAddRate += 10;
                     researchResult.defAddRate += 20;
                     researchResult.hpAddRate += 20;
-                    researchResult.spAddRate += 20;
+                    researchResult.spAddRate += 10;
                     break;
 
                 case EResearch.ObstacleLv0: // 기본 연구
-                    researchResult.valueIncreaseRate += 5;
                     researchResult.obstacleCostReduceRate += -5;
                     break;
                 case EResearch.ObstacleLv1_1: // 품질 상승
@@ -145,11 +144,11 @@ public class ResearchManager : TSingleton<ResearchManager>
                     researchResult.obstacleCostReduceRate += -5;
                     break;
                 case EResearch.ObstacleLv2_1: // 구조 개편
-                    researchResult.valueIncreaseRate += 5;
-                    researchResult.obstacleCostReduceRate += -5;
+                    researchResult.valueIncreaseRate += 3;
+                    researchResult.obstacleCostReduceRate += -10;
                     break;
                 case EResearch.ObstacleLv2_2: // 환경 적응
-                    researchResult.valueIncreaseRate += 10;
+                    researchResult.valueIncreaseRate += 12;
                     break;
                 case EResearch.ObstacleLv3_1: // 유니크 객체
                     researchResult.valueIncreaseRate += 15;
@@ -172,12 +171,12 @@ public class ResearchManager : TSingleton<ResearchManager>
                     researchResult.mineralAddRate += 10;
                     break;
                 case EResearch.ResourceLv2_1: // 장기전
-                    researchResult.occasionalAddRate += 30;
-                    researchResult.occasionalReduceTime += 20;
+                    researchResult.occasionalAddRate += 20;
+                    researchResult.occasionalReduceTime += 10;
                     break;
                 case EResearch.ResourceLv2_2: // 빠른 지원
                     researchResult.occasionalAddRate += 5;
-                    researchResult.occasionalReduceTime += -30;
+                    researchResult.occasionalReduceTime += -20;
                     break;
                 case EResearch.ResourceLv3_1: // 초기 승부
                     researchResult.towerPartAddRate += 30;

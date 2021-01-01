@@ -108,7 +108,7 @@ public class LobbyPlayer : MonoBehaviour
             SelectObject selectObject = other.GetComponent<SelectObject>();
             selectObject.OnPlayerExit();
             _onObject = null;
-            _actionTxt.text = "Action";
+            _actionTxt.text = "";
             _actionBtn.interactable = false;
         }
     }

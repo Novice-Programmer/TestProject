@@ -28,7 +28,7 @@ public class ResourceManager : TSingleton<ResourceManager>
 
     private void Start()
     {
-        _mineralValue = 5000;
+        _mineralValue = 6000;
     }
 
     public int MaxOccPlayment()

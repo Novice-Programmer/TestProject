@@ -41,6 +41,7 @@ public class BombEffect : MonoBehaviour
         if (_timeCheck >= _bombTime)
         {
             _dealCheck = false;
+            GetComponent<BoxCollider>().enabled = false;
         }
     }
 

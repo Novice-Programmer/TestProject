@@ -31,7 +31,21 @@ public class Ghost : MonoBehaviour
     {
         _saveDemision = _demision;
         if (_objectType == EObjectType.Tower)
-            _rangeObject.transform.localScale *= ObjectDataManager.Instance.GetTowerData(_objectName).atkRange;
+        {
+            float totalRange;
+            ResearchResult researchResult = ResearchManager.Instance.GameResearchData;
+            float range = ObjectDataManager.Instance.GetTowerData(_objectName).atkRange;
+            if (researchResult.startATKUpgrade != 0)
+            {
+                float upgradeRange = ObjectDataManager.Instance.GetUpgradeData(_objectName, EUpgradeType.Attack, researchResult.startATKUpgrade).addValue[2];
+                totalRange = range + upgradeRange + ((range + upgradeRange) * researchResult.atkRangeAddRate * 0.01f);
+            }
+            else
+            {
+                totalRange = range + (range * researchResult.atkRangeAddRate * 0.01f);
+            }
+            _rangeObject.transform.localScale *= totalRange;
+        }
     }
 
     private void Update()

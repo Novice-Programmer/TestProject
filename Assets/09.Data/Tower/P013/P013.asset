@@ -22,7 +22,7 @@ MonoBehaviour:
   ep: 2
   atk: 8
   def: 2
-  atkSpd: 0.8
+  atkSpd: 0.6
   atkRange: 8
   atkNumber: 1
   targetNumber: 1

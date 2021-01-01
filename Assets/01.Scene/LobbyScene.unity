@@ -9712,7 +9712,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 307288710}
   m_OnClick:
     m_PersistentCalls:
@@ -9741,7 +9741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -16288,7 +16288,7 @@ PrefabInstance:
     - target: {fileID: 331855972905970857, guid: d71fd04e09ba7e2409d31bac33e6790e,
         type: 3}
       propertyPath: _facilityData._dataEffect.Array.data[2]
-      value: "\uBC29\uD574 Lv.2 \uC5F0\uAD6C \uAC00\uB2A5"
+      value: "\uBC29\uD574 Lv.3 \uC5F0\uAD6C \uAC00\uB2A5"
       objectReference: {fileID: 0}
     - target: {fileID: 8617242097827956238, guid: d71fd04e09ba7e2409d31bac33e6790e,
         type: 3}
@@ -28120,7 +28120,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Action
+  m_Text: 
 --- !u!222 &903154651
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -44248,7 +44248,7 @@ PrefabInstance:
     - target: {fileID: 331855972905970857, guid: d71fd04e09ba7e2409d31bac33e6790e,
         type: 3}
       propertyPath: _facilityData._dataEffect.Array.data[2]
-      value: "\uBC29\uD574 Lv.1 \uC5F0\uAD6C \uAC00\uB2A5"
+      value: "\uBC29\uD574 Lv.2 \uC5F0\uAD6C \uAC00\uB2A5"
       objectReference: {fileID: 0}
     - target: {fileID: 331855972905970857, guid: d71fd04e09ba7e2409d31bac33e6790e,
         type: 3}

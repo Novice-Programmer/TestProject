@@ -499,7 +499,7 @@ public abstract class Enemy : ObjectGame
     {
         if (_stateType == EStateType.Die)
             return;
-        if (weakType == _weakType)
+        if (weakType != EWeakType.None && weakType == _weakType)
         {
             damage += (int)(damage * 0.2f);
         }
