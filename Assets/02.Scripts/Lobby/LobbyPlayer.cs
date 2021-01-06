@@ -11,8 +11,8 @@ public class LobbyPlayer : MonoBehaviour
     [SerializeField] Text _actionTxt = null;
     [SerializeField] LobbyStick _stickMovement = null;
 
-    [SerializeField] float _moveSpeed = 2.0f;
-    [SerializeField] float _rotateSpeed = 120.0f;
+    [SerializeField] float _moveSpeed = 3.0f;
+    [SerializeField] float _rotateSpeed = 60.0f;
 
     Vector3 mv;
     Vector3 rv;

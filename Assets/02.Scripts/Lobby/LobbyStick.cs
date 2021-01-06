@@ -20,7 +20,14 @@ public class LobbyStick : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoi
     {
         get
         {
-            return new Vector2(_dirInput.x, _dirInput.y);
+            if (_dirInput.y > 0.1f || _dirInput.y < -0.1f)
+            {
+                return new Vector2(_dirInput.x, _dirInput.y);
+            }
+            else
+            {
+                return new Vector2(_dirInput.x, 0);
+            }
         }
     }
 
@@ -29,12 +36,6 @@ public class LobbyStick : MonoBehaviour, IDragHandler, IPointerDownHandler, IPoi
     {
         _bg = GetComponent<Image>();
         _orizinColor = _stick.color;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void OnDrag(PointerEventData eventData)

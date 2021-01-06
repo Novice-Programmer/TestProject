@@ -66775,8 +66775,8 @@ MonoBehaviour:
   _actionBtn: {fileID: 307288709}
   _actionTxt: {fileID: 903154650}
   _stickMovement: {fileID: 1516266808}
-  _moveSpeed: 3.5
-  _rotateSpeed: 130
+  _moveSpeed: 3
+  _rotateSpeed: 60
 --- !u!95 &4838673398474836099
 Animator:
   serializedVersion: 3
