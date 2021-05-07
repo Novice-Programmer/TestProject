@@ -48,11 +48,6 @@ public class Ghost : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        RotateObject();
-    }
-
     public void FitMaterialCheck(EFitType towerFitType)
     {
         switch (towerFitType)
@@ -103,6 +98,13 @@ public class Ghost : MonoBehaviour
             {
                 _rotateType++;
             }
+        }
+        else
+        {
+            if (_rotateType != ERotateType.degree0)
+                _rotateType = ERotateType.degree0;
+            else
+                return;
         }
 
         Vector3 rotateEuler = Vector3.zero;
